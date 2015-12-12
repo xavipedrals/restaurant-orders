@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
     private final int EDITAR_PLATS_FRAGMENT = 2;
+    private final int LLISTAR_COMANDES_FRAGMENT = 3;
+    private final int STOC_PRODUCTES_FRAGMENT = 4;
+    private final int CONFIGURACIO_FRAGMENT = 5;
+    private final int AJUDA_FRAGMENT = 6;
 
     private void configureFab(int fragmentTag){
         switch (fragmentTag){
@@ -42,6 +46,21 @@ public class MainActivity extends AppCompatActivity
                 fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F44336"))); //Vermell
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
                 fab.setVisibility(View.VISIBLE);
+                break;
+            case LLISTAR_COMANDES_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
+            case STOC_PRODUCTES_FRAGMENT:
+                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2196F3"))); //Blau
+                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
+                fab.setVisibility(View.VISIBLE);
+                break;
+            case CONFIGURACIO_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
+            case AJUDA_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
         }
         actualFragment = fragmentTag;
     }
@@ -61,9 +80,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Main");
+        toolbar.setTitle("Nova comanda");
         setSupportActionBar(toolbar);
-
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +93,12 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case EDITAR_PLATS_FRAGMENT:
                         Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();
+                        break;
+                    case STOC_PRODUCTES_FRAGMENT:
+                        Toast.makeText(getApplicationContext(), "Stoc productes", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -87,6 +111,11 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        actualFragment = NOVA_COMANDA_FRAGMENT;
+        configureFab(NOVA_COMANDA_FRAGMENT);
+        ItemFragment f = new ItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
     }
 
     @Override
@@ -127,24 +156,41 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_nova_comanda) {
             setToolbarTitle("Nova comanda");
             configureFab(NOVA_COMANDA_FRAGMENT);
             ItemFragment f = new ItemFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");
             configureFab(EDITAR_PLATS_FRAGMENT);
             ItemFragment f = new ItemFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_llistat_comandes) {
+            setToolbarTitle("Llistar comandes");
+            configureFab(LLISTAR_COMANDES_FRAGMENT);
+            Fragment f = new Fragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_stoc_productes) {
+            setToolbarTitle("Stoc productes");
+            configureFab(STOC_PRODUCTES_FRAGMENT);
+            ItemFragment f = new ItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_config) {
+            setToolbarTitle("Configuració");
+            configureFab(CONFIGURACIO_FRAGMENT);
+            Fragment f = new Fragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+
+        } else if (id == R.id.nav_ajuda){
+            setToolbarTitle("Ajuda");
+            configureFab(AJUDA_FRAGMENT);
+            Fragment f = new Fragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         }
 

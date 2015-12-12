@@ -3,34 +3,42 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_nova_comanda"
+            android:icon="@mipmap/ic_shopping_basket_black_48dp"
+            android:title="Nova Comanda" />
 
-    <item android:title="Communicate">
+    </group>
+    <item android:title="Administració">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_editar_plats"
+                android:icon="@mipmap/ic_list_black_48dp"
+                android:title="Editar plats" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_llistat_comandes"
+                android:icon="@mipmap/ic_event_black_48dp"
+                android:title="Llistar comandes" />
+            <item
+                android:id="@+id/nav_stoc_productes"
+                android:icon="@mipmap/ic_assignment_black_48dp"
+                android:title="Stoc productes" />
+
+            <item
+                android:id="@+id/nav_config"
+                android:icon="@mipmap/ic_build_black_48dp"
+                android:title="Configuració" />
+
         </menu>
+    </item>
+
+    <item android:title="Informació adicional">
+        <menu>
+        <item
+            android:id="@+id/nav_ajuda"
+            android:icon="@mipmap/ic_help_outline_black_48dp"
+            android:title="Ajuda" />
+        </menu>
+
     </item>
 
 </menu>

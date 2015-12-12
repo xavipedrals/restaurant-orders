@@ -28,23 +28,6 @@ public class ProductsContainer {
         return instance;
     }
 
-    private void fillWithDefaultProducts(){
-        Product p1, p2, p3, p4, p5, p6;
-        p1 = new Product(R.mipmap.alberginia, 7.50, "Alberginia amb bacon");
-        p2 = new Product(R.mipmap.arros, 8.40, "Arròs amb pollastre");
-        p3 = new Product(R.mipmap.cranc, 11.99, "Cranc amb gurnició");
-        p4 = new Product(R.mipmap.kabab, 8.00, "Kabab");
-        p5 = new Product(R.mipmap.sopa, 6.70, "Sopa de verdures");
-        p6 = new Product(R.mipmap.postres, 4.50, "Coulan de xocolata");
-        productList.add(p1);
-        productList.add(p2);
-        productList.add(p3);
-        productList.add(p4);
-        productList.add(p5);
-        productList.add(p6);
-        count = 6;
-    }
-
     private void populateBDifNotPopulated(){
         Cursor cursor = GestorBD.getInstance(context).getAllPlats();
         if (cursor.moveToFirst()) {

@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
 
     private final int MAIN_FRAGMENT = 1;
     private final int NOVA_COMANDA_FRAGMENT = 2;
+    private final int EDITAR_PLATS_FRAGMENT = 3;
 
     private void configureFab(int fragmentTag){
         switch (fragmentTag){
@@ -37,10 +38,14 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.GONE);
                 break;
             case NOVA_COMANDA_FRAGMENT:
-                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17")));
+                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17"))); //Verd
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_done_white_64dp_1x));
                 fab.setVisibility(View.VISIBLE);
                 break;
+            case EDITAR_PLATS_FRAGMENT:
+                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F44336"))); //Vermell
+                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
+                fab.setVisibility(View.VISIBLE);
         }
         actualFragment = fragmentTag;
     }
@@ -138,6 +143,10 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_slideshow) {
+            setToolbarTitle("Editar plats");
+            configureFab(EDITAR_PLATS_FRAGMENT);
+            ItemFragment f = new ItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_manage) {
 

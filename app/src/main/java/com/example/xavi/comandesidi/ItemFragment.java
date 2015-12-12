@@ -1,6 +1,7 @@
 package com.example.xavi.comandesidi;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -28,6 +30,7 @@ public class ItemFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ProductsContainer productsContainer;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,26 +64,32 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
-//        FloatingActionButton fab = (FloatingActionButton) container.findViewById(R.id.fab);
-//        fab.setVisibility(View.VISIBLE);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //jnkjhiuhuhkuh
-//            }
-//        });
-
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override public void onItemClick(View view, int position) {
+                            MyItemRecyclerViewAdapter.ViewHolder v = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
+                            String number = v.quantitatTv.getText().toString();
+                            if(number.equals("X") || number.equals("")){
+                                v.quantitatTv.setText("x1");
+                            } else {
+                                String aux = number.substring(number.indexOf("x") + 1, number.length());
+                                int i = Integer.parseInt(aux);
+                                i++;
+                                v.quantitatTv.setText("x" + i);
+                            }
+                            v.itemContainer.setBackgroundColor(Color.parseColor("#E1F5FE")); //Light blue
+                        }
+                    })
+            );
             if (mColumnCount <= 1) {
-                Log.d("CRAC", "Holi crac, no havia de fer un linear Layout");
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            Log.d("CRAC", "En teoria vaig bé");
             recyclerView.setAdapter(new MyItemRecyclerViewAdapter(ProductsContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext()));
         }
         return view;

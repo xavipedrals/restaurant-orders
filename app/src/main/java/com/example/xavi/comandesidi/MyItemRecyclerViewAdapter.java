@@ -1,14 +1,17 @@
 package com.example.xavi.comandesidi;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.ItemFragment.OnListFragmentInteractionListener;
@@ -46,7 +49,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.product = productList.get(position);
         holder.nameTv.setText(productList.get(position).getName());
         String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
-        holder.price.setText(priceStr);
+        holder.priceTv.setText(priceStr);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
@@ -63,6 +66,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         });
     }
 
+
+
     @Override
     public int getItemCount() {
         return productList.size();
@@ -70,24 +75,24 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        public final LinearLayout itemContainer;
         public final TextView nameTv;
-        public final TextView price;
+        public final TextView priceTv;
+        public TextView quantitatTv;
         public ImageView imageView;
         public ProductsContainer.Product product;
 
         public ViewHolder(View view) {
             super(view);
+            itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
             mView = view;
-            nameTv = (TextView) view.findViewById(R.id.id);
-            price = (TextView) view.findViewById(R.id.content);
+            nameTv = (TextView) view.findViewById(R.id.product_name);
+            priceTv = (TextView) view.findViewById(R.id.product_price);
+            quantitatTv = (TextView) view.findViewById(R.id.quantitat);
             imageView = (ImageView) view.findViewById(R.id.listImageView);
-
-            //Bitmap round = ImageHelper.getRoundedCornerBitmap(bitmap, 10);
+            int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
+            priceTv.setTextColor(Color.argb(alpha, 0, 0, 0));
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + price.getText() + "'";
-        }
     }
 }

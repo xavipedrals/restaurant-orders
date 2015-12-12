@@ -43,13 +43,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.d("CRAAAC", "Holis champion, entro aqui");
         holder.product = productList.get(position);
         holder.nameTv.setText(productList.get(position).getName());
         String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
         holder.price.setText(priceStr);
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
-        Bitmap round = ImageHelper.getRoundedShape(bitmap, 200);
+        Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

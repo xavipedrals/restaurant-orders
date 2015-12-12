@@ -46,7 +46,7 @@ public class ProductsContainer {
     }
 
     private void populateBDifNotPopulated(){
-        Cursor cursor = new GestorBD(context).getAllPlats();
+        Cursor cursor = GestorBD.getInstance(context).getAllPlats();
         if (cursor.moveToFirst()) {
             do {
                 Product product = new Product();
@@ -56,12 +56,12 @@ public class ProductsContainer {
                 productList.add(product);
             } while (cursor.moveToNext());
         } else {
-            new GestorBD(context).insertPlat(R.mipmap.alberginia, 7.50, "Alberginia amb bacon");
-            new GestorBD(context).insertPlat(R.mipmap.arros, 8.40, "Arròs amb pollastre");
-            new GestorBD(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb gurnició");
-            new GestorBD(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab");
-            new GestorBD(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures");
-            new GestorBD(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.alberginia, 7.50, "Alberginia amb bacon");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.arros, 8.40, "Arròs amb pollastre");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb gurnició");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata");
             populateBDifNotPopulated();
         }
     }
@@ -88,7 +88,7 @@ public class ProductsContainer {
 
     public void addProduct(int mipmapId, double price, String name){
         productList.add(new Product(mipmapId, price, name));
-        new GestorBD(context).insertPlat(mipmapId, price, name);
+        GestorBD.getInstance(context).insertPlat(mipmapId, price, name);
     }
 
 

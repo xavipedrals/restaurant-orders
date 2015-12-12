@@ -28,15 +28,11 @@ public class MainActivity extends AppCompatActivity
     FloatingActionButton fab;
     private int actualFragment;
 
-    private final int MAIN_FRAGMENT = 1;
-    private final int NOVA_COMANDA_FRAGMENT = 2;
-    private final int EDITAR_PLATS_FRAGMENT = 3;
+    private final int NOVA_COMANDA_FRAGMENT = 1;
+    private final int EDITAR_PLATS_FRAGMENT = 2;
 
     private void configureFab(int fragmentTag){
         switch (fragmentTag){
-            case MAIN_FRAGMENT:
-                fab.setVisibility(View.GONE);
-                break;
             case NOVA_COMANDA_FRAGMENT:
                 fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17"))); //Verd
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_done_white_64dp_1x));
@@ -74,11 +70,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 switch (actualFragment){
-                    case MAIN_FRAGMENT:
-                        break;
                     case NOVA_COMANDA_FRAGMENT:
                         Toast.makeText(getApplicationContext(), "I'm in new comanda", Toast.LENGTH_LONG).show();
                         break;
+                    case EDITAR_PLATS_FRAGMENT:
+                        Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -137,10 +133,6 @@ public class MainActivity extends AppCompatActivity
             ItemFragment f = new ItemFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
         } else if (id == R.id.nav_gallery) {
-            setToolbarTitle("Hola crac");
-            configureFab(MAIN_FRAGMENT);
-            Fragment f = new Fragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_slideshow) {
             setToolbarTitle("Editar plats");

@@ -34,7 +34,6 @@ public class ImageHelper {
     }
 
     public static Bitmap getRoundedShape(Bitmap scaleBitmapImage,int width) {
-        // TODO Auto-generated method stub
         int targetWidth = width;
         int targetHeight = width;
         Bitmap targetBitmap = Bitmap.createBitmap(targetWidth,
@@ -48,10 +47,9 @@ public class ImageHelper {
                         ((float) targetHeight)) / 2),
                 Path.Direction.CCW);
         canvas.clipPath(path);
-        Bitmap sourceBitmap = scaleBitmapImage;
-        canvas.drawBitmap(sourceBitmap,
-                new Rect(0, 0, sourceBitmap.getWidth(),
-                        sourceBitmap.getHeight()),
+        canvas.drawBitmap(scaleBitmapImage,
+                new Rect(0, 0, scaleBitmapImage.getWidth(),
+                        scaleBitmapImage.getHeight()),
                 new Rect(0, 0, targetWidth,
                         targetHeight), null);
         return targetBitmap;

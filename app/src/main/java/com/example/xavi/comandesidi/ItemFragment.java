@@ -1,18 +1,24 @@
 package com.example.xavi.comandesidi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -30,33 +36,25 @@ public class ItemFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ProductsContainer productsContainer;
+    private double totalPrice;
+    private RecyclerView recyclerView;
+    private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
 
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ItemFragment() {
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ItemFragment newInstance(int columnCount) {
-        ItemFragment fragment = new ItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+    public ItemFragment() {
+        //Required empty constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        setHasOptionsMenu(true);
         productsContainer = ProductsContainer.getInstance(getActivity().getApplicationContext());
+        totalPrice = 0;
     }
 
     @Override
@@ -67,21 +65,12 @@ public class ItemFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override public void onItemClick(View view, int position) {
                             MyItemRecyclerViewAdapter.ViewHolder v = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                            String number = v.quantitatTv.getText().toString();
-                            if(number.equals("X") || number.equals("")){
-                                v.quantitatTv.setText("x1");
-                            } else {
-                                String aux = number.substring(number.indexOf("x") + 1, number.length());
-                                int i = Integer.parseInt(aux);
-                                i++;
-                                v.quantitatTv.setText("x" + i);
-                            }
-                            v.itemContainer.setBackgroundColor(Color.parseColor("#E1F5FE")); //Light blue
+                            v.increaseQuantityByOne();
                         }
                     })
             );
@@ -90,11 +79,17 @@ public class ItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(ProductsContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext()));
+            myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(ProductsContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
+            recyclerView.setAdapter(myItemRecyclerViewAdapter);
         }
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        registerForContextMenu(recyclerView);
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -112,6 +107,77 @@ public class ItemFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.nova_comanda_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_info) {
+            Bundle b = new Bundle();
+            b.putDouble("price", myItemRecyclerViewAdapter.getTotalPrice());
+            InfoDialog infoDialog = new InfoDialog();
+            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            infoDialog.setArguments(b);
+            infoDialog.show(fragmentManager, "tag");
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.nova_comanda_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        MyItemRecyclerViewAdapter.ViewHolder viewHolder = null;
+        int position = -1;
+        try {
+            viewHolder = myItemRecyclerViewAdapter.getLastClickedView();
+            position = myItemRecyclerViewAdapter.getPosition();
+        } catch (Exception e) {
+            Log.d("PUTAAA", e.getLocalizedMessage(), e);
+            return super.onContextItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.context_menys:
+                viewHolder.decreaseQuantityByOne();
+                break;
+            case R.id.context_zero:
+                viewHolder.decreaseQuantityToZero();
+                break;
+            case R.id.context_num_pers:
+                IntrQuantDialog intrQuantDialog = new IntrQuantDialog();
+                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                intrQuantDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                final MyItemRecyclerViewAdapter.ViewHolder finalViewHolder = viewHolder;
+                intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
+                    @Override
+                    public void onPositiveResult(int value) {
+                        finalViewHolder.setExactQuantity(value);
+                    }
+                    @Override
+                    public void onNegativeResult() {
+                    }
+                });
+                intrQuantDialog.show(fragmentManager, "tag");
+                break;
+        }
+        return super.onContextItemSelected(item);
+
+    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

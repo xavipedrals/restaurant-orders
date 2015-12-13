@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/context_zero"
+        android:title="Posar quantitat a zero" />
+
+    <item
+        android:id="@+id/context_num_pers"
+        android:title="Introduïr quantitat exacta" />
+
+    <item
+        android:id="@+id/context_menys"
+        android:title="Restar una unitat" />
+
+
+</menu>

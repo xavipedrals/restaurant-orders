@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     ActionBarDrawerToggle toggle;
     FloatingActionButton fab;
     private int actualFragment;
+    ItemFragment itemFragment;
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
     private final int EDITAR_PLATS_FRAGMENT = 2;
@@ -89,7 +91,10 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 switch (actualFragment){
                     case NOVA_COMANDA_FRAGMENT:
-                        Toast.makeText(getApplicationContext(), "I'm in new comanda", Toast.LENGTH_LONG).show();
+                        TableDialog tableDialog = new TableDialog();
+                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                        tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                        tableDialog.show(fragmentManager, "tag");
                         break;
                     case EDITAR_PLATS_FRAGMENT:
                         Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();
@@ -114,8 +119,8 @@ public class MainActivity extends AppCompatActivity
 
         actualFragment = NOVA_COMANDA_FRAGMENT;
         configureFab(NOVA_COMANDA_FRAGMENT);
-        ItemFragment f = new ItemFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+        itemFragment = new ItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
     }
 
     @Override
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -159,8 +164,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_nova_comanda) {
             setToolbarTitle("Nova comanda");
             configureFab(NOVA_COMANDA_FRAGMENT);
-            ItemFragment f = new ItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            itemFragment = new ItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
 
         } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");

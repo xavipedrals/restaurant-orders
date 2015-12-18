@@ -1,6 +1,7 @@
 package com.example.xavi.comandesidi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -67,7 +68,9 @@ public class ItemFragment extends Fragment {
                     new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override public void onItemClick(View view, int position) {
                             MyItemRecyclerViewAdapter.ViewHolder v = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                            v.increaseQuantityByOne();
+                            //v.increaseQuantityByOne();
+                            //TODO: Esborrar això
+                            startActivity(new Intent(getActivity(), EditPlatActivity.class));
                         }
                     })
             );

@@ -1,5 +1,6 @@
 package com.example.xavi.comandesidi;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;

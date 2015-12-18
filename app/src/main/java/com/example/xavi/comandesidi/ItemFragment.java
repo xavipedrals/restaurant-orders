@@ -30,23 +30,20 @@ import com.example.xavi.comandesidi.domini.ProductsContainer;
  */
 public class ItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ProductsContainer productsContainer;
-    private double totalPrice;
     private RecyclerView recyclerView;
     private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
 
 
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
     public ItemFragment() {
         //Required empty constructor
+    }
+
+    public MyItemRecyclerViewAdapter getMyItemRecyclerViewAdapter() {
+        return myItemRecyclerViewAdapter;
     }
 
     @Override
@@ -54,7 +51,6 @@ public class ItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         productsContainer = ProductsContainer.getInstance(getActivity().getApplicationContext());
-        totalPrice = 0;
     }
 
     @Override
@@ -66,6 +62,7 @@ public class ItemFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
+            //TODO: Fer operació des del Adapter per veure si va més ràpid
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override public void onItemClick(View view, int position) {
@@ -117,9 +114,7 @@ public class ItemFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_info) {
+        if (id == R.id.action_info) {
             Bundle b = new Bundle();
             b.putDouble("price", myItemRecyclerViewAdapter.getTotalPrice());
             InfoDialog infoDialog = new InfoDialog();
@@ -127,6 +122,8 @@ public class ItemFragment extends Fragment {
             infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             infoDialog.setArguments(b);
             infoDialog.show(fragmentManager, "tag");
+        } else if(id == R.id.menu_reset_comanda){
+            myItemRecyclerViewAdapter.resetView();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -190,7 +187,6 @@ public class ItemFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(ProductsContainer.Product product);
     }
 }

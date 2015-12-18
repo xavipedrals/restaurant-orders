@@ -17,16 +17,11 @@ import android.widget.TextView;
 
 import com.example.xavi.comandesidi.ItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
-import com.example.xavi.comandesidi.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
     private List<ProductsContainer.Product> productList;
@@ -59,6 +54,12 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             price += holder.quantity * holder.product.getPrice();
         }
         return price;
+    }
+
+    public void resetView(){
+        for(ViewHolder holder: viewHolderList){
+            holder.decreaseQuantityToZero();
+        }
     }
 
     public MyItemRecyclerViewAdapter(ProductsContainer productsContainer, OnListFragmentInteractionListener listener, Context context) {

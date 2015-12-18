@@ -19,6 +19,7 @@ public class TableDialog extends DialogFragment {
 
     TextView acceptTV, cancelTv;
     EditText numeroTaulaEt;
+    private OnTableDialogResultListener onTableDialogResultListener;
 
     public TableDialog() {
         // Empty constructor required for DialogFragment
@@ -38,13 +39,15 @@ public class TableDialog extends DialogFragment {
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                onTableDialogResultListener.onNegativeResult();
                 dismiss();
             }
         });
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //int i = Integer.parseInt(numeroTaulaEt.getText().toString());
+                int numTaula = Integer.parseInt(numeroTaulaEt.getText().toString());
+                onTableDialogResultListener.onPositiveResult(numTaula);
                 dismiss();
             }
         });
@@ -57,6 +60,15 @@ public class TableDialog extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public interface OnTableDialogResultListener {
+        public abstract void onPositiveResult(int numTaula);
+        public abstract void onNegativeResult();
+    }
+
+    public void setOnTableDialogResultListener(OnTableDialogResultListener listener) {
+        this.onTableDialogResultListener = listener;
     }
 
 }

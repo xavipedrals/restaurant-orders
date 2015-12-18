@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.dummy;
+package com.example.xavi.comandesidi.LlistarComandes.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
- * <p/>
+ * <p>
  * TODO: Replace all uses of this class before publishing your app.
  */
 public class DummyContent {

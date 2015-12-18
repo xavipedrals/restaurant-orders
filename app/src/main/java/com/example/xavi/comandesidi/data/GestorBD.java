@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Date;
+
 public class GestorBD extends SQLiteOpenHelper {
 
     private static GestorBD instance;
@@ -17,6 +19,7 @@ public class GestorBD extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Dades";
 
+    //PLATS
     public static final String PLATS_TABLE ="Plats";
     public static final String PLATS_COL_NAME ="name";
     public static final String PLATS_COL_PRICE ="price";
@@ -29,6 +32,20 @@ public class GestorBD extends SQLiteOpenHelper {
             PLATS_COL_IMG + " INTEGER);";
 
     public static final String PLATS_TABLE_RESET = "DELETE FROM " + PLATS_TABLE;
+
+    //COMANDES
+    public static final String COMANDES_TABLE ="Comandes";
+    public static final String COMANDES_COL_DATA ="date";
+    public static final String COMANDES_COL_PRICE ="price";
+    public static final String COMANDES_COL_NUM_TABLE ="numtaula";
+
+    public static final String COMANDES_TABLE_CREATE = "CREATE TABLE " + COMANDES_TABLE +
+            "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COMANDES_COL_NUM_TABLE + " INTEGER, " +
+            COMANDES_COL_DATA + " TEXT, " +
+            COMANDES_COL_PRICE + " REAL);";
+
+    public static final String COMANDES_TABLE_RESET = "DELETE FROM " + COMANDES_TABLE;
 
     public GestorBD(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +61,7 @@ public class GestorBD extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(PLATS_TABLE_CREATE);
+        db.execSQL(COMANDES_TABLE_CREATE);
     }
 
     public void insertPlat (int img, double price, String name){
@@ -70,9 +88,23 @@ public class GestorBD extends SQLiteOpenHelper {
         return c;
     }
 
+    public void insertComanda(double price, String date, int numTaula){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COMANDES_COL_PRICE, price);
+        contentValues.put(COMANDES_COL_DATA, date);
+        contentValues.put(COMANDES_COL_NUM_TABLE, numTaula);
+        db.insert(COMANDES_TABLE, null, contentValues);
+    }
+
     public void resetTablePlats(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(PLATS_TABLE_RESET);
+    }
+
+    public void resetTableComandes(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(COMANDES_TABLE_RESET);
     }
 
     @Override

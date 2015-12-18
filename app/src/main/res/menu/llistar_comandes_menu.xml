@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_reset_comanda"
-        android:title="Reset comanda"
+        android:id="@+id/menu_hjhj"
+        android:title="jkhjhjh"
         app:showAsAction="never" />
 
 
     <item
-        android:id="@+id/action_info"
-        android:icon="@mipmap/ic_info_outline_white_48dp"
+        android:id="@+id/action_filter"
+        android:icon="@mipmap/ic_filter_list_white_48dp"
         android:orderInCategory="200"
-        android:title="info"
+        android:title="filter"
         app:showAsAction="ifRoom" />
 
 </menu>

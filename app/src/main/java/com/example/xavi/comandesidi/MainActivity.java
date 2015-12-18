@@ -17,10 +17,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
+import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
+import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ComandaItemFragment.OnListFragmentInteractionListener {
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -94,6 +100,23 @@ public class MainActivity extends AppCompatActivity
                         TableDialog tableDialog = new TableDialog();
                         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
                         tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                        tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
+                            @Override
+                            public void onPositiveResult(int numTaula) {
+                                double price = itemFragment.getMyItemRecyclerViewAdapter().getTotalPrice();
+                                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                                Date date = new Date();
+                                String dateStr = df.format(date);
+                                GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                                itemFragment.getMyItemRecyclerViewAdapter().resetView();
+                                Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onNegativeResult() {
+
+                            }
+                        });
                         tableDialog.show(fragmentManager, "tag");
                         break;
                     case EDITAR_PLATS_FRAGMENT:
@@ -148,9 +171,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -176,8 +196,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_llistat_comandes) {
             setToolbarTitle("Llistar comandes");
             configureFab(LLISTAR_COMANDES_FRAGMENT);
-            Fragment f = new Fragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            ComandaItemFragment comandaItemFragment = new ComandaItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, comandaItemFragment).commit();
 
         } else if (id == R.id.nav_stoc_productes) {
             setToolbarTitle("Stoc productes");
@@ -207,6 +227,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(ProductsContainer.Product product) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 }

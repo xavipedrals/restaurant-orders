@@ -54,7 +54,8 @@ public class EditPlatActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), mipmapId);
         image.setImageBitmap(bitmap);
 
-        //TextView title = (TextView) findViewById(R.id.title);
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText(name);
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {

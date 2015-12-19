@@ -41,7 +41,7 @@ public class ProductsContainer {
         } else {
             GestorBD.getInstance(context).insertPlat(R.mipmap.alberginia, 7.50, "Alberginia amb bacon");
             GestorBD.getInstance(context).insertPlat(R.mipmap.arros, 8.40, "Arròs amb pollastre");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb gurnició");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb guarnició");
             GestorBD.getInstance(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab");
             GestorBD.getInstance(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures");
             GestorBD.getInstance(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata");

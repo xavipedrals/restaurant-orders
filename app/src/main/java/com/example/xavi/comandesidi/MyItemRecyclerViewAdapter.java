@@ -1,12 +1,10 @@
 package com.example.xavi.comandesidi;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.xavi.comandesidi.ItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.NovaComanda.ItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 import java.util.ArrayList;

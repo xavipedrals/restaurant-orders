@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
-    android:name="com.example.xavi.comandesidi.ItemFragment"
+    android:name="com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".NovaComanda.ItemFragment"
-    tools:listitem="@layout/fragment_item" />
+    tools:context="com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment"
+    tools:listitem="@layout/fragment_editplatitem" />

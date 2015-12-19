@@ -1,6 +1,5 @@
 package com.example.xavi.comandesidi;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,8 +17,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
+import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -27,7 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener, ComandaItemFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener,
+        ComandaItemFragment.OnListFragmentInteractionListener, EditPlatItemFragment.OnListFragmentInteractionListener {
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");
             configureFab(EDITAR_PLATS_FRAGMENT);
-            ItemFragment f = new ItemFragment();
+            EditPlatItemFragment f = new EditPlatItemFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_llistat_comandes) {

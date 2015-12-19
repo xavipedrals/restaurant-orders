@@ -3,6 +3,7 @@ package com.example.xavi.comandesidi;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -25,21 +26,6 @@ public class EditPlatActivity extends AppCompatActivity {
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private Toolbar toolbar;
-
-//    public static void navigate(AppCompatActivity activity, View transitionImage, ViewModel viewModel) {
-//        Intent intent = new Intent(activity, DetailActivity.class);
-//        intent.putExtra(EXTRA_IMAGE, viewModel.getImage());
-//        intent.putExtra(EXTRA_TITLE, viewModel.getText());
-//
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionImage, EXTRA_IMAGE);
-//        ActivityCompat.startActivity(activity, intent, options.toBundle());
-//    }
-
-    private void setToolbarTitle(String title){
-        toolbar.setTitle(title);
-        setSupportActionBar(toolbar);
-    }
 
     @SuppressWarnings("ConstantConditions")
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +33,17 @@ public class EditPlatActivity extends AppCompatActivity {
         initActivityTransitions();
         setContentView(R.layout.activity_edit_plat);
 
+        Bundle b = getIntent().getExtras();
+        String name = b.getString("name");
+        double price = b.getDouble("price");
+        int mipmapId = b.getInt("mipmap");
+
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout), EXTRA_IMAGE);
         supportPostponeEnterTransition();
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Caca de vaca");
+        getSupportActionBar().setTitle(name);
 
         String itemTitle = getIntent().getStringExtra(EXTRA_TITLE);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -60,9 +51,10 @@ public class EditPlatActivity extends AppCompatActivity {
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
         final ImageView image = (ImageView) findViewById(R.id.image);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), mipmapId);
+        image.setImageBitmap(bitmap);
 
-        TextView title = (TextView) findViewById(R.id.title);
-        //title.setText(itemTitle);
+        //TextView title = (TextView) findViewById(R.id.title);
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {

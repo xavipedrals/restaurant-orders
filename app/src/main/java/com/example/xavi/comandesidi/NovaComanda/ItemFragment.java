@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi;
+package com.example.xavi.comandesidi.NovaComanda;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.example.xavi.comandesidi.InfoDialog;
+import com.example.xavi.comandesidi.IntrQuantDialog;
+import com.example.xavi.comandesidi.MyItemRecyclerViewAdapter;
+import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 /**
@@ -68,9 +73,9 @@ public class ItemFragment extends Fragment {
                     new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override public void onItemClick(View view, int position) {
                             MyItemRecyclerViewAdapter.ViewHolder v = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                            //v.increaseQuantityByOne();
+                            v.increaseQuantityByOne();
                             //TODO: Esborrar això
-                            startActivity(new Intent(getActivity(), EditPlatActivity.class));
+                            //startActivity(new Intent(getActivity(), EditPlatActivity.class));
                         }
                     })
             );

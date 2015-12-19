@@ -1,30 +1,26 @@
 package com.example.xavi.comandesidi;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class EditPlatActivity extends AppCompatActivity {
 
+    private static final String TAG = "EditPlatActivity";
+
     private static final String EXTRA_IMAGE = "com.antonioleiva.materializeyourapp.extraImage";
     private static final String EXTRA_TITLE = "com.antonioleiva.materializeyourapp.extraTitle";
+
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
     @SuppressWarnings("ConstantConditions")
@@ -72,5 +68,23 @@ public class EditPlatActivity extends AppCompatActivity {
             getWindow().setEnterTransition(transition);
             getWindow().setReturnTransition(transition);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch(id){
+            case android.R.id.home:
+
+                Log.d(TAG, "Home");
+                //FIXME: Go back instead of finishing activity.
+                finish();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

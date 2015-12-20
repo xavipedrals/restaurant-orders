@@ -28,6 +28,10 @@ public class ProductsContainer {
         return instance;
     }
 
+    public static void refresh(Context context){
+        instance = new ProductsContainer(context);
+    }
+
     private void populateBDifNotPopulated(){
         Cursor cursor = GestorBD.getInstance(context).getAllPlats();
         if (cursor.moveToFirst()) {
@@ -45,6 +49,9 @@ public class ProductsContainer {
             GestorBD.getInstance(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab");
             GestorBD.getInstance(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures");
             GestorBD.getInstance(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.pizza, 7.30, "Pizza vegetariana");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.fajitas, 4.50, "Fajitas");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.tacos, 4, "Tacos");
             populateBDifNotPopulated();
         }
     }

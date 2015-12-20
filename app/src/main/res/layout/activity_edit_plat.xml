@@ -70,8 +70,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="7dp"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:gravity="center_vertical">
 
                     <ImageView
@@ -128,8 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="7dp"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:gravity="center_vertical">
 
                     <ImageView
@@ -175,6 +175,25 @@
 
 
             </android.support.v7.widget.CardView>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GUARDAR CANVIS"
+                android:textColor="@android:color/white"
+                android:background="@color/material_green"
+                android:id="@+id/buttonSave"
+                android:layout_margin="@dimen/spacing_medium" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BORRAR PRODUCTE"
+                android:textColor="@android:color/white"
+                android:background="@color/material_red"
+                android:id="@+id/buttonDelete"
+                android:layout_margin="@dimen/spacing_medium" />
+
 
         </LinearLayout>
 

@@ -73,6 +73,21 @@ public class GestorBD extends SQLiteOpenHelper {
         db.insert(PLATS_TABLE, null, contentValues);
     }
 
+    public void updatePlat(int mipmapId, double price, String name, String legacyName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLATS_COL_PRICE, price);
+        contentValues.put(PLATS_COL_NAME, name);
+        contentValues.put(PLATS_COL_IMG, mipmapId);
+        Log.d("DADES", "Vaig a fer un update");
+        db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{legacyName});
+    }
+
+    public void deletePlat (String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM "+ PLATS_TABLE +" WHERE "+ PLATS_COL_NAME + "="+ name +";");
+    }
+
     public Cursor getAllPlats (){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {PLATS_COL_NAME, PLATS_COL_PRICE, PLATS_COL_IMG};

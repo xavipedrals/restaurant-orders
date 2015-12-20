@@ -19,10 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main234234Activity"
-            android:label="@string/title_activity_main234234"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".EditarPlats.EditPlatActivity"
             android:parentActivityName=".MainActivity">
             <meta-data

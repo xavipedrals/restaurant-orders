@@ -6,4 +6,7 @@
     <color name="colorPrimaryDark">#1E88E5</color>
     <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorAccent">#2979FF</color>
+
+    <color name="material_red">#F44336</color>
+    <color name="material_green">#4CAF50</color>
 </resources>

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     ItemFragment itemFragment;
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
-    private final int EDITAR_PLATS_FRAGMENT = 2;
+    public static final int EDITAR_PLATS_FRAGMENT = 2;
     private final int LLISTAR_COMANDES_FRAGMENT = 3;
     private final int STOC_PRODUCTES_FRAGMENT = 4;
     private final int CONFIGURACIO_FRAGMENT = 5;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (actualFragment){
+                switch (actualFragment) {
                     case NOVA_COMANDA_FRAGMENT:
                         TableDialog tableDialog = new TableDialog();
                         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -143,10 +143,20 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        actualFragment = NOVA_COMANDA_FRAGMENT;
-        configureFab(NOVA_COMANDA_FRAGMENT);
-        itemFragment = new ItemFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
+        if(getIntent().hasExtra("Fragment")){
+            Bundle b = getIntent().getExtras();
+            if(b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT){
+                actualFragment = EDITAR_PLATS_FRAGMENT;
+                configureFab(EDITAR_PLATS_FRAGMENT);
+                EditPlatItemFragment editPlatItemFragment = new EditPlatItemFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
+            }
+        } else {
+            actualFragment = NOVA_COMANDA_FRAGMENT;
+            configureFab(NOVA_COMANDA_FRAGMENT);
+            itemFragment = new ItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
+        }
     }
 
     @Override

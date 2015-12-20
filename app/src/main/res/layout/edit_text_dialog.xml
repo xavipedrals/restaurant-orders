@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Introduiex una quantitat:"
-        android:id="@+id/textViewLastBank"
+        android:textColor="@color/primary_text"
+        android:text="Introduiex un nou preu:"
+        android:id="@+id/textViewMissatge"
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:layout_marginTop="20sp"
@@ -27,9 +28,9 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/editTextQuant" />
+            android:id="@+id/editTextResposta" />
     </LinearLayout>
 
     <LinearLayout

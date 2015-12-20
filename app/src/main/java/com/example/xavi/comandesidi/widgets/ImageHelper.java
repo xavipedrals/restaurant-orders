@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi;
+package com.example.xavi.comandesidi.widgets;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

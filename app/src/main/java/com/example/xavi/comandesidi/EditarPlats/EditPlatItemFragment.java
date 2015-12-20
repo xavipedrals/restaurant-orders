@@ -11,14 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.xavi.comandesidi.EditPlatActivity;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.EditarPlats.dummy.DummyContent;
-import com.example.xavi.comandesidi.EditarPlats.dummy.DummyContent.DummyItem;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

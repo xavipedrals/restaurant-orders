@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="157,86€"
+        android:textColor="@color/primary_text"
         android:id="@+id/textViewPriceDg"
         android:gravity="center" />
 
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="ACCEPTAR"
             android:textStyle="bold"
-            android:textColor="#03A9F4"
+            android:textColor="@color/primary"
             android:id="@+id/textViewAccept"
             android:textSize="17sp" />
     </LinearLayout>

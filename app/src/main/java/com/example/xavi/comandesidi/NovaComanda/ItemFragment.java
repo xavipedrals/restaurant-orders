@@ -1,11 +1,7 @@
 package com.example.xavi.comandesidi.NovaComanda;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,11 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import com.example.xavi.comandesidi.InfoDialog;
 import com.example.xavi.comandesidi.IntrQuantDialog;
-import com.example.xavi.comandesidi.MyItemRecyclerViewAdapter;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;

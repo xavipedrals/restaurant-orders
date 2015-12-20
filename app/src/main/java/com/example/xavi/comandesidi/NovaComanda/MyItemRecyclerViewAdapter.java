@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi;
+package com.example.xavi.comandesidi.NovaComanda;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.widgets.ImageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,7 +191,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         }
 
         public void setSelectionedBackgroundColor(){
-            itemContainer.setBackgroundColor(Color.parseColor("#E1F5FE")); //Light blue
+            //itemContainer.setBackgroundColor(Color.parseColor("#E1F5FE")); //Light blue
+            itemContainer.setBackgroundColor(context.getResources().getColor(R.color.accent_translucent)); //Light blue
         }
 
         public void setNormalBackgroundColor(){

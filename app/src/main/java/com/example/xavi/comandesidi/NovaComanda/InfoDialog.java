@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi;
+package com.example.xavi.comandesidi.NovaComanda;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.xavi.comandesidi.R;
 
 import java.io.IOException;
 import java.text.DecimalFormat;

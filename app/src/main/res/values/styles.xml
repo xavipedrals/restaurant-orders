@@ -2,10 +2,10 @@
 
     <!-- Base application theme. -->
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
+    <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+    <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+    <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+    <!--<item name="colorAccent">@color/colorAccent</item>-->
     <!--</style>-->
 
     <style name="AppTheme.NoActionBar">
@@ -17,7 +17,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme" parent="BaseTheme"/>
+    <style name="AppTheme" parent="BaseTheme" />
 
     <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item> 
@@ -32,19 +32,33 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/spacing_large</item>
-        <item name="android:src">@mipmap/ic_add_white_48dp</item>
+        <!--<item name="android:src">@mipmap/ic_add_white_48dp</item>-->
         <item name="borderWidth">0dp</item>
         <item name="elevation">6dp</item>
         <item name="pressedTranslationZ">12dp</item>
-        <item name="rippleColor">@android:color/white</item>
+        <item name="rippleColor">@color/accent_bright</item>
     </style>
 
-    <color name="primary">#00BCD4</color>
-    <color name="primary_dark">#0097A7</color>
-    <color name="accent">#FFEB3B</color>
+    <!--<color name="primary">#00BCD4</color>-->
+    <!--<color name="primary_dark">#0097A7</color>-->
+    <!--<color name="accent">#FFEB3B</color>-->
+    <!--<color name="accent_translucent">#80FFEB3B</color>-->
+    <!--<color name="accent_bright">#FFF493</color>-->
+
+    <!--<color name="primary">#03A9F4</color>-->
+    <!--<color name="primary_dark">#0288D1</color>-->
+    <!--<color name="accent">#FFc107</color>-->
+    <!--<color name="accent_translucent">#80FFEB3B</color>-->
+    <!--<color name="accent_bright">#FFF493</color>-->
+
+    <color name="primary">#009688</color>
+    <color name="primary_dark">#00796B</color>
+    <color name="accent">#FFC107</color>
     <color name="accent_translucent">#80FFEB3B</color>
     <color name="accent_bright">#FFF493</color>
-
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="divider">#B6B6B6</color>
 
 
 </resources>

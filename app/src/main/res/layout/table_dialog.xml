@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text"
         android:text="Introduiex el número de la taula:"
         android:id="@+id/textViewLastBank"
         android:layout_marginBottom="20sp"
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:text="CANCEL·LAR"
             android:textStyle="bold"
-            android:textColor="#03A9F4"
+            android:textColor="@color/primary"
             android:textSize="17sp"
             android:id="@+id/textViewCancel"
             android:layout_marginRight="30sp" />
@@ -58,7 +59,7 @@
             android:layout_height="wrap_content"
             android:text="ACCEPTAR"
             android:textStyle="bold"
-            android:textColor="#03A9F4"
+            android:textColor="@color/primary"
             android:id="@+id/textViewAccept"
             android:textSize="17sp" />
 

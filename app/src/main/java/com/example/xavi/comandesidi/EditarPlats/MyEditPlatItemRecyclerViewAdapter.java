@@ -13,18 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment.OnListFragmentInteractionListener;
-import com.example.xavi.comandesidi.EditarPlats.dummy.DummyContent.DummyItem;
-import com.example.xavi.comandesidi.ImageHelper;
+import com.example.xavi.comandesidi.widgets.ImageHelper;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEditPlatItemRecyclerViewAdapter.ViewHolder> {
 
     private final OnListFragmentInteractionListener mListener;

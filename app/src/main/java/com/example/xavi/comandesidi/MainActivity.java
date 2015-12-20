@@ -1,7 +1,6 @@
 package com.example.xavi.comandesidi;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
@@ -21,6 +20,7 @@ import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
+import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity
     private void configureFab(int fragmentTag){
         switch (fragmentTag){
             case NOVA_COMANDA_FRAGMENT:
-                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17"))); //Verd
+                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17"))); //Verd
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_done_white_64dp_1x));
                 fab.setVisibility(View.VISIBLE);
                 break;
             case EDITAR_PLATS_FRAGMENT:
-                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F44336"))); //Vermell
+                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F44336"))); //Vermell
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
                 fab.setVisibility(View.VISIBLE);
                 break;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.GONE);
                 break;
             case STOC_PRODUCTES_FRAGMENT:
-                fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2196F3"))); //Blau
+                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2196F3"))); //Blau
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
                 fab.setVisibility(View.VISIBLE);
                 break;
@@ -215,10 +215,11 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_ajuda){
-            setToolbarTitle("Ajuda");
-            configureFab(AJUDA_FRAGMENT);
-            Fragment f = new Fragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+//            setToolbarTitle("Ajuda");
+//            configureFab(AJUDA_FRAGMENT);
+//            Fragment f = new Fragment();
+//            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
 
         }
 

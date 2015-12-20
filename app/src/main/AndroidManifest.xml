@@ -22,13 +22,17 @@
             android:name=".Main234234Activity"
             android:label="@string/title_activity_main234234"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".EditPlatActivity"
+        <activity
+            android:name=".EditarPlats.EditPlatActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

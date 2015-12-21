@@ -85,7 +85,9 @@ public class GestorBD extends SQLiteOpenHelper {
 
     public void deletePlat (String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM "+ PLATS_TABLE +" WHERE "+ PLATS_COL_NAME + "="+ name +";");
+        String whereClause = PLATS_COL_NAME + "=?";
+        String[] whereArgs = new String[] { name };
+        db.delete(PLATS_TABLE, whereClause, whereArgs);
     }
 
     public Cursor getAllPlats (){

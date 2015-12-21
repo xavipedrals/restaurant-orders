@@ -4,7 +4,7 @@
     <group>
         <item
             android:id="@+id/nav_nova_comanda"
-            android:icon="@mipmap/ic_shopping_basket_black_48dp"
+            android:icon="@mipmap/comanda48"
             android:title="Nova Comanda" />
 
     </group>
@@ -12,7 +12,7 @@
         <menu>
             <item
                 android:id="@+id/nav_editar_plats"
-                android:icon="@mipmap/ic_list_black_48dp"
+                android:icon="@mipmap/cutlery22"
                 android:title="Editar plats" />
             <item
                 android:id="@+id/nav_llistat_comandes"

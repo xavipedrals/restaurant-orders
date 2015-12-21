@@ -147,7 +147,6 @@ public class EditPlatActivity extends AppCompatActivity {
                     specialBackPressed = true;
                     onBackPressed();
                 }
-                //GestorBD.getInstance(getApplicationContext())
             }
         });
 
@@ -155,10 +154,11 @@ public class EditPlatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Afegir comprovació extra
-//                GestorBD.getInstance(getApplicationContext()).deletePlat(name);
-//                ProductsContainer.refresh(getApplicationContext());
-//                specialBackPressed = true;
-//                onBackPressed();
+                GestorBD.getInstance(getApplicationContext()).deletePlat(name);
+                ProductsContainer.refresh(getApplicationContext());
+                specialBackPressed = true;
+                onBackPressed();
+                //TODO: Mostrar toast informant que s'ha esborrat/guardat
             }
         });
     }

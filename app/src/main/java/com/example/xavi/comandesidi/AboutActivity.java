@@ -43,15 +43,7 @@ public class AboutActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        //TODO: Afegir cards per cada apartat
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {

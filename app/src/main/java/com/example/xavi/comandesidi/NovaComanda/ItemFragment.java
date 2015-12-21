@@ -61,17 +61,6 @@ public class ItemFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
-            //TODO: Fer operació des del Adapter per veure si va més ràpid
-            recyclerView.addOnItemTouchListener(
-                    new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
-                        @Override public void onItemClick(View view, int position) {
-                            MyItemRecyclerViewAdapter.ViewHolder v = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                            v.increaseQuantityByOne();
-                            //TODO: Esborrar això
-                            //startActivity(new Intent(getActivity(), EditPlatActivity.class));
-                        }
-                    })
-            );
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -118,6 +107,7 @@ public class ItemFragment extends Fragment {
         if (id == R.id.action_info) {
             Bundle b = new Bundle();
             b.putDouble("price", myItemRecyclerViewAdapter.getTotalPrice());
+            b.putString("Type", "See price");
             InfoDialog infoDialog = new InfoDialog();
             android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
@@ -175,6 +165,9 @@ public class ItemFragment extends Fragment {
 
     }
 
+    public boolean checkIfPriceIsZero(){
+        return (myItemRecyclerViewAdapter.getTotalPrice() == 0);
+    }
 
 
     /**

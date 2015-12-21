@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
+import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.data.GestorBD;
@@ -91,7 +92,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Nova comanda");
+        if (getIntent().hasExtra("Fragment")) toolbar.setTitle("Editar Plats");
+        else toolbar.setTitle("Nova comanda");
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -100,27 +102,36 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 switch (actualFragment) {
                     case NOVA_COMANDA_FRAGMENT:
-                        TableDialog tableDialog = new TableDialog();
-                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                        tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                        tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
-                            @Override
-                            public void onPositiveResult(int numTaula) {
-                                double price = itemFragment.getMyItemRecyclerViewAdapter().getTotalPrice();
-                                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                                Date date = new Date();
-                                String dateStr = df.format(date);
-                                GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
-                                itemFragment.getMyItemRecyclerViewAdapter().resetView();
-                                Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void onNegativeResult() {
-
-                            }
-                        });
-                        tableDialog.show(fragmentManager, "tag");
+                        if (itemFragment.checkIfPriceIsZero()) {
+                            Bundle b = new Bundle();
+                            b.putString("Type", "No products selected");
+                            InfoDialog infoDialog = new InfoDialog();
+                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                            infoDialog.setArguments(b);
+                            infoDialog.show(fragmentManager, "tag");
+                        } else {
+                            TableDialog tableDialog = new TableDialog();
+                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                            tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                            tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
+                                @Override
+                                public void onPositiveResult(int numTaula) {
+                                    double price = itemFragment.getMyItemRecyclerViewAdapter().getTotalPrice();
+                                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                                    Date date = new Date();
+                                    String dateStr = df.format(date);
+                                    GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                                    itemFragment.getMyItemRecyclerViewAdapter().resetView();
+                                    Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
+                                }
+                                @Override
+                                public void onNegativeResult() {
+                                    //Do nothing
+                                }
+                            });
+                            tableDialog.show(fragmentManager, "tag");
+                        }
                         break;
                     case EDITAR_PLATS_FRAGMENT:
                         Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();

@@ -22,6 +22,7 @@ import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
+import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
 import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -30,7 +31,8 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener,
-        ComandaItemFragment.OnListFragmentInteractionListener, EditPlatItemFragment.OnListFragmentInteractionListener {
+        ComandaItemFragment.OnListFragmentInteractionListener, EditPlatItemFragment.OnListFragmentInteractionListener,
+        ItemStocFragment.OnListFragmentInteractionListener {
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_stoc_productes) {
             setToolbarTitle("Stoc productes");
             configureFab(STOC_PRODUCTES_FRAGMENT);
-            ItemFragment f = new ItemFragment();
+            ItemStocFragment f = new ItemStocFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_config) {

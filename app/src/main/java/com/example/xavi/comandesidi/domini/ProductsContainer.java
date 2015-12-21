@@ -39,19 +39,20 @@ public class ProductsContainer {
                 Product product = new Product();
                 product.setName(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_NAME)));
                 product.setPrice(cursor.getDouble(cursor.getColumnIndex(GestorBD.PLATS_COL_PRICE)));
+                product.setStock(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_STOCK)));
                 product.setMipmapId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_IMG)));
                 productList.add(product);
             } while (cursor.moveToNext());
         } else {
-            GestorBD.getInstance(context).insertPlat(R.mipmap.alberginia, 7.50, "Alberginia amb bacon");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.arros, 8.40, "Arròs amb pollastre");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb guarnició");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.pizza, 7.30, "Pizza vegetariana");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.fajitas, 4.50, "Fajitas");
-            GestorBD.getInstance(context).insertPlat(R.mipmap.tacos, 4, "Tacos");
+            GestorBD.getInstance(context).insertPlat(R.mipmap.alberginia, 7.50, "Alberginia amb bacon", 100);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.arros, 8.40, "Arròs amb pollastre", 50);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.cranc, 11.99, "Cranc amb guarnició", 20);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.kabab, 8.00, "Kabab", 1);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.sopa, 6.70, "Sopa de verdures", 0);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.postres, 4.50, "Coulan de xocolata", 40);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.pizza, 7.30, "Pizza vegetariana", 0);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.fajitas, 4.50, "Fajitas", 3);
+            GestorBD.getInstance(context).insertPlat(R.mipmap.tacos, 4, "Tacos", 99);
             populateBDifNotPopulated();
         }
     }
@@ -61,7 +62,6 @@ public class ProductsContainer {
         count = 0;
         this.context = context;
         populateBDifNotPopulated();
-        //fillWithDefaultProducts();
     }
 
     public Product getProdByIndex(int index){
@@ -78,7 +78,7 @@ public class ProductsContainer {
 
     public void addProduct(int mipmapId, double price, String name){
         productList.add(new Product(mipmapId, price, name));
-        GestorBD.getInstance(context).insertPlat(mipmapId, price, name);
+        GestorBD.getInstance(context).insertPlat(mipmapId, price, name, 100);
     }
 
 
@@ -88,6 +88,7 @@ public class ProductsContainer {
         private int mipmapId;
         private double price;
         private String name;
+        private int stock;
 
         public int getMipmapId() {
             return mipmapId;
@@ -113,10 +114,26 @@ public class ProductsContainer {
             this.name = name;
         }
 
+        public int getStock() {
+            return stock;
+        }
+
+        public void setStock(int stock) {
+            this.stock = stock;
+        }
+
         public Product(int mipmapId, double price, String name){
             this.mipmapId = mipmapId;
             this.price = price;
             this.name = name;
+            this.stock = 100;
+        }
+
+        public Product(int mipmapId, double price, String name, int stock){
+            this.mipmapId = mipmapId;
+            this.price = price;
+            this.name = name;
+            this.stock = stock;
         }
 
         public Product(){}

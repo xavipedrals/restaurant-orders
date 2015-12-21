@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
 public class GestorBD extends SQLiteOpenHelper {
@@ -24,11 +25,13 @@ public class GestorBD extends SQLiteOpenHelper {
     public static final String PLATS_COL_NAME ="name";
     public static final String PLATS_COL_PRICE ="price";
     public static final String PLATS_COL_IMG ="img";
+    public static final String PLATS_COL_STOCK ="stoc";
 
     public static final String PLATS_TABLE_CREATE = "CREATE TABLE " + PLATS_TABLE +
             "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PLATS_COL_NAME + " TEXT, " +
             PLATS_COL_PRICE + " REAL, " +
+            PLATS_COL_STOCK + " INTEGER, " +
             PLATS_COL_IMG + " INTEGER);";
 
     public static final String PLATS_TABLE_RESET = "DELETE FROM " + PLATS_TABLE;
@@ -64,12 +67,23 @@ public class GestorBD extends SQLiteOpenHelper {
         db.execSQL(COMANDES_TABLE_CREATE);
     }
 
-    public void insertPlat (int img, double price, String name){
+//    public void insertPlat (int img, double price, String name){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(PLATS_COL_NAME, name);
+//        contentValues.put(PLATS_COL_PRICE, price);
+//        contentValues.put(PLATS_COL_IMG, img);
+//        contentValues.put(PLATS_COL_STOCK, 100);
+//        db.insert(PLATS_TABLE, null, contentValues);
+//    }
+
+    public void insertPlat (int img, double price, String name, int stoc){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLATS_COL_NAME, name);
         contentValues.put(PLATS_COL_PRICE, price);
         contentValues.put(PLATS_COL_IMG, img);
+        contentValues.put(PLATS_COL_STOCK, stoc);
         db.insert(PLATS_TABLE, null, contentValues);
     }
 
@@ -92,7 +106,7 @@ public class GestorBD extends SQLiteOpenHelper {
 
     public Cursor getAllPlats (){
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {PLATS_COL_NAME, PLATS_COL_PRICE, PLATS_COL_IMG};
+        String[] columns = {PLATS_COL_NAME, PLATS_COL_PRICE, PLATS_COL_STOCK, PLATS_COL_IMG};
         Cursor c = db.query(
                 PLATS_TABLE,                            // The table to query
                 columns,                                // The columns to return

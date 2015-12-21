@@ -43,6 +43,9 @@ public class AboutActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
+        ImageView iconNovaComanda = (ImageView) findViewById(R.id.iconNovaComanda);
+        iconNovaComanda.setAlpha(138);
+
         //TODO: Afegir cards per cada apartat
     }
 

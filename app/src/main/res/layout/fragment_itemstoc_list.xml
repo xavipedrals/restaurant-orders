@@ -8,4 +8,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.xavi.comandesidi.StocProductes.ItemStocFragment"
-    tools:listitem="@layout/fragment_itemstoc" />
+    tools:listitem="@layout/fragment_itemstoc"
+    android:paddingBottom="80dp"
+    android:clipToPadding="false"/>

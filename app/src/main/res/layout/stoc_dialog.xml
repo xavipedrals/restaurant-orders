@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/primary_text"
+        android:text="Introduiex la operació:"
+        android:id="@+id/textViewLastBank"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/radioGroup">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Incrementar" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Decrementar" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="Posar a zero" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layoutQuantitat"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/primary_text"
+                android:text="Introduiex una quantitat:"
+                android:id="@+id/textViewInsertQuantity"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:layout_marginRight="20sp"
+                android:layout_marginLeft="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:gravity="right"
+        android:layout_marginTop="30sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="20sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL·LAR"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:textSize="17sp"
+            android:id="@+id/textViewCancel"
+            android:layout_marginRight="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACCEPTAR"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:id="@+id/textViewAccept"
+            android:textSize="17sp" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

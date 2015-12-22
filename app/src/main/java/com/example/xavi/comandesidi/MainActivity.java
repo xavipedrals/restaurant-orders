@@ -23,6 +23,7 @@ import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
+import com.example.xavi.comandesidi.StocProductes.StockDialog;
 import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
@@ -139,7 +140,11 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();
                         break;
                     case STOC_PRODUCTES_FRAGMENT:
-                        Toast.makeText(getApplicationContext(), "Stoc productes", Toast.LENGTH_LONG).show();
+                        StockDialog stockDialog = new StockDialog();
+                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                        stockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                        stockDialog.show(fragmentManager, "tag");
+                        //Toast.makeText(getApplicationContext(), "Stoc productes", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         break;

@@ -13,11 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
-import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent.DummyItem;
+import com.example.xavi.comandesidi.R;
 
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -119,6 +117,6 @@ public class ComandaItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(DummyContent.DummyItem item);
     }
 }

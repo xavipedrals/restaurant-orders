@@ -167,7 +167,7 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         }
 
         public void setNoStockBackgroundColor() {
-            itemContainer.setBackgroundColor(Color.parseColor("#FFCDD2")); //Light blue
+            itemContainer.setBackgroundColor(Color.parseColor("#FFCDD2")); //Light red
         }
 
         public void setNormalBackgroundColor() {

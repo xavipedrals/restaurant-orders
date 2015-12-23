@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.IntrQuantDialog;
 import com.example.xavi.comandesidi.R;
@@ -152,7 +153,10 @@ public class ItemFragment extends Fragment {
                 intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
                     @Override
                     public void onPositiveResult(int value) {
-                        finalViewHolder.setExactQuantity(value);
+                        if (finalViewHolder.checkStock(value)) finalViewHolder.setExactQuantity(value);
+                        else{
+                            Toast.makeText(getActivity().getApplicationContext(), "Poducte sense stoc suficient", Toast.LENGTH_LONG).show();
+                        }
                     }
                     @Override
                     public void onNegativeResult() {

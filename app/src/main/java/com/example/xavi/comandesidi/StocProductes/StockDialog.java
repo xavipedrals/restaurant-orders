@@ -77,10 +77,9 @@ public class StockDialog extends DialogFragment {
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                dismiss();
             }
         });
-
 
         getDialog().setCancelable(true);
         return view;

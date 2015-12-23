@@ -2,6 +2,7 @@ package com.example.xavi.comandesidi.StocProductes;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 /**
@@ -49,6 +51,17 @@ public class ItemStocFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            StockDialog stockDialog = new StockDialog();
+                            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            stockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                            stockDialog.show(fragmentManager, "tag");
+                        }
+                    })
+            );
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {

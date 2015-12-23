@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.R;
@@ -79,6 +80,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.product = productList.get(position);
+        holder.stock = holder.product.getStock();
+        if (holder.stock == 0) holder.setOutOfStockBackgroundColor();
         holder.nameTv.setText(productList.get(position).getName());
         String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
         holder.priceTv.setText(priceStr);
@@ -93,7 +96,11 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     //mListener.onListFragmentInteraction(holder.product);
-                    holder.increaseQuantityByOne();
+                    if (holder.checkStock()) holder.increaseQuantityByOne();
+                    else {
+                        holder.setOutOfStockBackgroundColor();
+                        mListener.onListFragmentInteraction(holder.product);
+                    }
                 }
             }
         });
@@ -129,6 +136,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public ImageView imageView;
         public ProductsContainer.Product product;
         public int quantity;
+        public int stock;
 
         public ViewHolder(View view) {
             super(view);
@@ -145,6 +153,14 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             view.setOnCreateContextMenuListener(this);
         }
 
+        public boolean checkStock(){
+            return stock > quantity;
+        }
+
+        public boolean checkStock(int quantity){
+            return stock > quantity;
+        }
+
         public void decreaseQuantityByOne(){
             String s = quantitatTv.getText().toString();
             if (!s.equals("")) {
@@ -154,6 +170,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                     quantitatTv.setText("");
                     quantity = 0;
                 } else {
+                    if(!checkStock()) setSelectionedBackgroundColor();
                     int i = Integer.parseInt(s);
                     i--;
                     quantity = i;
@@ -185,10 +202,14 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         }
 
         public void setExactQuantity(int quantity){
-            xTv.setVisibility(View.VISIBLE);
-            quantitatTv.setText(String.valueOf(quantity));
-            this.quantity = quantity;
-            this.setSelectionedBackgroundColor();
+            if (checkStock()) {
+                xTv.setVisibility(View.VISIBLE);
+                quantitatTv.setText(String.valueOf(quantity));
+                this.quantity = quantity;
+                this.setSelectionedBackgroundColor();
+            } else {
+
+            }
         }
 
         public void setSelectionedBackgroundColor(){
@@ -198,6 +219,10 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         public void setNormalBackgroundColor(){
             itemContainer.setBackgroundColor(Color.parseColor("#FAFAFA"));   //Default background color
+        }
+
+        public void setOutOfStockBackgroundColor(){
+            itemContainer.setBackgroundColor(Color.parseColor("#FFCDD2")); //Light red
         }
 
         @Override

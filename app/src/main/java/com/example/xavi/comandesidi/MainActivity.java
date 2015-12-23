@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     private final int LLISTAR_COMANDES_FRAGMENT = 3;
     private final int STOC_PRODUCTES_FRAGMENT = 4;
     private final int CONFIGURACIO_FRAGMENT = 5;
-    private final int AJUDA_FRAGMENT = 6;
 
     private void configureFab(int fragmentTag){
         switch (fragmentTag){
@@ -66,14 +65,9 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.GONE);
                 break;
             case STOC_PRODUCTES_FRAGMENT:
-                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2196F3"))); //Blau
-                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
-                fab.setVisibility(View.VISIBLE);
-                break;
-            case CONFIGURACIO_FRAGMENT:
                 fab.setVisibility(View.GONE);
                 break;
-            case AJUDA_FRAGMENT:
+            case CONFIGURACIO_FRAGMENT:
                 fab.setVisibility(View.GONE);
                 break;
         }
@@ -137,14 +131,8 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                     case EDITAR_PLATS_FRAGMENT:
-                        Toast.makeText(getApplicationContext(), "Editar comanda", Toast.LENGTH_LONG).show();
-                        break;
-                    case STOC_PRODUCTES_FRAGMENT:
-                        StockDialog stockDialog = new StockDialog();
-                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                        stockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                        stockDialog.show(fragmentManager, "tag");
-                        //Toast.makeText(getApplicationContext(), "Stoc productes", Toast.LENGTH_LONG).show();
+                        //TODO: Afegir funcionalitat crear plats
+                        Toast.makeText(getApplicationContext(), "Editar plats", Toast.LENGTH_LONG).show();
                         break;
                     default:
                         break;
@@ -243,12 +231,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_ajuda){
-//            setToolbarTitle("Ajuda");
-//            configureFab(AJUDA_FRAGMENT);
-//            Fragment f = new Fragment();
-//            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
             startActivity(new Intent(MainActivity.this, AboutActivity.class));
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -259,7 +242,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(ProductsContainer.Product product) {
-
+        Toast.makeText(getApplicationContext(), "Poducte fora de stoc", Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -57,6 +57,17 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return price;
     }
 
+    public List<ProductsContainer.Product> getProductesActualitzats(){
+        List<ProductsContainer.Product> productesActualitzats = new ArrayList<>();
+        for(ViewHolder holder: viewHolderList){
+            if (holder.checkIfOrdered()) {
+                holder.updateOrderedProduct();
+                productesActualitzats.add(holder.product);
+            }
+        }
+        return productesActualitzats;
+    }
+
     public void resetView(){
         for(ViewHolder holder: viewHolderList){
             holder.decreaseQuantityToZero();
@@ -153,6 +164,15 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             view.setOnCreateContextMenuListener(this);
         }
 
+        public boolean checkIfOrdered(){
+            return quantity != 0;
+        }
+
+        public void updateOrderedProduct(){
+            stock -= quantity;
+            product.setStock(stock);
+        }
+
         public boolean checkStock(){
             return stock > quantity;
         }
@@ -198,18 +218,15 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             quantitatTv.setText(String.valueOf(""));
             xTv.setVisibility(View.GONE);
             quantity = 0;
-            this.setNormalBackgroundColor();
+            if (stock == 0) this.setOutOfStockBackgroundColor();
+            else this.setNormalBackgroundColor();
         }
 
         public void setExactQuantity(int quantity){
-            if (checkStock()) {
                 xTv.setVisibility(View.VISIBLE);
                 quantitatTv.setText(String.valueOf(quantity));
                 this.quantity = quantity;
                 this.setSelectionedBackgroundColor();
-            } else {
-
-            }
         }
 
         public void setSelectionedBackgroundColor(){

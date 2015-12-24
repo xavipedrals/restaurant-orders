@@ -20,7 +20,10 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.IntrQuantDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
+import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -171,6 +174,13 @@ public class ItemFragment extends Fragment {
 
     public boolean checkIfPriceIsZero(){
         return (myItemRecyclerViewAdapter.getTotalPrice() == 0);
+    }
+
+    public void updateStockDb(){
+        List<ProductsContainer.Product> productList = myItemRecyclerViewAdapter.getProductesActualitzats();
+        for (ProductsContainer.Product product : productList){
+            GestorBD.getInstance(getActivity().getApplicationContext()).updatePlat(product.getName(), product.getStock());
+        }
     }
 
 

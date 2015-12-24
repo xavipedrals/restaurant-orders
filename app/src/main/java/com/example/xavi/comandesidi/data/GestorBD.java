@@ -67,16 +67,6 @@ public class GestorBD extends SQLiteOpenHelper {
         db.execSQL(COMANDES_TABLE_CREATE);
     }
 
-//    public void insertPlat (int img, double price, String name){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(PLATS_COL_NAME, name);
-//        contentValues.put(PLATS_COL_PRICE, price);
-//        contentValues.put(PLATS_COL_IMG, img);
-//        contentValues.put(PLATS_COL_STOCK, 100);
-//        db.insert(PLATS_TABLE, null, contentValues);
-//    }
-
     public void insertPlat (int img, double price, String name, int stoc){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -97,6 +87,14 @@ public class GestorBD extends SQLiteOpenHelper {
         db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{legacyName});
     }
 
+    public void updatePlat(String name, int stock){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLATS_COL_STOCK, stock);
+        Log.d("DADES", "Vaig a fer un update");
+        db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{name});
+    }
+
     public void deletePlat (String name){
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = PLATS_COL_NAME + "=?";
@@ -115,6 +113,55 @@ public class GestorBD extends SQLiteOpenHelper {
                 null,                                   // don't group the rows
                 null,                                   // don't filter by row groups
                 null                                    // The sort order
+        );
+        return c;
+    }
+
+    public Cursor getComandesByDay(String date){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COMANDES_COL_NUM_TABLE, COMANDES_COL_DATA, COMANDES_COL_PRICE};
+        String[] valuesWhere = {date};
+        Cursor c = db.query(
+                COMANDES_TABLE,                         // The table to query
+                columns,                                // The columns to return
+                COMANDES_COL_DATA + "=?",               // The columns for the WHERE clause
+                valuesWhere,                            // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                COMANDES_COL_DATA + " DESC"             // The sort order
+        );
+        return c;
+    }
+
+    public Cursor getComandesBetween(String startDay, String endDay){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COMANDES_COL_NUM_TABLE, COMANDES_COL_DATA, COMANDES_COL_PRICE};
+        String compStartDay = startDay + "01:00 AM";
+        String compEndDay = endDay + "12:59 PM";
+        String[] valuesWhere = {compStartDay, compEndDay};
+        Cursor c = db.query(
+                COMANDES_TABLE,                         // The table to query
+                columns,                                // The columns to return
+                COMANDES_COL_DATA + " BETWEEN ? AND ?",        // The columns for the WHERE clause
+                valuesWhere,                                   // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                COMANDES_COL_DATA + " DESC"             // The sort order
+        );
+        return c;
+    }
+
+    public Cursor getAllComandes(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COMANDES_COL_NUM_TABLE, COMANDES_COL_DATA, COMANDES_COL_PRICE};
+        Cursor c = db.query(
+                COMANDES_TABLE,                         // The table to query
+                columns,                                // The columns to return
+                null,                                   // The columns for the WHERE clause
+                null,                                   // The values for the WHERE clause
+                null,                                   // don't group the rows
+                null,                                   // don't filter by row groups
+                COMANDES_COL_DATA + " DESC"             // The sort order
         );
         return c;
     }

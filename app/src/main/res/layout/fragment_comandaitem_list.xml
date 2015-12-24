@@ -6,10 +6,6 @@
     android:name="com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment"
-    tools:listitem="@layout/fragment_comandaitem"
-    android:paddingBottom="80dp"
-    android:clipToPadding="false"/>
+    tools:listitem="@layout/fragment_comandaitem" />

@@ -7,19 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment.OnListFragmentInteractionListener;
-import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent.DummyItem;
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.domini.ComandaContainer;
 
 import java.util.List;
 
 
 public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyComandaItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<ComandaContainer.Comanda> comandaList;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyComandaItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MyComandaItemRecyclerViewAdapter(List<ComandaContainer.Comanda> items, OnListFragmentInteractionListener listener) {
+        comandaList = items;
         mListener = listener;
     }
 
@@ -32,17 +32,17 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
-
+        holder.comanda = comandaList.get(position);
+        holder.priceTv.setText(String.valueOf(comandaList.get(position).getPrice()));
+        holder.numTaulaTv.setText(String.valueOf(comandaList.get(position).getTableNum()));
+        holder.dateTv.setText(String.valueOf(comandaList.get(position).getDay()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.comanda);
                 }
             }
         });
@@ -50,25 +50,23 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return comandaList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView numTaulaTv;
+        public final TextView priceTv;
+        public final TextView dateTv;
+        public ComandaContainer.Comanda comanda;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            numTaulaTv = (TextView) view.findViewById(R.id.numTableTv);
+            dateTv = (TextView) view.findViewById(R.id.dateTv);
+            priceTv = (TextView) view.findViewById(R.id.comandaPriceTv);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
 }

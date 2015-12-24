@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.domini.ComandaContainer;
 
 
 /**
@@ -71,7 +71,8 @@ public class ComandaItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyComandaItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            ComandaContainer comandaContainer = ComandaContainer.getInstance(getActivity().getApplicationContext());
+            recyclerView.setAdapter(new MyComandaItemRecyclerViewAdapter(comandaContainer.getComandaList(), mListener));
         }
         return view;
     }
@@ -117,6 +118,6 @@ public class ComandaItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyContent.DummyItem item);
+        void onListFragmentInteraction(ComandaContainer.Comanda comanda);
     }
 }

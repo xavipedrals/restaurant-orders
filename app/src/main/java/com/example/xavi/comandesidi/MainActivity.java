@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,13 +19,12 @@ import android.widget.Toast;
 
 import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
-import com.example.xavi.comandesidi.LlistarComandes.dummy.DummyContent;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
-import com.example.xavi.comandesidi.StocProductes.StockDialog;
 import com.example.xavi.comandesidi.data.GestorBD;
+import com.example.xavi.comandesidi.domini.ComandaContainer;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 import java.text.SimpleDateFormat;
@@ -115,10 +115,18 @@ public class MainActivity extends AppCompatActivity
                                 @Override
                                 public void onPositiveResult(int numTaula) {
                                     double price = itemFragment.getMyItemRecyclerViewAdapter().getTotalPrice();
-                                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                                     Date date = new Date();
                                     String dateStr = df.format(date);
+                                    String[] aux = dateStr.split(" ");
+                                    String day = aux[0];
+                                    String hour = aux[1];
+                                    Log.d("DIA", day);
+                                    Log.d("HORA", hour);
                                     GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                                    ComandaContainer.refresh(getApplicationContext());
+                                    itemFragment.updateStockDb();
+                                    ProductsContainer.refresh(getApplicationContext());
                                     itemFragment.getMyItemRecyclerViewAdapter().resetView();
                                     Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
                                 }
@@ -246,7 +254,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(ComandaContainer.Comanda comanda) {
 
     }
 }

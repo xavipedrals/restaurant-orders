@@ -17,7 +17,6 @@ public class ProductsContainer {
     private static ProductsContainer instance;
 
     private final List<Product> productList;
-    private int count;
     private Context context;
 
     /**Per tenir una sola instància**/
@@ -59,7 +58,6 @@ public class ProductsContainer {
 
     private ProductsContainer(Context context){
         productList = new ArrayList<>();
-        count = 0;
         this.context = context;
         populateBDifNotPopulated();
     }
@@ -72,10 +70,6 @@ public class ProductsContainer {
         return productList;
     }
 
-    public int getCount() {
-        return count;
-    }
-
     public void addProduct(int mipmapId, double price, String name){
         productList.add(new Product(mipmapId, price, name));
         GestorBD.getInstance(context).insertPlat(mipmapId, price, name, 100);
@@ -85,6 +79,7 @@ public class ProductsContainer {
     /**Classe item**/
     public class Product {
 
+        //TODO: Afegir camp id com a identificador
         private int mipmapId;
         private double price;
         private String name;

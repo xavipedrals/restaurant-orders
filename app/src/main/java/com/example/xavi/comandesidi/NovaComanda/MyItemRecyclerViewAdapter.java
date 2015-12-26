@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,8 @@ import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +101,21 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         holder.nameTv.setText(productList.get(position).getName());
         String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
         holder.priceTv.setText(priceStr);
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
+        Bitmap bitmap = null;
+        if(holder.product.hasImage()){
+            Log.d("CARREGO IMATGE", "Ei colega");
+            Uri uri = Uri.parse(holder.product.getImgUri());
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
+        }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +155,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+        //TODO: Tenir en compte si hi ha bitmap o imageUri
         public final View mView;
         public final LinearLayout itemContainer;
         public final TextView nameTv;

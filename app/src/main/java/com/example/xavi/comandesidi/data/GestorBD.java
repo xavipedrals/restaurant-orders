@@ -8,10 +8,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.beans.PropertyChangeSupport;
-import java.util.Date;
 
 public class GestorBD extends SQLiteOpenHelper {
 
@@ -26,12 +22,17 @@ public class GestorBD extends SQLiteOpenHelper {
     public static final String PLATS_COL_PRICE ="price";
     public static final String PLATS_COL_IMG ="img";
     public static final String PLATS_COL_STOCK ="stoc";
+    public static final String PLATS_COL_HAS_IMAGE ="hasimage";
+    public static final String PLATS_COL_IMAGE_URI ="imageuri";
+    public static final String PLATS_COL_ID ="id";
 
     public static final String PLATS_TABLE_CREATE = "CREATE TABLE " + PLATS_TABLE +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "("+ PLATS_COL_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
             PLATS_COL_NAME + " TEXT, " +
             PLATS_COL_PRICE + " REAL, " +
             PLATS_COL_STOCK + " INTEGER, " +
+            PLATS_COL_HAS_IMAGE + " INTEGER, " +
+            PLATS_COL_IMAGE_URI + " TEXT, " +
             PLATS_COL_IMG + " INTEGER);";
 
     public static final String PLATS_TABLE_RESET = "DELETE FROM " + PLATS_TABLE;
@@ -74,25 +75,25 @@ public class GestorBD extends SQLiteOpenHelper {
         contentValues.put(PLATS_COL_PRICE, price);
         contentValues.put(PLATS_COL_IMG, img);
         contentValues.put(PLATS_COL_STOCK, stoc);
+        contentValues.put(PLATS_COL_HAS_IMAGE, false);
         db.insert(PLATS_TABLE, null, contentValues);
-    }
-
-    public void updatePlat(int mipmapId, double price, String name, String legacyName){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PLATS_COL_PRICE, price);
-        contentValues.put(PLATS_COL_NAME, name);
-        contentValues.put(PLATS_COL_IMG, mipmapId);
-        Log.d("DADES", "Vaig a fer un update");
-        db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{legacyName});
     }
 
     public void updatePlat(String name, int stock){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PLATS_COL_STOCK, stock);
-        Log.d("DADES", "Vaig a fer un update");
         db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{name});
+    }
+
+    public void updatePlat(int id, int hasImage, String imgUri, double price, String name){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLATS_COL_PRICE, price);
+        contentValues.put(PLATS_COL_NAME, name);
+        contentValues.put(PLATS_COL_HAS_IMAGE, hasImage);
+        contentValues.put(PLATS_COL_IMAGE_URI, imgUri);
+        db.update(PLATS_TABLE, contentValues, PLATS_COL_ID + "=?", new String[]{String.valueOf(id)});
     }
 
     public void deletePlat (String name){
@@ -104,7 +105,7 @@ public class GestorBD extends SQLiteOpenHelper {
 
     public Cursor getAllPlats (){
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {PLATS_COL_NAME, PLATS_COL_PRICE, PLATS_COL_STOCK, PLATS_COL_IMG};
+        String[] columns = {PLATS_COL_ID, PLATS_COL_NAME, PLATS_COL_PRICE, PLATS_COL_STOCK, PLATS_COL_IMG, PLATS_COL_HAS_IMAGE, PLATS_COL_IMAGE_URI};
         Cursor c = db.query(
                 PLATS_TABLE,                            // The table to query
                 columns,                                // The columns to return

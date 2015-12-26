@@ -2,6 +2,7 @@ package com.example.xavi.comandesidi.LlistarComandes;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +26,7 @@ import com.example.xavi.comandesidi.domini.ComandaContainer;
  */
 public class ComandaItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -38,7 +37,6 @@ public class ComandaItemFragment extends Fragment {
     public ComandaItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ComandaItemFragment newInstance(int columnCount) {
         ComandaItemFragment fragment = new ComandaItemFragment();
@@ -103,21 +101,17 @@ public class ComandaItemFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_filter) {
+            DatePickerFragment datePickerFragment = new DatePickerFragment();
+            datePickerFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            datePickerFragment.show(fragmentManager, "tag");
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(ComandaContainer.Comanda comanda);
     }
 }

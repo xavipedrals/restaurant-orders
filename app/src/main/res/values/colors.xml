@@ -9,4 +9,5 @@
 
     <color name="material_red">#F44336</color>
     <color name="material_green">#4CAF50</color>
+    <color name="background_light_red">#FFCDD2</color>
 </resources>

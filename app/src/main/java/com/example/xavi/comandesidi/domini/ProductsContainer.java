@@ -2,6 +2,7 @@ package com.example.xavi.comandesidi.domini;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.data.GestorBD;
@@ -36,10 +37,21 @@ public class ProductsContainer {
         if (cursor.moveToFirst()) {
             do {
                 Product product = new Product();
+                product.setId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_ID)));
                 product.setName(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_NAME)));
                 product.setPrice(cursor.getDouble(cursor.getColumnIndex(GestorBD.PLATS_COL_PRICE)));
                 product.setStock(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_STOCK)));
                 product.setMipmapId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_IMG)));
+                int hasImage = cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_HAS_IMAGE));
+                Log.d("PRODUCTS CONTAINER", "HAS IMAGE = " + hasImage);
+                if (hasImage != 0){
+                    Log.d("PRODUCTS CONTAINER", "Hola champion");
+                    product.setHasImage(true);
+                    product.setImgUri(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_IMAGE_URI)));
+                } else {
+                    product.setHasImage(false);
+                    product.setImgUri(null);
+                }
                 productList.add(product);
             } while (cursor.moveToNext());
         } else {
@@ -70,9 +82,9 @@ public class ProductsContainer {
         return productList;
     }
 
-    public void addProduct(int mipmapId, double price, String name){
-        productList.add(new Product(mipmapId, price, name));
-        GestorBD.getInstance(context).insertPlat(mipmapId, price, name, 100);
+    public void addProduct(Product product){
+        productList.add(product);
+        //GestorBD.getInstance(context).insertPlat(mipmapId, price, name, 100);
     }
 
 
@@ -80,10 +92,37 @@ public class ProductsContainer {
     public class Product {
 
         //TODO: Afegir camp id com a identificador
+        private int id;
         private int mipmapId;
         private double price;
         private String name;
         private int stock;
+        private boolean hasImage;
+        private String imgUri;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public boolean hasImage() {
+            return hasImage;
+        }
+
+        public void setHasImage(boolean hasImage) {
+            this.hasImage = hasImage;
+        }
+
+        public String getImgUri() {
+            return imgUri;
+        }
+
+        public void setImgUri(String imgUri) {
+            this.imgUri = imgUri;
+        }
 
         public int getMipmapId() {
             return mipmapId;
@@ -114,20 +153,6 @@ public class ProductsContainer {
         }
 
         public void setStock(int stock) {
-            this.stock = stock;
-        }
-
-        public Product(int mipmapId, double price, String name){
-            this.mipmapId = mipmapId;
-            this.price = price;
-            this.name = name;
-            this.stock = 100;
-        }
-
-        public Product(int mipmapId, double price, String name, int stock){
-            this.mipmapId = mipmapId;
-            this.price = price;
-            this.name = name;
             this.stock = stock;
         }
 

@@ -118,11 +118,6 @@ public class MainActivity extends AppCompatActivity
                                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                                     Date date = new Date();
                                     String dateStr = df.format(date);
-                                    String[] aux = dateStr.split(" ");
-                                    String day = aux[0];
-                                    String hour = aux[1];
-                                    Log.d("DIA", day);
-                                    Log.d("HORA", hour);
                                     GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
                                     ComandaContainer.refresh(getApplicationContext());
                                     itemFragment.updateStockDb();

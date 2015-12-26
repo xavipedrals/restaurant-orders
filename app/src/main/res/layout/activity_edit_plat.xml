@@ -183,16 +183,34 @@
                 android:textColor="@android:color/white"
                 android:background="@color/material_green"
                 android:id="@+id/buttonSave"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:layout_margin="@dimen/spacing_large" />
 
-            <Button
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="BORRAR PRODUCTE"
-                android:textColor="@android:color/white"
-                android:background="@color/material_red"
-                android:id="@+id/buttonDelete"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:layout_height="match_parent"
+                android:background="@color/background_light_red">
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Zona de perill"-->
+                    <!--android:id="@+id/textView2"-->
+                    <!--android:layout_marginStart="@dimen/spacing_large"-->
+                    <!--android:layout_marginTop="@dimen/spacing_small"-->
+                    <!--android:textColor="@color/primary_text"-->
+                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BORRAR PRODUCTE"
+                    android:textColor="@android:color/white"
+                    android:background="@color/material_red"
+                    android:id="@+id/buttonDelete"
+                    android:layout_margin="@dimen/spacing_large" />
+
+            </LinearLayout>
 
 
         </LinearLayout>

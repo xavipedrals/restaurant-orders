@@ -2,6 +2,7 @@ package com.example.xavi.comandesidi.domini;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.data.GestorBD;
@@ -29,7 +30,7 @@ public class ComandaContainer {
         if (cursor.moveToFirst()) {
             do {
                 Comanda comanda = new Comanda();
-                comanda.setDay(cursor.getString(cursor.getColumnIndex(GestorBD.COMANDES_COL_DATA)));
+                comanda.setDate(cursor.getString(cursor.getColumnIndex(GestorBD.COMANDES_COL_DATA)));
                 comanda.setPrice(cursor.getDouble(cursor.getColumnIndex(GestorBD.COMANDES_COL_PRICE)));
                 comanda.setTableNum(cursor.getInt(cursor.getColumnIndex(GestorBD.COMANDES_COL_NUM_TABLE)));
                 comandaList.add(comanda);
@@ -59,12 +60,24 @@ public class ComandaContainer {
 
     public class Comanda{
 
+        private String date;
         private String day;
         private String hour;
         private int tableNum;
         private double price;
 
         public Comanda(){}
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+            String[] aux = date.split(" ");
+            day = aux[0];
+            hour = aux[1] + " " + aux[2];
+        }
 
         public String getDay() {
             return day;

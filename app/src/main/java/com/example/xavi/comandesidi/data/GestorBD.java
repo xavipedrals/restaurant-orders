@@ -97,6 +97,13 @@ public class GestorBD extends SQLiteOpenHelper {
         db.update(PLATS_TABLE, contentValues, PLATS_COL_NAME + "=?", new String[]{name});
     }
 
+    public void updatePlat(int id, int stock){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLATS_COL_STOCK, stock);
+        db.update(PLATS_TABLE, contentValues, PLATS_COL_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
     public void updatePlat(int id, int hasImage, String imgUri, double price, String name){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

@@ -77,7 +77,6 @@ public class InfoDialog extends DialogFragment {
                 break;
         }
 
-
         getDialog().setCancelable(true);
         return view;
     }

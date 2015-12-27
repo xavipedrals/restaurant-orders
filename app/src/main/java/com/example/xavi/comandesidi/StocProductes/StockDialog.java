@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -21,9 +22,11 @@ import java.text.DecimalFormat;
  */
 public class StockDialog extends DialogFragment {
 
-    TextView acceptTV, cancelTv, totalTv, textTV;
-    LinearLayout quantitatLayout;
-    RadioButton radioButtonInc, radioButtonDec, radioButtonZero;
+    private TextView acceptTV, cancelTv, totalTv, textTV;
+    private LinearLayout quantitatLayout;
+    private RadioButton radioButtonInc, radioButtonDec, radioButtonZero;
+    private EditText editText;
+    private OnStockDialogResultListener onStockDialogResultListener;
 
 
     public StockDialog() {
@@ -38,6 +41,7 @@ public class StockDialog extends DialogFragment {
         totalTv = (TextView) view.findViewById(R.id.textViewPriceDg);
         textTV = (TextView) view.findViewById(R.id.textViewPriceTx);
         quantitatLayout = (LinearLayout) view.findViewById(R.id.layoutQuantitat);
+        editText = (EditText) view.findViewById(R.id.editText);
 
         radioButtonInc = (RadioButton) view.findViewById(R.id.radioButton);
         radioButtonDec = (RadioButton) view.findViewById(R.id.radioButton2);
@@ -64,13 +68,18 @@ public class StockDialog extends DialogFragment {
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
                 if(radioButtonZero.isChecked()){
-
+                    bundle.putString("opcio", "zero");
                 } else if (radioButtonInc.isChecked()){
-
+                    bundle.putString("opcio", "incrementar");
+                    bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
                 } else if (radioButtonDec.isChecked()){
-
+                    bundle.putString("opcio", "decrementar");
+                    bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
                 }
+                onStockDialogResultListener.onPositiveResult(bundle);
+                dismiss();
             }
         });
 
@@ -89,6 +98,15 @@ public class StockDialog extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public interface OnStockDialogResultListener {
+        public abstract void onPositiveResult(Bundle bundle);
+        public abstract void onNegativeResult();
+    }
+
+    public void setOnStockDialogResultListener(OnStockDialogResultListener listener) {
+        this.onStockDialogResultListener = listener;
     }
 
 }

@@ -29,6 +29,8 @@ import java.io.IOException;
 
 public class EditPlatActivity extends AppCompatActivity {
 
+    //TODO: SUbstituir dialog per edició sobre els TextsViews directe
+
     private static final String TAG = "EditPlatActivity";
     private static final int PICK_PHOTO = 11;
     private TextView nameTv, priceTv;

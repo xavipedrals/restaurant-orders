@@ -153,7 +153,6 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         }
 
         public void decreaseQuantityByX(int x) {
-            //TODO: Toasts control errors
             String s = quantitatTv.getText().toString();
             int aux = Integer.parseInt(s);
             if (aux > 0) {
@@ -161,6 +160,11 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
                     aux -= x;
                     quantitatTv.setText(String.valueOf(aux));
                     stock = aux;
+                    if (stock == 0) setNoStockBackgroundColor();
+                } else {
+                    stock = 0;
+                    setNoStockBackgroundColor();
+                    quantitatTv.setText(String.valueOf(stock));
                 }
             }
         }

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
+import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 /**
@@ -54,10 +55,31 @@ public class ItemStocFragment extends Fragment {
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
+                        public void onItemClick(final View view, int position) {
                             StockDialog stockDialog = new StockDialog();
                             android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             stockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                            stockDialog.setOnStockDialogResultListener(new StockDialog.OnStockDialogResultListener() {
+                                @Override
+                                public void onPositiveResult(Bundle bundle) {
+                                    MyItemStocRecyclerViewAdapter.ViewHolder v = (MyItemStocRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
+                                    String opcio = bundle.getString("opcio", "");
+                                    if (opcio.equals("zero")){
+                                        v.decreaseQuantityToZero();
+                                    } else if (opcio.equals("incrementar")){
+                                        v.increaseQuantityByX(bundle.getInt("quantitat"));
+                                    } else if (opcio.equals("decrementar")){
+                                        v.decreaseQuantityByX(bundle.getInt("quantitat"));
+                                    }
+                                    GestorBD.getInstance(getActivity().getApplicationContext()).updatePlat(v.product.getId(), v.stock);
+                                    ProductsContainer.refresh(getActivity().getApplicationContext());
+                                }
+
+                                @Override
+                                public void onNegativeResult() {
+
+                                }
+                            });
                             stockDialog.show(fragmentManager, "tag");
                         }
                     })

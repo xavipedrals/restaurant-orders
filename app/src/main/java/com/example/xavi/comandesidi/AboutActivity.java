@@ -14,6 +14,8 @@ import android.widget.ImageView;
 
 public class AboutActivity extends AppCompatActivity {
 
+    //TODO: Afegir cards per cada apartat
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,6 @@ public class AboutActivity extends AppCompatActivity {
 
         Toolbar actionbar = (Toolbar) findViewById(R.id.toolbar);
         if (null != actionbar) {
-//            actionbar.setNavigationIcon(R.mipmap.abc_ic_ab_back_mtrl_am_alpha);
             actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
 
             actionbar.setTitle("Ajuda");
@@ -35,7 +36,6 @@ public class AboutActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     onBackPressed();
-                    //NavUtils.navigateUpFromSameTask(EditPlatActivity.this);
                 }
             });
         }
@@ -45,8 +45,6 @@ public class AboutActivity extends AppCompatActivity {
 
         ImageView iconNovaComanda = (ImageView) findViewById(R.id.iconNovaComanda);
         iconNovaComanda.setAlpha(138);
-
-        //TODO: Afegir cards per cada apartat
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {

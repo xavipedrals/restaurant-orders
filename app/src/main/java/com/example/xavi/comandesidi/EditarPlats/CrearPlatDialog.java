@@ -24,6 +24,8 @@ import com.example.xavi.comandesidi.R;
  */
 public class CrearPlatDialog extends DialogFragment {
 
+    //TODO: falta fer control d'errors al introduir dades
+
     private TextView acceptTV, cancelTv;
     private EditText nameEt, priceEt, stockEt;
     private static int PICK_PHOTO = 11;

@@ -18,7 +18,7 @@ import com.example.xavi.comandesidi.R;
  */
 public class EditTextDialog extends DialogFragment {
 
-    //TODO: Fer canvi en el formulari des de l'activity, no des de Dialog
+    //TODO: Fer canvi en els TextViews des de l'activity, no des de Dialog
 
     TextView acceptTV, cancelTv, missatgeTv;
     EditText respostaEt;

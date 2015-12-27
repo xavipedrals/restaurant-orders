@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_config) {
+            //TODO: Falta fer config (editar foto restaurant, netejar BDS, carregar stubs
             setToolbarTitle("Configuració");
             configureFab(CONFIGURACIO_FRAGMENT);
             Fragment f = new Fragment();

@@ -43,9 +43,7 @@ public class ProductsContainer {
                 product.setStock(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_STOCK)));
                 product.setMipmapId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_IMG)));
                 int hasImage = cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_HAS_IMAGE));
-                Log.d("PRODUCTS CONTAINER", "HAS IMAGE = " + hasImage);
                 if (hasImage != 0){
-                    Log.d("PRODUCTS CONTAINER", "Hola champion");
                     product.setHasImage(true);
                     product.setImgUri(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_IMAGE_URI)));
                 } else {
@@ -74,24 +72,14 @@ public class ProductsContainer {
         populateBDifNotPopulated();
     }
 
-    public Product getProdByIndex(int index){
-        return productList.get(index);
-    }
-
     public List<Product> getProductList(){
         return productList;
-    }
-
-    public void addProduct(Product product){
-        productList.add(product);
-        //GestorBD.getInstance(context).insertPlat(mipmapId, price, name, 100);
     }
 
 
     /**Classe item**/
     public class Product {
 
-        //TODO: Afegir camp id com a identificador
         private int id;
         private int mipmapId;
         private double price;

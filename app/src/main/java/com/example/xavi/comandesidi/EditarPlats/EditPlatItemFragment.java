@@ -15,6 +15,8 @@ import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p>
@@ -89,6 +91,9 @@ public class EditPlatItemFragment extends Fragment {
         return view;
     }
 
+    public void refreshAdapter(List<ProductsContainer.Product> products){
+        myEditPlatItemRecyclerViewAdapter.refreshView(products);
+    }
 
     @Override
     public void onAttach(Context context) {

@@ -36,6 +36,12 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
         this.context = context;
     }
 
+    public void refreshView(List<ProductsContainer.Product> products){
+        productList.clear();
+        productList.addAll(products);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -52,7 +58,6 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
 
         Bitmap bitmap = null;
         if(holder.product.hasImage()){
-            Log.d("CARREGO IMATGE", "Ei colega");
             Uri uri = Uri.parse(holder.product.getImgUri());
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
@@ -75,7 +80,6 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
                 }
             }
         });
-        //viewHolderList.add(holder);
     }
 
     @Override

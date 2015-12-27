@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.xavi.comandesidi.EditarPlats.CrearPlatDialog;
 import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
@@ -35,13 +35,14 @@ public class MainActivity extends AppCompatActivity
         ComandaItemFragment.OnListFragmentInteractionListener, EditPlatItemFragment.OnListFragmentInteractionListener,
         ItemStocFragment.OnListFragmentInteractionListener {
 
-    Toolbar toolbar;
-    DrawerLayout drawer;
-    NavigationView navigationView;
-    ActionBarDrawerToggle toggle;
-    FloatingActionButton fab;
+    private Toolbar toolbar;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+    private FloatingActionButton fab;
     private int actualFragment;
-    ItemFragment itemFragment;
+    private ItemFragment itemFragment;
+    private EditPlatItemFragment editPlatItemFragment;
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
     public static final int EDITAR_PLATS_FRAGMENT = 2;
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity
                 fab.setVisibility(View.VISIBLE);
                 break;
             case EDITAR_PLATS_FRAGMENT:
-                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F44336"))); //Vermell
                 fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
                 fab.setVisibility(View.VISIBLE);
                 break;
@@ -134,8 +134,27 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                     case EDITAR_PLATS_FRAGMENT:
-                        //TODO: Afegir funcionalitat crear plats
-                        Toast.makeText(getApplicationContext(), "Editar plats", Toast.LENGTH_LONG).show();
+                        CrearPlatDialog crearPlatDialog = new CrearPlatDialog();
+                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                        crearPlatDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                        crearPlatDialog.setOnCreatePlatDialogResultListener(new CrearPlatDialog.OnCreatePlatDialogResultListener() {
+                            @Override
+                            public void onPositiveResult(Bundle bundle) {
+                                String name = bundle.getString("name");
+                                double price = bundle.getDouble("price");
+                                int stock = bundle.getInt("stock");
+                                String imgUri = bundle.getString("imgUri");
+                                GestorBD.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
+                                ProductsContainer.refresh(getApplicationContext());
+                                editPlatItemFragment.refreshAdapter(ProductsContainer.getInstance(getApplicationContext()).getProductList());
+                            }
+
+                            @Override
+                            public void onNegativeResult() {
+
+                            }
+                        });
+                        crearPlatDialog.show(fragmentManager, "tag");
                         break;
                     default:
                         break;
@@ -157,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             if(b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT){
                 actualFragment = EDITAR_PLATS_FRAGMENT;
                 configureFab(EDITAR_PLATS_FRAGMENT);
-                EditPlatItemFragment editPlatItemFragment = new EditPlatItemFragment();
+                editPlatItemFragment = new EditPlatItemFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
             }
         } else {
@@ -212,8 +231,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");
             configureFab(EDITAR_PLATS_FRAGMENT);
-            EditPlatItemFragment f = new EditPlatItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            editPlatItemFragment = new EditPlatItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
 
         } else if (id == R.id.nav_llistat_comandes) {
             setToolbarTitle("Llistar comandes");

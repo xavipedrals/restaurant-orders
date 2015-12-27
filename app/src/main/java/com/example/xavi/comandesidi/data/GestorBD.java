@@ -79,6 +79,17 @@ public class GestorBD extends SQLiteOpenHelper {
         db.insert(PLATS_TABLE, null, contentValues);
     }
 
+    public void insertPlat (String imgUri, double price, String name, int stoc){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PLATS_COL_NAME, name);
+        contentValues.put(PLATS_COL_PRICE, price);
+        contentValues.put(PLATS_COL_IMAGE_URI, imgUri);
+        contentValues.put(PLATS_COL_STOCK, stoc);
+        contentValues.put(PLATS_COL_HAS_IMAGE, true);
+        db.insert(PLATS_TABLE, null, contentValues);
+    }
+
     public void updatePlat(String name, int stock){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -113,7 +124,7 @@ public class GestorBD extends SQLiteOpenHelper {
                 null,                                   // The values for the WHERE clause
                 null,                                   // don't group the rows
                 null,                                   // don't filter by row groups
-                null                                    // The sort order
+                PLATS_COL_NAME                                    // The sort order
         );
         return c;
     }

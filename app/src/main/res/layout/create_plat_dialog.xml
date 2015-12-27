@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Introdueix un nom pel plat:"
+        android:id="@+id/textView1"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10"
+            android:id="@+id/editTextName" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Introduiex un preu:"
+        android:id="@+id/textView2"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/editTextPrice" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Introduiex un stoc:"
+        android:id="@+id/textView3"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:layout_marginTop="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editTextStock" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:src="@mipmap/ic_photo_white_48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/spacing_large"
+            app:rippleColor="@color/accent_bright"/>
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        android:gravity="right"
+        android:layout_marginTop="30sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginBottom="20sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANCEL·LAR"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:textSize="17sp"
+            android:id="@+id/textViewCancel"
+            android:layout_marginRight="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACCEPTAR"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:id="@+id/textViewAccept"
+            android:textSize="17sp" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

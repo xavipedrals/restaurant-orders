@@ -10,6 +10,8 @@ import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment.OnListFr
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.domini.ComandaContainer;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,10 +19,20 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
 
     private final List<ComandaContainer.Comanda> comandaList;
     private final OnListFragmentInteractionListener mListener;
+    private List<ViewHolder> viewHolderList;
+
+    public double getTotalPrice(){
+        double price = 0;
+        for(ViewHolder holder: viewHolderList){
+            price += holder.comanda.getPrice();
+        }
+        return price;
+    }
 
     public MyComandaItemRecyclerViewAdapter(List<ComandaContainer.Comanda> items, OnListFragmentInteractionListener listener) {
         comandaList = items;
         mListener = listener;
+        viewHolderList = new ArrayList<>();
     }
 
     @Override
@@ -33,9 +45,13 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.comanda = comandaList.get(position);
-        holder.priceTv.setText(String.valueOf(comandaList.get(position).getPrice()));
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String price = decimalFormat.format(comandaList.get(position).getPrice());
+        String priceText = price + " €";
+        holder.priceTv.setText(priceText);
         holder.numTaulaTv.setText(String.valueOf(comandaList.get(position).getTableNum()));
-        holder.dateTv.setText(String.valueOf(comandaList.get(position).getDay()));
+        holder.diaTv.setText(String.valueOf(comandaList.get(position).getDay()));
+        holder.horaTv.setText(String.valueOf(comandaList.get(position).getHour()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +62,7 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
                 }
             }
         });
+        viewHolderList.add(holder);
     }
 
     @Override
@@ -57,14 +74,16 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
         public final View mView;
         public final TextView numTaulaTv;
         public final TextView priceTv;
-        public final TextView dateTv;
+        public final TextView diaTv;
+        public final TextView horaTv;
         public ComandaContainer.Comanda comanda;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             numTaulaTv = (TextView) view.findViewById(R.id.numTableTv);
-            dateTv = (TextView) view.findViewById(R.id.dateTv);
+            diaTv = (TextView) view.findViewById(R.id.textViewDia);
+            horaTv = (TextView) view.findViewById(R.id.textViewHora);
             priceTv = (TextView) view.findViewById(R.id.comandaPriceTv);
         }
 

@@ -40,6 +40,11 @@ public class InfoDialog extends DialogFragment {
         Bundle b = getArguments();
         String type = b.getString("Type", null);
 
+        int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
+        double price = 0.0;
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String roundedPrice;
+
         switch (type) {
             case "No products selected":
                 textTV.setText("Encara no has afegit cap producte a la comanda");
@@ -55,12 +60,25 @@ public class InfoDialog extends DialogFragment {
                 break;
 
             case "See price":
-                double price = b.getDouble("price", 0);
-                DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                String roundedPrice = decimalFormat.format(price);
+                price = b.getDouble("price", 0);
+                roundedPrice = decimalFormat.format(price);
 
-                int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
+                textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+                totalTv.setText(String.valueOf(roundedPrice + " €"));
 
+                acceptTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+                break;
+
+            case "See total":
+                price = b.getDouble("price", 0);
+                roundedPrice = decimalFormat.format(price);
+
+                textTV.setText("Els ingressos sumen un total de");
                 textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
                 totalTv.setText(String.valueOf(roundedPrice + " €"));
 

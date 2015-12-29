@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.domini.ComandaContainer;
 
@@ -29,6 +30,7 @@ public class ComandaItemFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyComandaItemRecyclerViewAdapter myComandaItemRecyclerViewAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,7 +72,8 @@ public class ComandaItemFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             ComandaContainer comandaContainer = ComandaContainer.getInstance(getActivity().getApplicationContext());
-            recyclerView.setAdapter(new MyComandaItemRecyclerViewAdapter(comandaContainer.getComandaList(), mListener));
+            myComandaItemRecyclerViewAdapter = new MyComandaItemRecyclerViewAdapter(comandaContainer.getComandaList(), mListener);
+            recyclerView.setAdapter(myComandaItemRecyclerViewAdapter);
         }
         return view;
     }
@@ -107,6 +110,15 @@ public class ComandaItemFragment extends Fragment {
             datePickerFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             datePickerFragment.show(fragmentManager, "tag");
+        } else if (id == R.id.action_info){
+            InfoDialog infoDialog = new InfoDialog();
+            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+            Bundle bundle = new Bundle();
+            bundle.putString("Type", "See total");
+            bundle.putDouble("price", myComandaItemRecyclerViewAdapter.getTotalPrice());
+            infoDialog.setArguments(bundle);
+            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            infoDialog.show(fragmentManager, "tag");
         }
         return super.onOptionsItemSelected(item);
     }

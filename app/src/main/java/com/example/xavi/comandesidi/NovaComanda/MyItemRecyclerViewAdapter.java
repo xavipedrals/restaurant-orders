@@ -155,7 +155,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
-        //TODO: Tenir en compte si hi ha bitmap o imageUri
         public final View mView;
         public final LinearLayout itemContainer;
         public final TextView nameTv;

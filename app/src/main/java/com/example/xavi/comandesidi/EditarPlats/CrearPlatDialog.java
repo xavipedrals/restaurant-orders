@@ -24,8 +24,6 @@ import com.example.xavi.comandesidi.R;
  */
 public class CrearPlatDialog extends DialogFragment {
 
-    //TODO: falta fer control d'errors al introduir dades
-
     private TextView acceptTV, cancelTv;
     private EditText nameEt, priceEt, stockEt;
     private static int PICK_PHOTO = 11;
@@ -56,19 +54,25 @@ public class CrearPlatDialog extends DialogFragment {
                 dismiss();
             }
         });
+
+        imageUri = null;
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameEt.getText().toString();
-                double price = Double.parseDouble(priceEt.getText().toString());
-                int stock = Integer.parseInt(stockEt.getText().toString());
-                Bundle bundle = new Bundle();
-                bundle.putString("name", name);
-                bundle.putDouble("price", price);
-                bundle.putInt("stock", stock);
-                bundle.putString("imgUri", imageUri.toString());
-                onCreatePlatDialogResultListener.onPositiveResult(bundle);
-                dismiss();
+                if(nameEt.getText().toString().equals("") || priceEt.getText().toString().equals("") || stockEt.getText().toString().equals("") || imageUri.equals(null)){
+                    Toast.makeText(getActivity().getApplicationContext(), "Omple tots els camps", Toast.LENGTH_LONG).show();
+                } else {
+                    String name = nameEt.getText().toString();
+                    double price = Double.parseDouble(priceEt.getText().toString());
+                    int stock = Integer.parseInt(stockEt.getText().toString());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name);
+                    bundle.putDouble("price", price);
+                    bundle.putInt("stock", stock);
+                    bundle.putString("imgUri", imageUri.toString());
+                    onCreatePlatDialogResultListener.onPositiveResult(bundle);
+                    dismiss();
+                }
             }
         });
 

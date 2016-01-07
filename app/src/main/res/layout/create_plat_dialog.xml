@@ -91,6 +91,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Selecciona una imatge:"
+            android:id="@+id/textView3"
+            android:layout_marginBottom="20sp"
+            android:gravity="center"
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="20sp"
+            android:layout_marginLeft="20sp" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:src="@mipmap/ic_photo_white_48dp"

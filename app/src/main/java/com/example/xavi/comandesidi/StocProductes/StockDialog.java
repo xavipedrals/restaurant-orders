@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
 
@@ -71,15 +72,27 @@ public class StockDialog extends DialogFragment {
                 Bundle bundle = new Bundle();
                 if(radioButtonZero.isChecked()){
                     bundle.putString("opcio", "zero");
+                    onStockDialogResultListener.onPositiveResult(bundle);
+                    dismiss();
                 } else if (radioButtonInc.isChecked()){
-                    bundle.putString("opcio", "incrementar");
-                    bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
+                    if(editText.getText().toString().equals(""))
+                        Toast.makeText(getActivity().getApplicationContext(), "Introdueix una quantitat", Toast.LENGTH_LONG).show();
+                    else {
+                        bundle.putString("opcio", "incrementar");
+                        bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
+                        onStockDialogResultListener.onPositiveResult(bundle);
+                        dismiss();
+                    }
                 } else if (radioButtonDec.isChecked()){
-                    bundle.putString("opcio", "decrementar");
-                    bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
+                    if(editText.getText().toString().equals(""))
+                        Toast.makeText(getActivity().getApplicationContext(), "Introdueix una quantitat", Toast.LENGTH_LONG).show();
+                    else {
+                        bundle.putString("opcio", "decrementar");
+                        bundle.putInt("quantitat", Integer.parseInt(editText.getText().toString()));
+                        onStockDialogResultListener.onPositiveResult(bundle);
+                        dismiss();
+                    }
                 }
-                onStockDialogResultListener.onPositiveResult(bundle);
-                dismiss();
             }
         });
 

@@ -1,10 +1,16 @@
 package com.example.xavi.comandesidi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xavi.comandesidi.EditarPlats.CrearPlatDialog;
@@ -27,6 +35,7 @@ import com.example.xavi.comandesidi.data.GestorBD;
 import com.example.xavi.comandesidi.domini.ComandaContainer;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -170,6 +179,26 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        TextView titleTv = (TextView) header.findViewById(R.id.navDrawerTitle);
+        TextView emailTv = (TextView) header.findViewById(R.id.navDrawerEmail);
+        LinearLayout linearLayout = (LinearLayout) header.findViewById(R.id.navBackground);
+        SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+        String restaurantName = prefs.getString("NomRestaurant", getResources().getString(R.string.nav_drawer_title));
+        String restaurantEmail = prefs.getString("EmailRestaurant", getResources().getString(R.string.nav_drawer_email));
+        String backgroundUri = prefs.getString("BackgroundUri", "");
+        titleTv.setText(restaurantName);
+        emailTv.setText(restaurantEmail);
+        if (!backgroundUri.equals("")) {
+            Uri uri = Uri.parse(backgroundUri);
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
+                linearLayout.setBackground(bitmapDrawable);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         if(getIntent().hasExtra("Fragment")){
             Bundle b = getIntent().getExtras();
@@ -248,13 +277,13 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_config) {
             //TODO: Falta fer config (editar foto restaurant, netejar BDS, carregar stubs
-            setToolbarTitle("Configuració");
-            configureFab(CONFIGURACIO_FRAGMENT);
-            Fragment f = new Fragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            startActivity(new Intent(MainActivity.this, ConfigActivity.class));
 
         } else if (id == R.id.nav_ajuda){
-            startActivity(new Intent(MainActivity.this, AboutActivity.class));
+            setToolbarTitle("Ajuda");
+            configureFab(CONFIGURACIO_FRAGMENT);
+            AjudaFragment f = new AjudaFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

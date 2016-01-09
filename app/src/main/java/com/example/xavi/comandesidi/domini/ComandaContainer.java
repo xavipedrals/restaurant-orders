@@ -32,6 +32,11 @@ public class ComandaContainer {
         populateBDifNotPopulated(onlyDay);
     }
 
+    public ComandaContainer(Context context, boolean carregarDades){
+        comandaList = new ArrayList<>();
+        this.context = context;
+    }
+
 //    private void getComandes(){
 //        Cursor cursor = GestorBD.getInstance(context).getAllComandes();
 //        if (cursor.moveToFirst()) {
@@ -88,6 +93,10 @@ public class ComandaContainer {
 
     public static void refresh(Context context){
         instance = new ComandaContainer(context);
+    }
+
+    public static void refreshAfterReset(Context context){
+        instance = new ComandaContainer(context, false);
     }
 
     public void addComanda(Comanda comanda){

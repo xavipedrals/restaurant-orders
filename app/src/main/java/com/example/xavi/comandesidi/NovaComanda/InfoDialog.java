@@ -111,6 +111,44 @@ public class InfoDialog extends DialogFragment {
                     }
                 });
                 break;
+
+            case "Reset table plats":
+                textTV.setText("Estàs segur que vols esborrar de manera permanent tots els plats?");
+                textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+                totalTv.setVisibility(View.GONE);
+                acceptTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onInfoDialogDialogResultListener.onPositiveResult();
+                        dismiss();
+                    }
+                });
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+                break;
+
+            case "Reset table comandes":
+                textTV.setText("Estàs segur que vols esborrar de manera permanent totes les comandes?");
+                textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+                totalTv.setVisibility(View.GONE);
+                acceptTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onInfoDialogDialogResultListener.onPositiveResult();
+                        dismiss();
+                    }
+                });
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+                break;
         }
 
         getDialog().setCancelable(true);

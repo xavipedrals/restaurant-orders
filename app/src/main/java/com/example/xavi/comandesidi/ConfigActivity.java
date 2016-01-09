@@ -1,24 +1,20 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.opengl.ETC1;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,35 +26,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xavi.comandesidi.MainActivity;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
-import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.data.GestorBD;
+import com.example.xavi.comandesidi.domini.ComandaContainer;
 import com.example.xavi.comandesidi.domini.ProductsContainer;
 
 import java.io.IOException;
 
-public class EditPlatActivity extends AppCompatActivity {
+public class ConfigActivity extends AppCompatActivity {
 
-    //TODO: SUbstituir dialog per edició sobre els TextsViews directe
-
-    private static final String TAG = "EditPlatActivity";
+    private static final String TAG = "ConfigActivity";
     private static final int PICK_PHOTO = 11;
-    private TextView nameTv, priceTv;
-    private Button saveBtn, deleteBtn;
-    private boolean specialBackPressed;
-    private ImageView image, iconEditName, iconEditPrice;
+    private EditText nameEt, mailEt;
+    private ImageView image, iconEditName, iconEditMail;
+    private Button saveBtn, deletePlatsBtn, deleteComandesBtn;
+    private String restaurantName, restaurantEmail, backgroundUri;
     private Uri imageUri;
-    private String imageUriOriginal;
-    private int productId;
-    private EditText nameEt, priceEt;
+    private boolean specialBackPressed;
     private int editingState;
     private static int NOT_EDITING = 0;
     private static int EDITING_NAME = 1;
-    private static int EDITING_PRICE = 2;
+    private static int EDITING_MAIL = 2;
 
 
-    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private void makeEditable(boolean isEditable,EditText et){
         if(isEditable){
@@ -80,94 +70,51 @@ public class EditPlatActivity extends AppCompatActivity {
         }
     }
 
-//    void visualitzaDialog(final boolean isEditName){
-//        EditTextDialog editTextDialog = new EditTextDialog();
-//        editTextDialog.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, 0);
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean("isEditName", isEditName);
-//        editTextDialog.setArguments(bundle);
-//        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-//        editTextDialog.setOnEditTextDialogResultListener(new EditTextDialog.OnEditTextDialogResultListener() {
-//            @Override
-//            public void onPositiveResult(String result) {
-//                if(isEditName) nameTv.setText(result);
-//                else {
-//                    priceTv.setText(result);
-//                }
-//            }
-//
-//            @Override
-//            public void onNegativeResult() {
-//
-//            }
-//        });
-//        editTextDialog.show(fragmentManager, "tag");
-//    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_plat);
+        setContentView(R.layout.activity_about);
+
+        SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+        restaurantName = prefs.getString("NomRestaurant", getResources().getString(R.string.nav_drawer_title));
+        restaurantEmail = prefs.getString("EmailRestaurant", getResources().getString(R.string.nav_drawer_email));
+        backgroundUri = prefs.getString("BackgroundUri", "");
         specialBackPressed = false;
-        imageUri = null;
-
-        Bundle b = getIntent().getExtras();
-        final String name = b.getString("name");
-        final double price = b.getDouble("price");
-        final int mipmapId = b.getInt("mipmap");
-        productId = b.getInt("id");
-        boolean hasImage = b.getBoolean("hasImage");
-        imageUriOriginal = b.getString("image");
-
-        Toolbar actionbar = (Toolbar) findViewById(R.id.toolbar);
-        if (null != actionbar) {
-//            actionbar.setNavigationIcon(R.mipmap.abc_ic_ab_back_mtrl_am_alpha);
-            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-
-            actionbar.setTitle("Editar plat");
-            actionbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onBackPressed();
-                    //NavUtils.navigateUpFromSameTask(EditPlatActivity.this);
-                }
-            });
-        }
-
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
 
         image = (ImageView) findViewById(R.id.image);
         Bitmap bitmap = null;
-        if(hasImage) {
-            Uri uri = Uri.parse(imageUriOriginal);
+        if(!backgroundUri.equals("")) {
+            Uri uri = Uri.parse(backgroundUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            bitmap = BitmapFactory.decodeResource(getResources(), mipmapId);
+            bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.restaurant2);
         }
         image.setImageBitmap(bitmap);
 
-        priceEt = (EditText) findViewById(R.id.priceEditText);
-        String aux = String.valueOf(price);
-        priceEt.setText(aux);
-        priceEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    iconEditPrice.setImageResource(R.mipmap.ic_edit_black_48dp);
-                    makeEditable(false, priceEt);
+
+        Toolbar actionbar = (Toolbar) findViewById(R.id.toolbar);
+        if (null != actionbar) {
+            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+
+            actionbar.setTitle("Configuració");
+            actionbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
                 }
-                return false;
-            }
-        });
-        makeEditable(false, priceEt);
+            });
+        }
+
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        //collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+
 
         nameEt = (EditText) findViewById(R.id.nameEditText);
-        nameEt.setText(name);
+        nameEt.setText(restaurantName);
         nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -180,22 +127,34 @@ public class EditPlatActivity extends AppCompatActivity {
         });
         makeEditable(false, nameEt);
 
-        ImageView priceIcon = (ImageView) findViewById(R.id.iconPrice);
-        priceIcon.setAlpha(138);
+        mailEt = (EditText) findViewById(R.id.mailEditText);
+        mailEt.setText(restaurantEmail);
+        mailEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    iconEditMail.setImageResource(R.mipmap.ic_edit_black_48dp);
+                    makeEditable(false, mailEt);
+                }
+                return false;
+            }
+        });
+        makeEditable(false, mailEt);
 
-        ImageView foodIcon = (ImageView) findViewById(R.id.iconFood);
-        foodIcon.setAlpha(138);
+
+        ImageView iconName = (ImageView) findViewById(R.id.iconName);
+        ImageView iconEmail = (ImageView) findViewById(R.id.iconEmail);
+        iconName.setAlpha(138);
+        iconEmail.setAlpha(138);
 
         iconEditName = (ImageView) findViewById(R.id.iconEditName);
-        iconEditPrice = (ImageView) findViewById(R.id.iconEditPrice);
         iconEditName.setAlpha(138);
-        iconEditPrice.setAlpha(138);
         iconEditName.setClickable(true);
         editingState = NOT_EDITING;
         iconEditName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editingState == EDITING_NAME){
+                if (editingState == EDITING_NAME) {
                     makeEditable(false, nameEt);
                     iconEditName.setImageResource(R.mipmap.ic_edit_black_48dp);
                     editingState = NOT_EDITING;
@@ -208,59 +167,99 @@ public class EditPlatActivity extends AppCompatActivity {
                 }
             }
         });
-        iconEditPrice.setClickable(true);
-        iconEditPrice.setOnClickListener(new View.OnClickListener() {
+
+        iconEditMail = (ImageView) findViewById(R.id.iconEditMail);
+        iconEditMail.setAlpha(138);
+        iconEditMail.setClickable(true);
+        iconEditMail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(editingState == EDITING_PRICE){
-                    makeEditable(false, priceEt);
-                    iconEditPrice.setImageResource(R.mipmap.ic_edit_black_48dp);
+                if (editingState == EDITING_MAIL) {
+                    makeEditable(false, mailEt);
+                    iconEditMail.setImageResource(R.mipmap.ic_edit_black_48dp);
                     editingState = NOT_EDITING;
                 } else {
-                    makeEditable(true, priceEt);
+                    makeEditable(true, mailEt);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(priceEt, InputMethodManager.SHOW_IMPLICIT);
-                    iconEditPrice.setImageResource(R.mipmap.ic_done_black_48dp);
-                    editingState = EDITING_PRICE;
+                    imm.showSoftInput(mailEt, InputMethodManager.SHOW_IMPLICIT);
+                    iconEditMail.setImageResource(R.mipmap.ic_done_black_48dp);
+                    editingState = EDITING_MAIL;
                 }
             }
         });
 
         saveBtn = (Button) findViewById(R.id.buttonSave);
-        deleteBtn = (Button) findViewById(R.id.buttonDelete);
-
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nameAux = nameEt.getText().toString();
-                double priceAux = Double.parseDouble(priceEt.getText().toString());
-                if(!nameAux.equals(name) || price != priceAux || imageUri != null){
-                    if (imageUri != null){
-                        GestorBD.getInstance(getApplicationContext()).updatePlat(productId, 1, imageUri.toString(), priceAux, nameAux);
-                    } else GestorBD.getInstance(getApplicationContext()).updatePlat(productId, 0, null, priceAux, nameAux);
-                    ProductsContainer.refresh(getApplicationContext());
+                String emailAux = mailEt.getText().toString();
+                SharedPreferences prefs = getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+                boolean hasChanges = false;
+                if(!nameAux.equals(restaurantName)) {
+                    prefs.edit().putString("NomRestaurant", nameAux).apply();
+                    hasChanges = true;
+                }
+                if(!emailAux.equals(restaurantEmail)) {
+                    prefs.edit().putString("EmailRestaurant", emailAux).apply();
+                    hasChanges = true;
+                }
+                if(imageUri != null) {
+                    prefs.edit().putString("BackgroundUri", imageUri.toString()).apply();
+                    hasChanges = true;
+                }
+
+                if (!hasChanges){
+                    Toast.makeText(getApplicationContext(), "Fes algun canvi abans de guardar", Toast.LENGTH_LONG).show();
+                } else {
                     specialBackPressed = true;
                     onBackPressed();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Fes algun canvi abans de guardar", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        deletePlatsBtn = (Button) findViewById(R.id.buttonDeletePlats);
+        deletePlatsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
-                b.putString("Type", "Deleting confirmation");
+                b.putString("Type", "Reset table plats");
                 InfoDialog infoDialog = new InfoDialog();
                 infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
                     @Override
                     public void onPositiveResult() {
-                        GestorBD.getInstance(getApplicationContext()).deletePlat(name);
-                        ProductsContainer.refresh(getApplicationContext());
+                        GestorBD.getInstance(getApplicationContext()).resetTablePlats();
+                        ProductsContainer.refreshAfterReset(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
-                        Toast.makeText(getApplicationContext(), "Producte esborrat", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "S'han esborrat els plats", Toast.LENGTH_LONG).show();
+                    }
+                    @Override
+                    public void onNegativeResult() {
+
+                    }
+                });
+                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+                infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                infoDialog.setArguments(b);
+                infoDialog.show(fragmentManager, "tag");
+            }
+        });
+
+        deleteComandesBtn = (Button) findViewById(R.id.buttonDeleteComandes);
+        deleteComandesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString("Type", "Reset table comandes");
+                InfoDialog infoDialog = new InfoDialog();
+                infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
+                    @Override
+                    public void onPositiveResult() {
+                        GestorBD.getInstance(getApplicationContext()).resetTableComandes();
+                        ComandaContainer.refreshAfterReset(getApplicationContext());
+                        specialBackPressed = true;
+                        onBackPressed();
+                        Toast.makeText(getApplicationContext(), "S'han esborrat les comandes", Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onNegativeResult() {
@@ -286,6 +285,14 @@ public class EditPlatActivity extends AppCompatActivity {
         });
     }
 
+    @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        try {
+            return super.dispatchTouchEvent(motionEvent);
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -302,23 +309,11 @@ public class EditPlatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(specialBackPressed){
-            Bundle bundle = new Bundle();
-            bundle.putInt("Fragment", MainActivity.EDITAR_PLATS_FRAGMENT);
-            Intent intent = new Intent(EditPlatActivity.this, MainActivity.class);
-            intent.putExtras(bundle);
+            Intent intent = new Intent(ConfigActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         super.onBackPressed();
     }
-
-    @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {
-        try {
-            return super.dispatchTouchEvent(motionEvent);
-        } catch (NullPointerException e) {
-            return false;
-        }
-    }
-
 
 }

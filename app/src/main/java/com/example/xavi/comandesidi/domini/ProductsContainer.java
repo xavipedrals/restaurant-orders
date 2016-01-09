@@ -32,6 +32,10 @@ public class ProductsContainer {
         instance = new ProductsContainer(context);
     }
 
+    public static void refreshAfterReset(Context context){
+        instance = new ProductsContainer(context, false);
+    }
+
     private void populateBDifNotPopulated(){
         Cursor cursor = GestorBD.getInstance(context).getAllPlats();
         if (cursor.moveToFirst()) {
@@ -70,6 +74,11 @@ public class ProductsContainer {
         productList = new ArrayList<>();
         this.context = context;
         populateBDifNotPopulated();
+    }
+
+    private ProductsContainer(Context context, boolean populate){
+        productList = new ArrayList<>();
+        this.context = context;
     }
 
     public List<Product> getProductList(){

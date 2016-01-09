@@ -105,12 +105,12 @@ public class ComandaItemFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_filter) {
+        /*if (id == R.id.action_filter) {
             DatePickerFragment datePickerFragment = new DatePickerFragment();
             datePickerFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             datePickerFragment.show(fragmentManager, "tag");
-        } else if (id == R.id.action_info){
+        } else*/ if (id == R.id.action_info){
             InfoDialog infoDialog = new InfoDialog();
             infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
             Bundle bundle = new Bundle();

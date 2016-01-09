@@ -139,11 +139,13 @@ public class GestorBD extends SQLiteOpenHelper {
     public Cursor getComandesByDay(String date){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COMANDES_COL_NUM_TABLE, COMANDES_COL_DATA, COMANDES_COL_PRICE};
-        String[] valuesWhere = {date};
+        String compDateStart = date + " 00:00 AM";
+        String compDateEnd = date + " 12:59 PM";
+        String[] valuesWhere = {compDateStart, compDateEnd};
         Cursor c = db.query(
                 COMANDES_TABLE,                         // The table to query
                 columns,                                // The columns to return
-                COMANDES_COL_DATA + "=?",               // The columns for the WHERE clause
+                COMANDES_COL_DATA + " BETWEEN ? AND ?",               // The columns for the WHERE clause
                 valuesWhere,                            // The values for the WHERE clause
                 null,                                   // don't group the rows
                 null,                                   // don't filter by row groups
@@ -155,8 +157,8 @@ public class GestorBD extends SQLiteOpenHelper {
     public Cursor getComandesBetween(String startDay, String endDay){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COMANDES_COL_NUM_TABLE, COMANDES_COL_DATA, COMANDES_COL_PRICE};
-        String compStartDay = startDay + "01:00 AM";
-        String compEndDay = endDay + "12:59 PM";
+        String compStartDay = startDay + "00:00 AM";
+        String compEndDay = endDay + "11:59 PM";
         String[] valuesWhere = {compStartDay, compEndDay};
         Cursor c = db.query(
                 COMANDES_TABLE,                         // The table to query

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
 
@@ -49,8 +50,12 @@ public class TableDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 int numTaula = Integer.parseInt(numeroTaulaEt.getText().toString());
-                onTableDialogResultListener.onPositiveResult(numTaula);
-                dismiss();
+                if (numTaula <= 0 || numTaula > 20)
+                    Toast.makeText(getActivity().getApplicationContext(), "El número de taula ha d'estar entre 1 i 20", Toast.LENGTH_LONG).show();
+                else {
+                    onTableDialogResultListener.onPositiveResult(numTaula);
+                    dismiss();
+                }
             }
         });
 

@@ -17,7 +17,7 @@
             <item
                 android:id="@+id/nav_llistat_comandes"
                 android:icon="@mipmap/ic_event_black_48dp"
-                android:title="Llistar comandes" />
+                android:title="Llistar comandes del dia" />
             <item
                 android:id="@+id/nav_stoc_productes"
                 android:icon="@mipmap/ic_assignment_black_48dp"

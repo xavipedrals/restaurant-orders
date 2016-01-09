@@ -25,7 +25,8 @@ import java.text.DecimalFormat;
 /**Serveix per mostrar info en general**/
 public class InfoDialog extends DialogFragment {
 
-    TextView acceptTV, totalTv, textTV;
+    private TextView acceptTV, totalTv, textTV, cancelTv;
+    private OnInfoDialogDialogResultListener onInfoDialogDialogResultListener;
 
     public InfoDialog() {
         // Empty constructor required for DialogFragment
@@ -37,6 +38,7 @@ public class InfoDialog extends DialogFragment {
         acceptTV = (TextView) view.findViewById(R.id.textViewAccept);
         totalTv = (TextView) view.findViewById(R.id.textViewPriceDg);
         textTV = (TextView) view.findViewById(R.id.textViewPriceTx);
+        cancelTv = (TextView) view.findViewById(R.id.textViewCancel);
         Bundle b = getArguments();
         String type = b.getString("Type", null);
 
@@ -47,9 +49,10 @@ public class InfoDialog extends DialogFragment {
 
         switch (type) {
             case "No products selected":
-                textTV.setText("Encara no has afegit cap producte a la comanda");
+                textTV.setText("Afegeix algun producte a la comanda");
                 textTV.setTextColor(getResources().getColor(R.color.primary_text));
                 totalTv.setVisibility(View.GONE);
+                cancelTv.setVisibility(View.GONE);
                 acceptTV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -62,7 +65,7 @@ public class InfoDialog extends DialogFragment {
             case "See price":
                 price = b.getDouble("price", 0);
                 roundedPrice = decimalFormat.format(price);
-
+                cancelTv.setVisibility(View.GONE);
                 textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
                 totalTv.setText(String.valueOf(roundedPrice + " €"));
 
@@ -77,7 +80,7 @@ public class InfoDialog extends DialogFragment {
             case "See total":
                 price = b.getDouble("price", 0);
                 roundedPrice = decimalFormat.format(price);
-
+                cancelTv.setVisibility(View.GONE);
                 textTV.setText("Els ingressos sumen un total de");
                 textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
                 totalTv.setText(String.valueOf(roundedPrice + " €"));
@@ -91,7 +94,22 @@ public class InfoDialog extends DialogFragment {
                 break;
 
             case "Deleting confirmation":
-
+                textTV.setText("Estàs segur que vols esborrar el producte?");
+                textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+                totalTv.setVisibility(View.GONE);
+                acceptTV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onInfoDialogDialogResultListener.onPositiveResult();
+                        dismiss();
+                    }
+                });
+                cancelTv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
                 break;
         }
 
@@ -105,4 +123,12 @@ public class InfoDialog extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public interface OnInfoDialogDialogResultListener {
+        public abstract void onPositiveResult();
+        public abstract void onNegativeResult();
+    }
+
+    public void setOnInfoDialogDialogResultListener(OnInfoDialogDialogResultListener onInfoDialogDialogResultListener) {
+        this.onInfoDialogDialogResultListener = onInfoDialogDialogResultListener;
+    }
 }

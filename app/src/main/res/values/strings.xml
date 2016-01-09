@@ -19,8 +19,20 @@
 
     <string name="about_nova_comanda">Aquí podràs crear noves comandes, fent click sobre un plat afegiràs una unitat d\'aquest, fent un
          click llarg sobre un plat accediràs a un menú on podràs canviar la quantitat que vols d\'aquest, fent click al botó
-    d\'informació podràs saber en tot moment el preu acumulat de la comanda i finalment amb el botó de abaix a la dreta de la pantalla
+    d\'informació podràs saber en tot moment el preu acumulat de la comanda i finalment amb el botó de baix a la dreta de la pantalla
     podràs tramitar una comanda.</string>
+
+    <string name="help_editar_plats">Aquí podràs editar els teus plats, fent click sobre un plat aniràs a una pantalla on podràs editar-lo
+        (o borrar-lo), fent click llarg sobre el botó de baix a la dreta de la pantalla podràs crear un plat nou.</string>
+
+        <string name="help_llistar_comandes">Aquí podràs veure les comandes fetes en el dia actual, fent click sobre l\'icona
+            d\'iformació podràs "fer caixa", és a dir, veure els ingressos totals del dia.</string>
+
+        <string name="help_stoc_productes">Aquí podràs veure l\'stoc dels teus plats, fent click sobre un plat
+             podràs modificar el seu stock.</string>
+
+        <string name="help_configuracio">Aquí podràs canviar el nom o la imatge del teu restaurant (la que apareix al navegador)
+             i també podràs netejar les bases de dades, per eliminar dades que ja no vols mantenir.</string>
 
 
 </resources>

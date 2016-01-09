@@ -29,12 +29,20 @@ public class ComandaContainer {
         String dateStr = df.format(date);
         String aux[] = dateStr.split(" ");
         String onlyDay = aux[0];
-        populateBDifNotPopulated(onlyDay);
+        carregaItems(onlyDay);
     }
 
-    public ComandaContainer(Context context, boolean carregarDades){
+    public ComandaContainer(Context context, boolean populate){
         comandaList = new ArrayList<>();
         this.context = context;
+        if (populate){
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+            Date date = new Date();
+            String dateStr = df.format(date);
+            String aux[] = dateStr.split(" ");
+            String onlyDay = aux[0];
+            populateBDifNotPopulated(onlyDay);
+        }
     }
 
 //    private void getComandes(){
@@ -83,10 +91,30 @@ public class ComandaContainer {
         }
     }
 
+    private void carregaItems(String date){
+        Cursor cursor = GestorBD.getInstance(context).getComandesByDay(date);
+        if (cursor.moveToFirst()) {
+            do {
+                Comanda comanda = new Comanda();
+                comanda.setDate(cursor.getString(cursor.getColumnIndex(GestorBD.COMANDES_COL_DATA)));
+                comanda.setPrice(cursor.getDouble(cursor.getColumnIndex(GestorBD.COMANDES_COL_PRICE)));
+                comanda.setTableNum(cursor.getInt(cursor.getColumnIndex(GestorBD.COMANDES_COL_NUM_TABLE)));
+                comandaList.add(comanda);
+            } while (cursor.moveToNext());
+        }
+    }
+
     /**Per tenir una sola instància**/
     public static ComandaContainer getInstance(Context context){
         if(instance == null){
             instance = new ComandaContainer(context);
+        }
+        return instance;
+    }
+
+    public static ComandaContainer getFirstInstance(Context context){
+        if(instance == null){
+            instance = new ComandaContainer(context, true);
         }
         return instance;
     }

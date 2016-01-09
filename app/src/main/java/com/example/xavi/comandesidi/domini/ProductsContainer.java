@@ -1,6 +1,7 @@
 package com.example.xavi.comandesidi.domini;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -24,6 +25,13 @@ public class ProductsContainer {
     public static ProductsContainer getInstance(Context context){
         if(instance == null){
             instance = new ProductsContainer(context);
+        }
+        return instance;
+    }
+
+    public static ProductsContainer getFirstInstance(Context context){
+        if(instance == null){
+            instance = new ProductsContainer(context, true);
         }
         return instance;
     }
@@ -70,15 +78,44 @@ public class ProductsContainer {
         }
     }
 
+    private void carregaItems(){
+        Cursor cursor = GestorBD.getInstance(context).getAllPlats();
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_ID)));
+                product.setName(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_NAME)));
+                product.setPrice(cursor.getDouble(cursor.getColumnIndex(GestorBD.PLATS_COL_PRICE)));
+                product.setStock(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_STOCK)));
+                product.setMipmapId(cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_IMG)));
+                int hasImage = cursor.getInt(cursor.getColumnIndex(GestorBD.PLATS_COL_HAS_IMAGE));
+                if (hasImage != 0) {
+                    product.setHasImage(true);
+                    product.setImgUri(cursor.getString(cursor.getColumnIndex(GestorBD.PLATS_COL_IMAGE_URI)));
+                } else {
+                    product.setHasImage(false);
+                    product.setImgUri(null);
+                }
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+    }
+
     private ProductsContainer(Context context){
         productList = new ArrayList<>();
         this.context = context;
-        populateBDifNotPopulated();
+        //populateBDifNotPopulated();
+        carregaItems();
     }
 
     private ProductsContainer(Context context, boolean populate){
         productList = new ArrayList<>();
         this.context = context;
+        if (populate) populateBDifNotPopulated();
+    }
+
+    public static int getSize(){
+        return instance.productList.size();
     }
 
     public List<Product> getProductList(){

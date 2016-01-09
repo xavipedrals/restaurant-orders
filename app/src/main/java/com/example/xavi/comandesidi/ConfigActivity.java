@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,28 +51,24 @@ public class ConfigActivity extends AppCompatActivity {
 
     private void makeEditable(boolean isEditable,EditText et){
         if(isEditable){
-            //et.setBackgroundDrawable("Give the textbox background here");//You can store it in some variable and use it over here while making non editable.
             et.setFocusable(true);
             et.setEnabled(true);
             et.setClickable(true);
             et.setFocusableInTouchMode(true);
             et.requestFocus();
-            //et.setKeyListener("Set edit text key listener here"); //You can store it in some variable and use it over here while making non editable.
-        }else{
-            //et.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        } else{
             et.setFocusable(false);
             et.setClickable(false);
             et.setFocusableInTouchMode(false);
             et.setEnabled(false);
             et.setTextColor(getResources().getColor(R.color.primary_text));
-            //et.setKeyListener(null);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_configuracio);
 
         SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
         restaurantName = prefs.getString("NomRestaurant", getResources().getString(R.string.nav_drawer_title));
@@ -208,10 +203,10 @@ public class ConfigActivity extends AppCompatActivity {
                     prefs.edit().putString("BackgroundUri", imageUri.toString()).apply();
                     hasChanges = true;
                 }
-
                 if (!hasChanges){
                     Toast.makeText(getApplicationContext(), "Fes algun canvi abans de guardar", Toast.LENGTH_LONG).show();
                 } else {
+                    Toast.makeText(getApplicationContext(), "Els canvis s'han guardat", Toast.LENGTH_LONG).show();
                     specialBackPressed = true;
                     onBackPressed();
                 }

@@ -200,19 +200,31 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        if(getIntent().hasExtra("Fragment")){
-            Bundle b = getIntent().getExtras();
-            if(b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT){
-                actualFragment = EDITAR_PLATS_FRAGMENT;
-                configureFab(EDITAR_PLATS_FRAGMENT);
-                editPlatItemFragment = new EditPlatItemFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
+        boolean fisrtLaunch = prefs.getBoolean("FirstLaunch", true);
+        if (fisrtLaunch){
+            prefs.edit().putBoolean("FirstLaunch", false).apply();
+            ProductsContainer.getFirstInstance(getApplicationContext());
+            ComandaContainer.getFirstInstance(getApplicationContext());
+            setToolbarTitle("Ajuda");
+            configureFab(CONFIGURACIO_FRAGMENT);
+            AjudaFragment f = new AjudaFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+        }
+        else {
+            if (getIntent().hasExtra("Fragment")) {
+                Bundle b = getIntent().getExtras();
+                if (b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT) {
+                    actualFragment = EDITAR_PLATS_FRAGMENT;
+                    configureFab(EDITAR_PLATS_FRAGMENT);
+                    editPlatItemFragment = new EditPlatItemFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
+                }
+            } else {
+                actualFragment = NOVA_COMANDA_FRAGMENT;
+                configureFab(NOVA_COMANDA_FRAGMENT);
+                itemFragment = new ItemFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
             }
-        } else {
-            actualFragment = NOVA_COMANDA_FRAGMENT;
-            configureFab(NOVA_COMANDA_FRAGMENT);
-            itemFragment = new ItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
         }
     }
 
@@ -270,13 +282,12 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, comandaItemFragment).commit();
 
         } else if (id == R.id.nav_stoc_productes) {
-            setToolbarTitle("Stoc productes");
+            setToolbarTitle("Stoc plats");
             configureFab(STOC_PRODUCTES_FRAGMENT);
             ItemStocFragment f = new ItemStocFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_config) {
-            //TODO: Falta fer config (editar foto restaurant, netejar BDS, carregar stubs
             startActivity(new Intent(MainActivity.this, ConfigActivity.class));
 
         } else if (id == R.id.nav_ajuda){

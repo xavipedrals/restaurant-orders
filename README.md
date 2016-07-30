@@ -7,7 +7,7 @@ This app is an example of an app built to manage a restaurant. You can create or
 This app is built in Android and uses no extra libraries. It uses Lists with RecyclerViews and round images, it has a NavDrawer it uses collapsible layouts, custom dialogs and SQlite.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/xavipedrals/comandes/master/screenshots/android-logo.jpg" width="32%">
+<img src="https://raw.githubusercontent.com/xavipedrals/comandes/master/screenshots/android-logo.jpg" width="25%">
 </p>
 
 
@@ -34,7 +34,7 @@ Here you can edit your dishes, clicking a dish will lead you to a screen where y
 ##History:
 
 <p align="center">
-<img src="https://github.com/xavipedrals/comandes/raw/master/screenshots/history.png" width="25%" margin="auto">
+<img src="https://github.com/xavipedrals/comandes/raw/master/screenshots/history.png" width="32%" margin="auto">
 </p>
 
 Here you can see the day's orders, showing the table and the price of each order. The information button shows the day's total earnings.

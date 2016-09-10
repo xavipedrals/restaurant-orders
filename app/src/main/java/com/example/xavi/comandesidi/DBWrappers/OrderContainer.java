@@ -99,8 +99,8 @@ public class OrderContainer {
     private Order initNewOrder(Cursor cursor) {
         Order order = new Order();
         order.setDate(cursor.getString(cursor.getColumnIndex(DBManager.COMANDES_COL_DATA)));
-        order.setPrice(cursor.getDouble(cursor.getColumnIndex(DBManager.COMANDES_COL_PRICE)));
-        order.setTableNum(cursor.getInt(cursor.getColumnIndex(DBManager.COMANDES_COL_NUM_TABLE)));
+        order.price = cursor.getDouble(cursor.getColumnIndex(DBManager.COMANDES_COL_PRICE));
+        order.tableNum = cursor.getInt(cursor.getColumnIndex(DBManager.COMANDES_COL_NUM_TABLE));
         return order;
     }
 
@@ -128,8 +128,8 @@ public class OrderContainer {
         private String date;
         private String day;
         private String hour;
-        private int tableNum;
-        private double price;
+        public int tableNum;
+        public double price;
 
         public Order(){}
 
@@ -148,32 +148,9 @@ public class OrderContainer {
             return day;
         }
 
-        public void setDay(String day) {
-            this.day = day;
-        }
-
         public String getHour() {
             return hour;
         }
 
-        public void setHour(String hour) {
-            this.hour = hour;
-        }
-
-        public int getTableNum() {
-            return tableNum;
-        }
-
-        public void setTableNum(int tableNum) {
-            this.tableNum = tableNum;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
     }
 }

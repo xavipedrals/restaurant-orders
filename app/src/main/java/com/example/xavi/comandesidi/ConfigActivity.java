@@ -28,7 +28,8 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.NewOrder.InfoDialog;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 
 import java.io.IOException;
 
@@ -139,11 +140,11 @@ public class ConfigActivity extends AppCompatActivity {
 
         ImageView iconName = (ImageView) findViewById(R.id.iconName);
         ImageView iconEmail = (ImageView) findViewById(R.id.iconEmail);
-        iconName.setAlpha(138);
-        iconEmail.setAlpha(138);
+        iconName.setAlpha(ConstantValues.alpha);
+        iconEmail.setAlpha(ConstantValues.alpha);
 
         iconEditName = (ImageView) findViewById(R.id.iconEditName);
-        iconEditName.setAlpha(138);
+        iconEditName.setAlpha(ConstantValues.alpha);
         iconEditName.setClickable(true);
         editingState = NOT_EDITING;
         iconEditName.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +165,7 @@ public class ConfigActivity extends AppCompatActivity {
         });
 
         iconEditMail = (ImageView) findViewById(R.id.iconEditMail);
-        iconEditMail.setAlpha(138);
+        iconEditMail.setAlpha(ConstantValues.alpha);
         iconEditMail.setClickable(true);
         iconEditMail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +224,7 @@ public class ConfigActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveResult() {
                         DBManager.getInstance(getApplicationContext()).resetTablePlats();
-                        ProductsContainer.refreshAfterReset(getApplicationContext());
+                        DishesContainer.refreshAfterReset(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
                         Toast.makeText(getApplicationContext(), "S'han esborrat els plats", Toast.LENGTH_LONG).show();

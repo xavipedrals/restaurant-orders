@@ -16,9 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.xavi.comandesidi.NewOrder.ItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.NewOrder.DishItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 
 import java.io.IOException;
@@ -26,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerViewAdapter.ViewHolder> {
 
-    private List<ProductsContainer.Product> productList;
+    private List<DishesContainer.Dish> dishList;
     private final OnListFragmentInteractionListener mListener;
     private Context context;
     private ViewHolder lastClickedView;
@@ -36,9 +37,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     private int position;
 
-    public int getPosition() {
-        return position;
-    }
+//    public int getPosition() {
+//        return position;
+//    }
 
     public void setPosition(int position) {
         this.position = position;
@@ -55,17 +56,17 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     public double getTotalPrice(){
         double price = 0;
         for(ViewHolder holder: viewHolderList){
-            price += holder.quantity * holder.product.getPrice();
+            price += holder.quantity * holder.dish.price;
         }
         return price;
     }
 
-    public List<ProductsContainer.Product> getProductesActualitzats(){
-        List<ProductsContainer.Product> productesActualitzats = new ArrayList<>();
+    public List<DishesContainer.Dish> getProductesActualitzats(){
+        List<DishesContainer.Dish> productesActualitzats = new ArrayList<>();
         for(ViewHolder holder: viewHolderList){
             if (holder.checkIfOrdered()) {
                 holder.updateOrderedProduct();
-                productesActualitzats.add(holder.product);
+                productesActualitzats.add(holder.dish);
             }
         }
         return productesActualitzats;
@@ -77,8 +78,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         }
     }
 
-    public MyItemRecyclerViewAdapter(ProductsContainer productsContainer, OnListFragmentInteractionListener listener, Context context) {
-        productList = productsContainer.getProductList();
+    public DishRecyclerViewAdapter(DishesContainer dishesContainer, OnListFragmentInteractionListener listener, Context context) {
+        dishList = dishesContainer.getDishList();
         mListener = listener;
         this.context = context;
         viewHolderList = new ArrayList<>();
@@ -93,23 +94,23 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.product = productList.get(position);
-        holder.stock = holder.product.getStock();
+        holder.dish = dishList.get(position);
+        holder.stock = holder.dish.stock;
         if (holder.stock == 0) holder.setOutOfStockBackgroundColor();
-        holder.nameTv.setText(productList.get(position).getName());
-        String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
+        holder.nameTv.setText(dishList.get(position).name);
+        String priceStr = String.valueOf(dishList.get(position).price) + " €";
         holder.priceTv.setText(priceStr);
         Bitmap bitmap = null;
-        if(holder.product.hasImage()){
+        if(holder.dish.hasImage){
             Log.d("CARREGO IMATGE", "Ei colega");
-            Uri uri = Uri.parse(holder.product.getImgUri());
+            Uri uri = Uri.parse(holder.dish.imgUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
+            bitmap = BitmapFactory.decodeResource(context.getResources(), dishList.get(position).mipmapId);
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
@@ -121,11 +122,11 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    //mListener.onListFragmentInteraction(holder.product);
+                    //mListener.onListFragmentInteraction(holder.dish);
                     if (holder.checkStock()) holder.increaseQuantityByOne();
                     else {
                         holder.setOutOfStockBackgroundColor();
-                        mListener.onListFragmentInteraction(holder.product);
+                        mListener.onListFragmentInteraction(holder.dish);
                     }
                 }
             }
@@ -149,7 +150,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return dishList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
@@ -160,7 +161,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public TextView quantitatTv;
         public final TextView xTv;
         public ImageView imageView;
-        public ProductsContainer.Product product;
+        public DishesContainer.Dish dish;
         public int quantity;
         public int stock;
 
@@ -173,8 +174,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             priceTv = (TextView) view.findViewById(R.id.product_price);
             quantitatTv = (TextView) view.findViewById(R.id.quantitat);
             imageView = (ImageView) view.findViewById(R.id.listImageView);
-            int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
-            priceTv.setTextColor(Color.argb(alpha, 0, 0, 0));
+            priceTv.setTextColor(Color.argb(ConstantValues.alpha, 0, 0, 0));
             quantity = 0;
             view.setOnCreateContextMenuListener(this);
         }
@@ -185,7 +185,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         public void updateOrderedProduct(){
             stock -= quantity;
-            product.setStock(stock);
+            dish.stock = stock;
         }
 
         public boolean checkStock(){
@@ -245,7 +245,6 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         }
 
         public void setSelectionedBackgroundColor(){
-            //itemContainer.setBackgroundColor(Color.parseColor("#E1F5FE")); //Light blue
             itemContainer.setBackgroundColor(context.getResources().getColor(R.color.accent_translucent)); //Light blue
         }
 
@@ -259,7 +258,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            //Necessari pel context menu del fragment
+            //Needed by it's fragmet context menu
         }
 
     }

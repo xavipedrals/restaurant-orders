@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/context_zero"
+        android:id="@+id/contextualMenuSetZero"
         android:title="Posar quantitat a zero" />
 
     <item
-        android:id="@+id/context_num_pers"
+        android:id="@+id/contextualMenuSetCustomNumber"
         android:title="Introduïr quantitat exacta" />
 
     <item
-        android:id="@+id/context_menys"
+        android:id="@+id/contextualMenuDecrease"
         android:title="Restar una unitat" />
 
 

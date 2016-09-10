@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.DBManager.DBManager;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 
 /**
  * A fragment representing a list of Items.
@@ -27,7 +27,7 @@ public class ItemStocFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ProductsContainer productsContainer;
+    private DishesContainer dishesContainer;
     private RecyclerView recyclerView;
     private MyItemStocRecyclerViewAdapter myItemStocRecyclerViewAdapter;
 
@@ -40,7 +40,7 @@ public class ItemStocFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setHasOptionsMenu(true);
-        productsContainer = ProductsContainer.getInstance(getActivity().getApplicationContext());
+        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
@@ -71,8 +71,8 @@ public class ItemStocFragment extends Fragment {
                                     } else if (opcio.equals("decrementar")){
                                         v.decreaseQuantityByX(bundle.getInt("quantitat"));
                                     }
-                                    DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(v.product.getId(), v.stock);
-                                    ProductsContainer.refresh(getActivity().getApplicationContext());
+                                    DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(v.dish.id, v.stock);
+                                    DishesContainer.refresh(getActivity().getApplicationContext());
                                 }
 
                                 @Override
@@ -89,7 +89,7 @@ public class ItemStocFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            myItemStocRecyclerViewAdapter = new MyItemStocRecyclerViewAdapter(ProductsContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
+            myItemStocRecyclerViewAdapter = new MyItemStocRecyclerViewAdapter(DishesContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
             recyclerView.setAdapter(myItemStocRecyclerViewAdapter);
         }
         return view;
@@ -118,6 +118,6 @@ public class ItemStocFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ProductsContainer.Product product);
+        void onListFragmentInteraction(DishesContainer.Dish dish);
     }
 }

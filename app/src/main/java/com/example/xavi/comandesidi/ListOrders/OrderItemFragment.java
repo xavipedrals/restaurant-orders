@@ -86,7 +86,6 @@ public class OrderItemFragment extends Fragment {
         recyclerView.setAdapter(orderItemRecyclerViewAdapter);
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

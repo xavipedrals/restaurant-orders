@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.xavi.comandesidi.Utils.ConstantValues;
+
 /**
  * Created by xavi on 07/01/16.
  */
@@ -23,11 +25,11 @@ public class AjudaFragment extends Fragment {
         ImageView iconStocPlats = (ImageView) view.findViewById(R.id.iconStocProductes);
         ImageView iconConfiguracio = (ImageView) view.findViewById(R.id.iconConfiguracio);
 
-        iconNovaComanda.setAlpha(138);
-        iconEditarPlats.setAlpha(138);
-        iconLlistarComandes.setAlpha(138);
-        iconStocPlats.setAlpha(138);
-        iconConfiguracio.setAlpha(138);
+        iconNovaComanda.setAlpha(ConstantValues.alpha);
+        iconEditarPlats.setAlpha(ConstantValues.alpha);
+        iconLlistarComandes.setAlpha(ConstantValues.alpha);
+        iconStocPlats.setAlpha(ConstantValues.alpha);
+        iconConfiguracio.setAlpha(ConstantValues.alpha);
         return view;
     }
 }

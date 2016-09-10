@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.IntrQuantDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBManager.DBManager;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 
 import java.util.List;
 
@@ -30,49 +30,55 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ItemFragment extends Fragment {
+public class DishItemFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ProductsContainer productsContainer;
+    private DishesContainer dishesContainer;
     private RecyclerView recyclerView;
-    private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
+    private Context context;
+    private DishRecyclerViewAdapter dishRecyclerViewAdapter;
 
-
-    public ItemFragment() {
+    public DishItemFragment() {
         //Required empty constructor
     }
 
-    public MyItemRecyclerViewAdapter getMyItemRecyclerViewAdapter() {
-        return myItemRecyclerViewAdapter;
+    public DishRecyclerViewAdapter getDishRecyclerViewAdapter() {
+        return dishRecyclerViewAdapter;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        productsContainer = ProductsContainer.getInstance(getActivity().getApplicationContext());
+        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+            context = view.getContext();
             recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(ProductsContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
-            recyclerView.setAdapter(myItemRecyclerViewAdapter);
+            manageRecyclerViewLayout();
+            setRecyclerViewAdapter();
         }
         return view;
+    }
+
+    private void manageRecyclerViewLayout() {
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+    }
+
+    private void setRecyclerViewAdapter() {
+        dishRecyclerViewAdapter = new DishRecyclerViewAdapter(DishesContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
+        recyclerView.setAdapter(dishRecyclerViewAdapter);
     }
 
     @Override
@@ -108,18 +114,27 @@ public class ItemFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_info) {
-            Bundle b = new Bundle();
-            b.putDouble("price", myItemRecyclerViewAdapter.getTotalPrice());
-            b.putString("Type", "See price");
-            InfoDialog infoDialog = new InfoDialog();
-            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            infoDialog.setArguments(b);
-            infoDialog.show(fragmentManager, "tag");
+            showInfoDialog();
         } else if(id == R.id.menu_reset_comanda){
-            myItemRecyclerViewAdapter.resetView();
+            dishRecyclerViewAdapter.resetView();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoDialog() {
+        InfoDialog infoDialog = new InfoDialog();
+        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        Bundle bundle = makeInfoDialogBundle();
+        infoDialog.setArguments(bundle);
+        infoDialog.show(fragmentManager, "tag");
+    }
+
+    private Bundle makeInfoDialogBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putDouble("price", dishRecyclerViewAdapter.getTotalPrice());
+        bundle.putString("Type", "See price");
+        return bundle;
     }
 
     @Override
@@ -129,29 +144,23 @@ public class ItemFragment extends Fragment {
         inflater.inflate(R.menu.nova_comanda_context, menu);
     }
 
+    /**Menu that appears in new command after making a long click on a dish**/
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        MyItemRecyclerViewAdapter.ViewHolder viewHolder = null;
-        int position = -1;
-        try {
-            viewHolder = myItemRecyclerViewAdapter.getLastClickedView();
-            position = myItemRecyclerViewAdapter.getPosition();
-        } catch (Exception e) {
-            Log.d("PUTAAA", e.getLocalizedMessage(), e);
-            return super.onContextItemSelected(item);
-        }
+        DishRecyclerViewAdapter.ViewHolder viewHolder = getlastClickedViewHolder();
+
         switch (item.getItemId()) {
-            case R.id.context_menys:
+            case R.id.contextualMenuDecrease:
                 viewHolder.decreaseQuantityByOne();
                 break;
-            case R.id.context_zero:
+            case R.id.contextualMenuSetZero:
                 viewHolder.decreaseQuantityToZero();
                 break;
-            case R.id.context_num_pers:
+            case R.id.contextualMenuSetCustomNumber:
                 IntrQuantDialog intrQuantDialog = new IntrQuantDialog();
                 android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 intrQuantDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                final MyItemRecyclerViewAdapter.ViewHolder finalViewHolder = viewHolder;
+                final DishRecyclerViewAdapter.ViewHolder finalViewHolder = viewHolder;
                 intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
                     @Override
                     public void onPositiveResult(int value) {
@@ -171,29 +180,28 @@ public class ItemFragment extends Fragment {
 
     }
 
+    public DishRecyclerViewAdapter.ViewHolder getlastClickedViewHolder() {
+        DishRecyclerViewAdapter.ViewHolder viewHolder = null;
+        try {
+            viewHolder = dishRecyclerViewAdapter.getLastClickedView();
+        } catch (Exception e) {
+            Log.d("EXCEPTION", e.getLocalizedMessage(), e);
+        }
+        return viewHolder;
+    }
+
     public boolean checkIfPriceIsZero(){
-        return (myItemRecyclerViewAdapter.getTotalPrice() == 0);
+        return (dishRecyclerViewAdapter.getTotalPrice() == 0);
     }
 
     public void updateStockDb(){
-        List<ProductsContainer.Product> productList = myItemRecyclerViewAdapter.getProductesActualitzats();
-        for (ProductsContainer.Product product : productList){
-            DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(product.getName(), product.getStock());
+        List<DishesContainer.Dish> dishList = dishRecyclerViewAdapter.getProductesActualitzats();
+        for (DishesContainer.Dish dish : dishList){
+            DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(dish.name, dish.stock);
         }
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ProductsContainer.Product product);
+        void onListFragmentInteraction(DishesContainer.Dish dish);
     }
 }

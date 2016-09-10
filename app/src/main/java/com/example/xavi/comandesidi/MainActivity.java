@@ -27,19 +27,19 @@ import com.example.xavi.comandesidi.EditDish.CrearPlatDialog;
 import com.example.xavi.comandesidi.EditDish.EditDishItemFragment;
 import com.example.xavi.comandesidi.ListOrders.OrderItemFragment;
 import com.example.xavi.comandesidi.NewOrder.InfoDialog;
-import com.example.xavi.comandesidi.NewOrder.ItemFragment;
+import com.example.xavi.comandesidi.NewOrder.DishItemFragment;
 import com.example.xavi.comandesidi.NewOrder.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener,
+        implements NavigationView.OnNavigationItemSelectedListener, DishItemFragment.OnListFragmentInteractionListener,
         OrderItemFragment.OnListFragmentInteractionListener, EditDishItemFragment.OnListFragmentInteractionListener,
         ItemStocFragment.OnListFragmentInteractionListener {
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private FloatingActionButton fab;
     private int actualFragment;
-    private ItemFragment itemFragment;
+    private DishItemFragment dishItemFragment;
     private EditDishItemFragment editDishItemFragment;
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 switch (actualFragment) {
                     case NOVA_COMANDA_FRAGMENT:
-                        if (itemFragment.checkIfPriceIsZero()) {
+                        if (dishItemFragment.checkIfPriceIsZero()) {
                             Bundle b = new Bundle();
                             b.putString("Type", "No products selected");
                             InfoDialog infoDialog = new InfoDialog();
@@ -122,15 +122,15 @@ public class MainActivity extends AppCompatActivity
                             tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
                                 @Override
                                 public void onPositiveResult(int numTaula) {
-                                    double price = itemFragment.getMyItemRecyclerViewAdapter().getTotalPrice();
+                                    double price = dishItemFragment.getDishRecyclerViewAdapter().getTotalPrice();
                                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                                     Date date = new Date();
                                     String dateStr = df.format(date);
                                     DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
                                     OrderContainer.refresh(getApplicationContext());
-                                    itemFragment.updateStockDb();
-                                    ProductsContainer.refresh(getApplicationContext());
-                                    itemFragment.getMyItemRecyclerViewAdapter().resetView();
+                                    dishItemFragment.updateStockDb();
+                                    DishesContainer.refresh(getApplicationContext());
+                                    dishItemFragment.getDishRecyclerViewAdapter().resetView();
                                     Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
                                 }
                                 @Override
@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity
                                 int stock = bundle.getInt("stock");
                                 String imgUri = bundle.getString("imgUri");
                                 DBManager.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
-                                ProductsContainer.refresh(getApplicationContext());
-                                editDishItemFragment.refreshAdapter(ProductsContainer.getInstance(getApplicationContext()).getProductList());
+                                DishesContainer.refresh(getApplicationContext());
+                                editDishItemFragment.refreshAdapter(DishesContainer.getInstance(getApplicationContext()).getDishList());
                             }
 
                             @Override
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity
         boolean fisrtLaunch = prefs.getBoolean("FirstLaunch", true);
         if (fisrtLaunch){
             prefs.edit().putBoolean("FirstLaunch", false).apply();
-            ProductsContainer.getFirstInstance(getApplicationContext());
+            DishesContainer.getFirstInstance(getApplicationContext());
             OrderContainer.getFirstInstance(getApplicationContext());
             setToolbarTitle("Ajuda");
             configureFab(CONFIGURACIO_FRAGMENT);
@@ -221,8 +221,8 @@ public class MainActivity extends AppCompatActivity
             } else {
                 actualFragment = NOVA_COMANDA_FRAGMENT;
                 configureFab(NOVA_COMANDA_FRAGMENT);
-                itemFragment = new ItemFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
+                dishItemFragment = new DishItemFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
             }
         }
     }
@@ -265,8 +265,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_nova_comanda) {
             setToolbarTitle("Nova comanda");
             configureFab(NOVA_COMANDA_FRAGMENT);
-            itemFragment = new ItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, itemFragment).commit();
+            dishItemFragment = new DishItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
 
         } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onListFragmentInteraction(ProductsContainer.Product product) {
+    public void onListFragmentInteraction(DishesContainer.Dish dish) {
         Toast.makeText(getApplicationContext(), "Poducte fora de stoc", Toast.LENGTH_LONG).show();
     }
 

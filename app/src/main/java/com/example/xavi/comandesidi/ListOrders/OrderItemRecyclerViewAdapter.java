@@ -24,7 +24,7 @@ public class OrderItemRecyclerViewAdapter extends RecyclerView.Adapter<OrderItem
     public double getTotalPrice(){
         double price = 0;
         for(ViewHolder holder: viewHolderList){
-            price += holder.order.getPrice();
+            price += holder.order.price;
         }
         return price;
     }
@@ -52,11 +52,11 @@ public class OrderItemRecyclerViewAdapter extends RecyclerView.Adapter<OrderItem
     private void setViewHolderData(final ViewHolder holder, int position) {
         holder.order = orderList.get(position);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        String price = decimalFormat.format(orderList.get(position).getPrice());
+        String price = decimalFormat.format(orderList.get(position).price);
         String priceText = price + " €";
 
         holder.priceTv.setText(priceText);
-        holder.tableNumberTv.setText(String.valueOf(orderList.get(position).getTableNum()));
+        holder.tableNumberTv.setText(String.valueOf(orderList.get(position).tableNum));
         holder.dateTv.setText(String.valueOf(orderList.get(position).getDay()));
         holder.horaTv.setText(String.valueOf(orderList.get(position).getHour()));
     }

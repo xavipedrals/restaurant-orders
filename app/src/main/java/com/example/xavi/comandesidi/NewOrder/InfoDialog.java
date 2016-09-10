@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 
 import java.text.DecimalFormat;
 
@@ -20,9 +21,9 @@ import java.text.DecimalFormat;
 /**Serveix per mostrar info en general**/
 public class InfoDialog extends DialogFragment {
 
+    //TODO: Move to Utils package
     private TextView acceptTV, totalTv, textTV, cancelTv;
     private OnInfoDialogDialogResultListener onInfoDialogDialogResultListener;
-    private int alpha = 54 * 255 / 100; //54% opacity, secondary text
 
     public InfoDialog() {
         // Empty constructor required for DialogFragment
@@ -94,7 +95,7 @@ public class InfoDialog extends DialogFragment {
     private void configShowPriceDialog() {
         String roundedPrice = getRoundedPrice(getPrice());
         cancelTv.setVisibility(View.GONE);
-        textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+        textTV.setTextColor(Color.argb(ConstantValues.alpha, 0, 0, 0));
         totalTv.setText(String.valueOf(roundedPrice + " €"));
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +126,7 @@ public class InfoDialog extends DialogFragment {
     }
 
     private void configAcceptCancelDialog() {
-        textTV.setTextColor(Color.argb(alpha, 0, 0, 0));
+        textTV.setTextColor(Color.argb(ConstantValues.alpha, 0, 0, 0));
         totalTv.setVisibility(View.GONE);
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override

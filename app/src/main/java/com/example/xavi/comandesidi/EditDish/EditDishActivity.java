@@ -28,7 +28,8 @@ import com.example.xavi.comandesidi.MainActivity;
 import com.example.xavi.comandesidi.NewOrder.InfoDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBManager.DBManager;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 
 import java.io.IOException;
 
@@ -105,10 +106,10 @@ public class EditDishActivity extends AppCompatActivity {
     }
 
     private void setGreyIcons() {
-        priceIcon.setAlpha(138);
-        foodIcon.setAlpha(138);
-        iconEditName.setAlpha(138);
-        iconEditPrice.setAlpha(138);
+        priceIcon.setAlpha(ConstantValues.alpha);
+        foodIcon.setAlpha(ConstantValues.alpha);
+        iconEditName.setAlpha(ConstantValues.alpha);
+        iconEditPrice.setAlpha(ConstantValues.alpha);
     }
 
     private void configActionBar() {
@@ -221,7 +222,7 @@ public class EditDishActivity extends AppCompatActivity {
                     if (imageUri != null){
                         DBManager.getInstance(getApplicationContext()).updatePlat(productId, 1, imageUri.toString(), priceAux, nameAux);
                     } else DBManager.getInstance(getApplicationContext()).updatePlat(productId, 0, null, priceAux, nameAux);
-                    ProductsContainer.refresh(getApplicationContext());
+                    DishesContainer.refresh(getApplicationContext());
                     specialBackPressed = true;
                     onBackPressed();
                 } else {
@@ -242,10 +243,10 @@ public class EditDishActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveResult() {
                         DBManager.getInstance(getApplicationContext()).deletePlat(name);
-                        ProductsContainer.refresh(getApplicationContext());
+                        DishesContainer.refresh(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
-                        Toast.makeText(getApplicationContext(), "Deleted product", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Deleted dish", Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onNegativeResult() {

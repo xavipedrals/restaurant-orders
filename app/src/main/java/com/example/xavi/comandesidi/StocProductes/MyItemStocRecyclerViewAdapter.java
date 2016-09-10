@@ -16,7 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemStocRecyclerViewAdapter.ViewHolder> {
 
-    private List<ProductsContainer.Product> productList;
+    private List<DishesContainer.Dish> dishList;
     private final ItemStocFragment.OnListFragmentInteractionListener mListener;
     private Context context;
     private ViewHolder lastClickedView;
@@ -53,7 +54,7 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
     public double getTotalPrice() {
         double price = 0;
         for (ViewHolder holder : viewHolderList) {
-            price += holder.stock * holder.product.getPrice();
+            price += holder.stock * holder.dish.price;
         }
         return price;
     }
@@ -64,8 +65,8 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         }
     }
 
-    public MyItemStocRecyclerViewAdapter(ProductsContainer productsContainer, ItemStocFragment.OnListFragmentInteractionListener listener, Context context) {
-        productList = productsContainer.getProductList();
+    public MyItemStocRecyclerViewAdapter(DishesContainer dishesContainer, ItemStocFragment.OnListFragmentInteractionListener listener, Context context) {
+        dishList = dishesContainer.getDishList();
         mListener = listener;
         this.context = context;
         viewHolderList = new ArrayList<>();
@@ -80,25 +81,25 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.product = productList.get(position);
-        holder.nameTv.setText(productList.get(position).getName());
-        String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
+        holder.dish = dishList.get(position);
+        holder.nameTv.setText(dishList.get(position).name);
+        String priceStr = String.valueOf(dishList.get(position).price) + " €";
         holder.priceTv.setText(priceStr);
-        holder.stock = holder.product.getStock();
+        holder.stock = holder.dish.stock;
         if(holder.stock == 0) holder.setNoStockBackgroundColor();
         holder.quantitatTv.setText(String.valueOf(holder.stock));
 
         Bitmap bitmap = null;
-        if(holder.product.hasImage()){
+        if(holder.dish.hasImage){
             Log.d("CARREGO IMATGE", "Ei colega");
-            Uri uri = Uri.parse(holder.product.getImgUri());
+            Uri uri = Uri.parse(holder.dish.imgUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
+            bitmap = BitmapFactory.decodeResource(context.getResources(), dishList.get(position).mipmapId);
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
@@ -123,7 +124,7 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return dishList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -134,7 +135,7 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         public TextView quantitatTv;
         public final TextView stocTv;
         public ImageView imageView;
-        public ProductsContainer.Product product;
+        public DishesContainer.Dish dish;
         public int stock;
 
         public ViewHolder(View view) {
@@ -147,8 +148,7 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
             priceTv = (TextView) view.findViewById(R.id.product_price);
             quantitatTv = (TextView) view.findViewById(R.id.TextViewQuantitat);
             imageView = (ImageView) view.findViewById(R.id.listImageView);
-            int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
-            priceTv.setTextColor(Color.argb(alpha, 0, 0, 0));
+            priceTv.setTextColor(Color.argb(ConstantValues.alpha, 0, 0, 0));
         }
 
         public void decreaseQuantityByX(int x) {

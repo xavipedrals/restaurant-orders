@@ -15,9 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.EditDish.EditDishItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.Utils.ConstantValues;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,18 +27,18 @@ import java.util.List;
 public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDishItemRecyclerViewAdapter.ViewHolder> {
 
     private final OnListFragmentInteractionListener mListener;
-    private List<ProductsContainer.Product> productList;
+    private List<DishesContainer.Dish> dishList;
     private Context context;
 
-    public EditDishItemRecyclerViewAdapter(ProductsContainer productsContainer, OnListFragmentInteractionListener listener, Context context) {
+    public EditDishItemRecyclerViewAdapter(DishesContainer dishesContainer, OnListFragmentInteractionListener listener, Context context) {
         mListener = listener;
-        this.productList = productsContainer.getProductList();
+        this.dishList = dishesContainer.getDishList();
         this.context = context;
     }
 
-    public void refreshView(List<ProductsContainer.Product> products){
-        productList.clear();
-        productList.addAll(products);
+    public void refreshView(List<DishesContainer.Dish> dishs){
+        dishList.clear();
+        dishList.addAll(dishs);
         notifyDataSetChanged();
     }
 
@@ -50,9 +51,9 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.product = productList.get(position);
-        holder.nameTv.setText(productList.get(position).getName());
-        String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
+        holder.dish = dishList.get(position);
+        holder.nameTv.setText(dishList.get(position).name);
+        String priceStr = String.valueOf(dishList.get(position).price) + " €";
         holder.priceTv.setText(priceStr);
 
         setImageViewRoundImage(holder, position);
@@ -61,15 +62,15 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
 
     public void setImageViewRoundImage(ViewHolder holder, int position) {
         Bitmap bitmap = null;
-        if(holder.product.hasImage()){
-            Uri uri = Uri.parse(holder.product.getImgUri());
+        if(holder.dish.hasImage){
+            Uri uri = Uri.parse(holder.dish.imgUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), productList.get(position).getMipmapId());
+            bitmap = BitmapFactory.decodeResource(context.getResources(), dishList.get(position).mipmapId);
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
@@ -80,7 +81,7 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.product);
+                    mListener.onListFragmentInteraction(holder.dish);
                 }
             }
         });
@@ -88,7 +89,7 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return dishList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,7 +100,7 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
         public TextView quantityTv;
         public final TextView xTv;
         public ImageView imageView;
-        public ProductsContainer.Product product;
+        public DishesContainer.Dish dish;
         public int quantity;
 
         public ViewHolder(View view) {
@@ -111,8 +112,7 @@ public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDi
             priceTv = (TextView) view.findViewById(R.id.product_price);
             quantityTv = (TextView) view.findViewById(R.id.quantitat);
             imageView = (ImageView) view.findViewById(R.id.listImageView);
-            int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
-            priceTv.setTextColor(Color.argb(alpha, 0, 0, 0));
+            priceTv.setTextColor(Color.argb(ConstantValues.alpha, 0, 0, 0));
             quantity = 0;
         }
     }

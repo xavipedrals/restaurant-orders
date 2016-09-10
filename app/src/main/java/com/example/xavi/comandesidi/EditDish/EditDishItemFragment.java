@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
-import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class EditDishItemFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ProductsContainer productsContainer;
+    private DishesContainer dishesContainer;
     private EditDishItemRecyclerViewAdapter editDishItemRecyclerViewAdapter;
     RecyclerView recyclerView;
     private Context context;
@@ -44,7 +44,7 @@ public class EditDishItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        productsContainer = ProductsContainer.getInstance(getActivity().getApplicationContext());
+        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class EditDishItemFragment extends Fragment {
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         EditDishItemRecyclerViewAdapter.ViewHolder v = (EditDishItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                        Bundle bundle = makeProductBundle(v.product);
+                        Bundle bundle = makeProductBundle(v.dish);
                         Intent intent = new Intent(getActivity(), EditDishActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
@@ -75,14 +75,14 @@ public class EditDishItemFragment extends Fragment {
         );
     }
 
-    private Bundle makeProductBundle(ProductsContainer.Product product){
+    private Bundle makeProductBundle(DishesContainer.Dish dish){
         Bundle bundle = new Bundle();
-        bundle.putInt("mipmap", product.getMipmapId());
-        bundle.putString("name", product.getName());
-        bundle.putDouble("price", product.getPrice());
-        bundle.putInt("id", product.getId());
-        bundle.putBoolean("hasImage", product.hasImage());
-        bundle.putString("image", product.getImgUri());
+        bundle.putInt("mipmap", dish.mipmapId);
+        bundle.putString("name", dish.name);
+        bundle.putDouble("price", dish.price);
+        bundle.putInt("id", dish.id);
+        bundle.putBoolean("hasImage", dish.hasImage);
+        bundle.putString("image", dish.imgUri);
         return bundle;
     }
 
@@ -95,12 +95,12 @@ public class EditDishItemFragment extends Fragment {
     }
 
     private void setRecyclerViewAdapter() {
-        editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(productsContainer, mListener, getActivity().getApplicationContext());
+        editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(dishesContainer, mListener, getActivity().getApplicationContext());
         recyclerView.setAdapter(editDishItemRecyclerViewAdapter);
     }
 
-    public void refreshAdapter(List<ProductsContainer.Product> products){
-        editDishItemRecyclerViewAdapter.refreshView(products);
+    public void refreshAdapter(List<DishesContainer.Dish> dishs){
+        editDishItemRecyclerViewAdapter.refreshView(dishs);
     }
 
     @Override
@@ -121,6 +121,6 @@ public class EditDishItemFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ProductsContainer.Product product);
+        void onListFragmentInteraction(DishesContainer.Dish dish);
     }
 }

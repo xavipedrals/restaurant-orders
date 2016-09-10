@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 
 
 /**
@@ -71,8 +71,8 @@ public class ComandaItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ComandaContainer comandaContainer = ComandaContainer.getInstance(getActivity().getApplicationContext());
-            myComandaItemRecyclerViewAdapter = new MyComandaItemRecyclerViewAdapter(comandaContainer.getComandaList(), mListener);
+            OrderContainer orderContainer = OrderContainer.getInstance(getActivity().getApplicationContext());
+            myComandaItemRecyclerViewAdapter = new MyComandaItemRecyclerViewAdapter(orderContainer.getOrderList(), mListener);
             recyclerView.setAdapter(myComandaItemRecyclerViewAdapter);
         }
         return view;
@@ -124,6 +124,6 @@ public class ComandaItemFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(ComandaContainer.Comanda comanda);
+        void onListFragmentInteraction(OrderContainer.Order order);
     }
 }

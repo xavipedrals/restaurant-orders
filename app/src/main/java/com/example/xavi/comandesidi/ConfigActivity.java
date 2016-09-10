@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.DBManager.DBManager;
-import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
@@ -251,7 +251,7 @@ public class ConfigActivity extends AppCompatActivity {
                     @Override
                     public void onPositiveResult() {
                         DBManager.getInstance(getApplicationContext()).resetTableComandes();
-                        ComandaContainer.refreshAfterReset(getApplicationContext());
+                        OrderContainer.refreshAfterReset(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
                         Toast.makeText(getApplicationContext(), "S'han esborrat les comandes", Toast.LENGTH_LONG).show();

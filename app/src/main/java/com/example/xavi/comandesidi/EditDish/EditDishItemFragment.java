@@ -29,7 +29,7 @@ public class EditDishItemFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ProductsContainer productsContainer;
-    private MyEditPlatItemRecyclerViewAdapter myEditPlatItemRecyclerViewAdapter;
+    private EditDishItemRecyclerViewAdapter editDishItemRecyclerViewAdapter;
     RecyclerView recyclerView;
     private Context context;
 
@@ -65,7 +65,7 @@ public class EditDishItemFragment extends Fragment {
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        MyEditPlatItemRecyclerViewAdapter.ViewHolder v = (MyEditPlatItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
+                        EditDishItemRecyclerViewAdapter.ViewHolder v = (EditDishItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
                         Bundle bundle = makeProductBundle(v.product);
                         Intent intent = new Intent(getActivity(), EditDishActivity.class);
                         intent.putExtras(bundle);
@@ -95,12 +95,12 @@ public class EditDishItemFragment extends Fragment {
     }
 
     private void setRecyclerViewAdapter() {
-        myEditPlatItemRecyclerViewAdapter = new MyEditPlatItemRecyclerViewAdapter(productsContainer, mListener, getActivity().getApplicationContext());
-        recyclerView.setAdapter(myEditPlatItemRecyclerViewAdapter);
+        editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(productsContainer, mListener, getActivity().getApplicationContext());
+        recyclerView.setAdapter(editDishItemRecyclerViewAdapter);
     }
 
     public void refreshAdapter(List<ProductsContainer.Product> products){
-        myEditPlatItemRecyclerViewAdapter.refreshView(products);
+        editDishItemRecyclerViewAdapter.refreshView(products);
     }
 
     @Override

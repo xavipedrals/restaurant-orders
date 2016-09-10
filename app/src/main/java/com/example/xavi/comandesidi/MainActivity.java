@@ -31,7 +31,7 @@ import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
 import com.example.xavi.comandesidi.DBManager.DBManager;
-import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
                                     Date date = new Date();
                                     String dateStr = df.format(date);
                                     DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
-                                    ComandaContainer.refresh(getApplicationContext());
+                                    OrderContainer.refresh(getApplicationContext());
                                     itemFragment.updateStockDb();
                                     ProductsContainer.refresh(getApplicationContext());
                                     itemFragment.getMyItemRecyclerViewAdapter().resetView();
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
         if (fisrtLaunch){
             prefs.edit().putBoolean("FirstLaunch", false).apply();
             ProductsContainer.getFirstInstance(getApplicationContext());
-            ComandaContainer.getFirstInstance(getApplicationContext());
+            OrderContainer.getFirstInstance(getApplicationContext());
             setToolbarTitle("Ajuda");
             configureFab(CONFIGURACIO_FRAGMENT);
             AjudaFragment f = new AjudaFragment();
@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(ComandaContainer.Comanda comanda) {
+    public void onListFragmentInteraction(OrderContainer.Order order) {
 
     }
 }

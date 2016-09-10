@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.util.List;
 
 
-public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEditPlatItemRecyclerViewAdapter.ViewHolder> {
+public class EditDishItemRecyclerViewAdapter extends RecyclerView.Adapter<EditDishItemRecyclerViewAdapter.ViewHolder> {
 
     private final OnListFragmentInteractionListener mListener;
     private List<ProductsContainer.Product> productList;
     private Context context;
 
-    public MyEditPlatItemRecyclerViewAdapter(ProductsContainer productsContainer, OnListFragmentInteractionListener listener, Context context) {
+    public EditDishItemRecyclerViewAdapter(ProductsContainer productsContainer, OnListFragmentInteractionListener listener, Context context) {
         mListener = listener;
         this.productList = productsContainer.getProductList();
         this.context = context;
@@ -55,6 +55,11 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
         String priceStr = String.valueOf(productList.get(position).getPrice()) + " €";
         holder.priceTv.setText(priceStr);
 
+        setImageViewRoundImage(holder, position);
+        setDishClickListener(holder);
+    }
+
+    public void setImageViewRoundImage(ViewHolder holder, int position) {
         Bitmap bitmap = null;
         if(holder.product.hasImage()){
             Uri uri = Uri.parse(holder.product.getImgUri());
@@ -68,13 +73,13 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
+    }
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+    public void setDishClickListener(final ViewHolder holder) {
+        holder.containerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.product);
                 }
             }
@@ -87,11 +92,11 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
+        public final View containerView;
         public final LinearLayout itemContainer;
         public final TextView nameTv;
         public final TextView priceTv;
-        public TextView quantitatTv;
+        public TextView quantityTv;
         public final TextView xTv;
         public ImageView imageView;
         public ProductsContainer.Product product;
@@ -99,17 +104,16 @@ public class MyEditPlatItemRecyclerViewAdapter extends RecyclerView.Adapter<MyEd
 
         public ViewHolder(View view) {
             super(view);
+            containerView = view;
             itemContainer = (LinearLayout) view.findViewById(R.id.item_container);
-            mView = view;
             xTv = (TextView) view.findViewById(R.id.textViewX);
             nameTv = (TextView) view.findViewById(R.id.product_name);
             priceTv = (TextView) view.findViewById(R.id.product_price);
-            quantitatTv = (TextView) view.findViewById(R.id.quantitat);
+            quantityTv = (TextView) view.findViewById(R.id.quantitat);
             imageView = (ImageView) view.findViewById(R.id.listImageView);
             int alpha = 54 * 255 / 100; //54% de opacitat, secondary text
             priceTv.setTextColor(Color.argb(alpha, 0, 0, 0));
             quantity = 0;
         }
-
     }
 }

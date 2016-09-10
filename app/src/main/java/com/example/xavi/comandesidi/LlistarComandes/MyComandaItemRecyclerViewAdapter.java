@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -17,20 +17,20 @@ import java.util.List;
 
 public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyComandaItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<ComandaContainer.Comanda> comandaList;
+    private final List<OrderContainer.Order> orderList;
     private final OnListFragmentInteractionListener mListener;
     private List<ViewHolder> viewHolderList;
 
     public double getTotalPrice(){
         double price = 0;
         for(ViewHolder holder: viewHolderList){
-            price += holder.comanda.getPrice();
+            price += holder.order.getPrice();
         }
         return price;
     }
 
-    public MyComandaItemRecyclerViewAdapter(List<ComandaContainer.Comanda> items, OnListFragmentInteractionListener listener) {
-        comandaList = items;
+    public MyComandaItemRecyclerViewAdapter(List<OrderContainer.Order> items, OnListFragmentInteractionListener listener) {
+        orderList = items;
         mListener = listener;
         viewHolderList = new ArrayList<>();
     }
@@ -44,21 +44,21 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.comanda = comandaList.get(position);
+        holder.order = orderList.get(position);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        String price = decimalFormat.format(comandaList.get(position).getPrice());
+        String price = decimalFormat.format(orderList.get(position).getPrice());
         String priceText = price + " €";
         holder.priceTv.setText(priceText);
-        holder.numTaulaTv.setText(String.valueOf(comandaList.get(position).getTableNum()));
-        holder.diaTv.setText(String.valueOf(comandaList.get(position).getDay()));
-        holder.horaTv.setText(String.valueOf(comandaList.get(position).getHour()));
+        holder.numTaulaTv.setText(String.valueOf(orderList.get(position).getTableNum()));
+        holder.diaTv.setText(String.valueOf(orderList.get(position).getDay()));
+        holder.horaTv.setText(String.valueOf(orderList.get(position).getHour()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.comanda);
+                    mListener.onListFragmentInteraction(holder.order);
                 }
             }
         });
@@ -67,7 +67,7 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
 
     @Override
     public int getItemCount() {
-        return comandaList.size();
+        return orderList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +76,7 @@ public class MyComandaItemRecyclerViewAdapter extends RecyclerView.Adapter<MyCom
         public final TextView priceTv;
         public final TextView diaTv;
         public final TextView horaTv;
-        public ComandaContainer.Comanda comanda;
+        public OrderContainer.Order order;
 
         public ViewHolder(View view) {
             super(view);

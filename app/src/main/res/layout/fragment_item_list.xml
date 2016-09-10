@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".NovaComanda.ItemFragment"
+    tools:context=".NewOrder.ItemFragment"
     tools:listitem="@layout/fragment_item"
     android:paddingBottom="80dp"
     android:clipToPadding="false"/>

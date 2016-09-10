@@ -25,10 +25,10 @@ import android.widget.Toast;
 
 import com.example.xavi.comandesidi.EditDish.CrearPlatDialog;
 import com.example.xavi.comandesidi.EditDish.EditDishItemFragment;
-import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
-import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
-import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
-import com.example.xavi.comandesidi.NovaComanda.TableDialog;
+import com.example.xavi.comandesidi.ListOrders.OrderItemFragment;
+import com.example.xavi.comandesidi.NewOrder.InfoDialog;
+import com.example.xavi.comandesidi.NewOrder.ItemFragment;
+import com.example.xavi.comandesidi.NewOrder.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
@@ -40,7 +40,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener,
-        ComandaItemFragment.OnListFragmentInteractionListener, EditDishItemFragment.OnListFragmentInteractionListener,
+        OrderItemFragment.OnListFragmentInteractionListener, EditDishItemFragment.OnListFragmentInteractionListener,
         ItemStocFragment.OnListFragmentInteractionListener {
 
     private Toolbar toolbar;
@@ -277,8 +277,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_llistat_comandes) {
             setToolbarTitle("Llistar comandes");
             configureFab(LLISTAR_COMANDES_FRAGMENT);
-            ComandaItemFragment comandaItemFragment = new ComandaItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, comandaItemFragment).commit();
+            OrderItemFragment orderItemFragment = new OrderItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, orderItemFragment).commit();
 
         } else if (id == R.id.nav_stoc_productes) {
             setToolbarTitle("Stoc plats");

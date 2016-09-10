@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.NovaComanda;
+package com.example.xavi.comandesidi.NewOrder;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -25,7 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
+import com.example.xavi.comandesidi.NewOrder.InfoDialog;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;

@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.LlistarComandes;
+package com.example.xavi.comandesidi.ListOrders;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
+import com.example.xavi.comandesidi.NewOrder.InfoDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 
@@ -25,23 +25,25 @@ import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ComandaItemFragment extends Fragment {
+public class OrderItemFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    private MyComandaItemRecyclerViewAdapter myComandaItemRecyclerViewAdapter;
+    private OnListFragmentInteractionListener orderItemfragmentInteractionListener;
+    private OrderItemRecyclerViewAdapter orderItemRecyclerViewAdapter;
+    private RecyclerView recyclerView;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ComandaItemFragment() {
+    public OrderItemFragment() {
     }
 
     @SuppressWarnings("unused")
-    public static ComandaItemFragment newInstance(int columnCount) {
-        ComandaItemFragment fragment = new ComandaItemFragment();
+    public static OrderItemFragment newInstance(int columnCount) {
+        OrderItemFragment fragment = new OrderItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -61,21 +63,27 @@ public class ComandaItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comandaitem_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            OrderContainer orderContainer = OrderContainer.getInstance(getActivity().getApplicationContext());
-            myComandaItemRecyclerViewAdapter = new MyComandaItemRecyclerViewAdapter(orderContainer.getOrderList(), mListener);
-            recyclerView.setAdapter(myComandaItemRecyclerViewAdapter);
+            context = view.getContext();
+            recyclerView = (RecyclerView) view;
+            manageRecyclerViewLayout();
+            setRecyclerViewAdapter();
         }
         return view;
+    }
+
+    private void manageRecyclerViewLayout() {
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+    }
+
+    private void setRecyclerViewAdapter() {
+        OrderContainer orderContainer = OrderContainer.getInstance(getActivity().getApplicationContext());
+        orderItemRecyclerViewAdapter = new OrderItemRecyclerViewAdapter(orderContainer.getOrderList(), orderItemfragmentInteractionListener);
+        recyclerView.setAdapter(orderItemRecyclerViewAdapter);
     }
 
 
@@ -83,7 +91,7 @@ public class ComandaItemFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+            orderItemfragmentInteractionListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -93,7 +101,7 @@ public class ComandaItemFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        orderItemfragmentInteractionListener = null;
     }
 
     @Override
@@ -105,22 +113,26 @@ public class ComandaItemFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /*if (id == R.id.action_filter) {
-            DatePickerFragment datePickerFragment = new DatePickerFragment();
-            datePickerFragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            datePickerFragment.show(fragmentManager, "tag");
-        } else*/ if (id == R.id.action_info){
-            InfoDialog infoDialog = new InfoDialog();
-            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-            Bundle bundle = new Bundle();
-            bundle.putString("Type", "See total");
-            bundle.putDouble("price", myComandaItemRecyclerViewAdapter.getTotalPrice());
-            infoDialog.setArguments(bundle);
-            android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            infoDialog.show(fragmentManager, "tag");
+        if (id == R.id.action_info){
+            showInfoDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showInfoDialog() {
+        InfoDialog infoDialog = new InfoDialog();
+        infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        Bundle bundle = makeInfoDialogBundle();
+        infoDialog.setArguments(bundle);
+        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        infoDialog.show(fragmentManager, "tag");
+    }
+
+    private Bundle makeInfoDialogBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("Type", "See total");
+        bundle.putDouble("price", orderItemRecyclerViewAdapter.getTotalPrice());
+        return bundle;
     }
 
     public interface OnListFragmentInteractionListener {

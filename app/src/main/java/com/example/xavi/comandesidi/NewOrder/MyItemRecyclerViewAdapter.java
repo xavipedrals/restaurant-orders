@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.NovaComanda;
+package com.example.xavi.comandesidi.NewOrder;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.xavi.comandesidi.NovaComanda.ItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.NewOrder.ItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 import com.example.xavi.comandesidi.widgets.ImageHelper;

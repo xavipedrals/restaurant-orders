@@ -1,62 +1,59 @@
-package com.example.xavi.comandesidi.EditDish;
+package com.example.xavi.comandesidi.NewOrder;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
 
 /**
- * Created by xavi on 20/12/15.
+ * Created by xavi on 13/12/15.
  */
-public class EditTextDialog extends DialogFragment {
+public class TableDialog extends DialogFragment {
 
-    TextView acceptTV, cancelTv, missatgeTv;
-    EditText respostaEt;
-    private OnEditTextDialogResultListener onEditTextDialogResultListener;
+    TextView acceptTV, cancelTv;
+    EditText numeroTaulaEt;
+    private OnTableDialogResultListener onTableDialogResultListener;
 
-    public EditTextDialog() {
+    public TableDialog() {
         // Empty constructor required for DialogFragment
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.edit_text_dialog, container);
-        respostaEt = (EditText) view.findViewById(R.id.editTextResposta);
+        View view = inflater.inflate(R.layout.table_dialog, container);
+        numeroTaulaEt = (EditText) view.findViewById(R.id.editTextnumTaula);
         acceptTV = (TextView) view.findViewById(R.id.textViewAccept);
         cancelTv = (TextView) view.findViewById(R.id.textViewCancel);
-        missatgeTv = (TextView) view.findViewById(R.id.textViewMissatge);
 
-        boolean isEditName = getArguments().getBoolean("isEditName");
-        if(isEditName){
-            respostaEt.setInputType(InputType.TYPE_CLASS_TEXT);
-            missatgeTv.setText("Introdueix un nou nom:");
-        }
-
-        respostaEt.requestFocus();
+        numeroTaulaEt.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onEditTextDialogResultListener.onNegativeResult();
+                onTableDialogResultListener.onNegativeResult();
                 dismiss();
             }
         });
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String result = respostaEt.getText().toString();
-                onEditTextDialogResultListener.onPositiveResult(result);
-                dismiss();
+                int numTaula = Integer.parseInt(numeroTaulaEt.getText().toString());
+                if (numTaula <= 0 || numTaula > 20)
+                    Toast.makeText(getActivity().getApplicationContext(), "El número de taula ha d'estar entre 1 i 20", Toast.LENGTH_LONG).show();
+                else {
+                    onTableDialogResultListener.onPositiveResult(numTaula);
+                    dismiss();
+                }
             }
         });
 
@@ -70,12 +67,14 @@ public class EditTextDialog extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public interface OnEditTextDialogResultListener {
-        public abstract void onPositiveResult(String result);
+    public interface OnTableDialogResultListener {
+        public abstract void onPositiveResult(int numTaula);
         public abstract void onNegativeResult();
     }
 
-    public void setOnEditTextDialogResultListener(OnEditTextDialogResultListener listener) {
-        this.onEditTextDialogResultListener = listener;
+    public void setOnTableDialogResultListener(OnTableDialogResultListener listener) {
+        this.onTableDialogResultListener = listener;
     }
+
 }
+

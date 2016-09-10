@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi.EditDish;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment.OnListFragmentInteractionListener;
+import com.example.xavi.comandesidi.EditDish.EditDishItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
 import java.util.List;

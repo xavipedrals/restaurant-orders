@@ -1,17 +1,14 @@
-package com.example.xavi.comandesidi.data;
+package com.example.xavi.comandesidi.DBManager;
 
-/**
- * Created by xavi on 06/12/15.
- */
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class GestorBD extends SQLiteOpenHelper {
+public class DBManager extends SQLiteOpenHelper {
 
-    private static GestorBD instance;
+    private static DBManager instance;
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Dades";
@@ -51,13 +48,13 @@ public class GestorBD extends SQLiteOpenHelper {
 
     public static final String COMANDES_TABLE_RESET = "DELETE FROM " + COMANDES_TABLE;
 
-    public GestorBD(Context context){
+    public DBManager(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized GestorBD getInstance(Context context){
+    public static synchronized DBManager getInstance(Context context){
         if (instance == null){
-            instance = new GestorBD(context);
+            instance = new DBManager(context);
         }
         return instance;
     }

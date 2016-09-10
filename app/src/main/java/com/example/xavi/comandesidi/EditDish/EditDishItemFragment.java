@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi.EditDish;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class EditPlatItemFragment extends Fragment {
+public class EditDishItemFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -31,20 +31,13 @@ public class EditPlatItemFragment extends Fragment {
     private ProductsContainer productsContainer;
     private MyEditPlatItemRecyclerViewAdapter myEditPlatItemRecyclerViewAdapter;
     RecyclerView recyclerView;
+    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public EditPlatItemFragment() {
-    }
-
-    public static EditPlatItemFragment newInstance(int columnCount) {
-        EditPlatItemFragment fragment = new EditPlatItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+    public EditDishItemFragment() {
     }
 
     @Override
@@ -58,37 +51,52 @@ public class EditPlatItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editplatitem_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
+            context = view.getContext();
             recyclerView = (RecyclerView) view;
-            recyclerView.addOnItemTouchListener(
-                    new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
-                        @Override public void onItemClick(View view, int position) {
-                            MyEditPlatItemRecyclerViewAdapter.ViewHolder v = (MyEditPlatItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("mipmap", v.product.getMipmapId());
-                            bundle.putString("name", v.product.getName());
-                            bundle.putDouble("price", v.product.getPrice());
-                            bundle.putInt("id", v.product.getId());
-                            bundle.putBoolean("hasImage", v.product.hasImage());
-                            bundle.putString("image", v.product.getImgUri());
-                            Intent intent = new Intent(getActivity(), EditPlatActivity.class);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }
-                    })
-            );
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            myEditPlatItemRecyclerViewAdapter = new MyEditPlatItemRecyclerViewAdapter(productsContainer, mListener, getActivity().getApplicationContext());
-            recyclerView.setAdapter(myEditPlatItemRecyclerViewAdapter);
+            setRecyclerViewItemTouchListener();
+            manageRecyclerViewLayout();
+            setRecyclerViewAdapter();
         }
         return view;
+    }
+
+    private void setRecyclerViewItemTouchListener() {
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        MyEditPlatItemRecyclerViewAdapter.ViewHolder v = (MyEditPlatItemRecyclerViewAdapter.ViewHolder) recyclerView.getChildViewHolder(view);
+                        Bundle bundle = makeProductBundle(v.product);
+                        Intent intent = new Intent(getActivity(), EditDishActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                })
+        );
+    }
+
+    private Bundle makeProductBundle(ProductsContainer.Product product){
+        Bundle bundle = new Bundle();
+        bundle.putInt("mipmap", product.getMipmapId());
+        bundle.putString("name", product.getName());
+        bundle.putDouble("price", product.getPrice());
+        bundle.putInt("id", product.getId());
+        bundle.putBoolean("hasImage", product.hasImage());
+        bundle.putString("image", product.getImgUri());
+        return bundle;
+    }
+
+    private void manageRecyclerViewLayout() {
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        }
+    }
+
+    private void setRecyclerViewAdapter() {
+        myEditPlatItemRecyclerViewAdapter = new MyEditPlatItemRecyclerViewAdapter(productsContainer, mListener, getActivity().getApplicationContext());
+        recyclerView.setAdapter(myEditPlatItemRecyclerViewAdapter);
     }
 
     public void refreshAdapter(List<ProductsContainer.Product> products){

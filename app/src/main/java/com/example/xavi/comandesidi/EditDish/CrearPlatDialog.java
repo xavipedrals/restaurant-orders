@@ -1,17 +1,14 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi.EditDish;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.opengl.ETC1;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,9 +16,7 @@ import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
 
-/**
- * Created by xavi on 26/12/15.
- */
+
 public class CrearPlatDialog extends DialogFragment {
 
     private TextView acceptTV, cancelTv;
@@ -31,6 +26,7 @@ public class CrearPlatDialog extends DialogFragment {
     private Uri imageUri;
     private ImageView imageView;
     private FloatingActionButton fab;
+    private View view;
 
     public CrearPlatDialog() {
         // Empty constructor required for DialogFragment
@@ -38,15 +34,27 @@ public class CrearPlatDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.create_plat_dialog, container);
+        initVisualItems(inflater, container);
+        setCancelClickListener();
+        imageUri = null;
+        setCreateDishClickListener();
+        setFabClickListener();
+        getDialog().setCancelable(true);
+        return view;
+    }
+
+    private void initVisualItems(LayoutInflater inflater, ViewGroup container) {
+        view = inflater.inflate(R.layout.create_plat_dialog, container);
         acceptTV = (TextView) view.findViewById(R.id.textViewAccept);
         cancelTv = (TextView) view.findViewById(R.id.textViewCancel);
-
         nameEt = (EditText) view.findViewById(R.id.editTextName);
         priceEt = (EditText) view.findViewById(R.id.editTextPrice);
         stockEt = (EditText) view.findViewById(R.id.editTextStock);
         imageView = (ImageView) view.findViewById(R.id.imageView);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+    }
 
+    private void setCancelClickListener() {
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,49 +62,52 @@ public class CrearPlatDialog extends DialogFragment {
                 dismiss();
             }
         });
+    }
 
-        imageUri = null;
+    private void setCreateDishClickListener() {
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(nameEt.getText().toString().equals("") || priceEt.getText().toString().equals("") || stockEt.getText().toString().equals("") || imageUri.equals(null)){
-                    Toast.makeText(getActivity().getApplicationContext(), "Omple tots els camps", Toast.LENGTH_LONG).show();
-                } else {
-                    String name = nameEt.getText().toString();
-                    double price = Double.parseDouble(priceEt.getText().toString());
-                    int stock = Integer.parseInt(stockEt.getText().toString());
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    bundle.putDouble("price", price);
-                    bundle.putInt("stock", stock);
-                    bundle.putString("imgUri", imageUri.toString());
-                    onCreatePlatDialogResultListener.onPositiveResult(bundle);
+                    Toast.makeText(getActivity().getApplicationContext(), "Please fill all the fields", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    manageNewDish();
                     dismiss();
                 }
             }
         });
+    }
 
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+    private void manageNewDish() {
+        String name = nameEt.getText().toString();
+        double price = Double.parseDouble(priceEt.getText().toString());
+        int stock = Integer.parseInt(stockEt.getText().toString());
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        bundle.putDouble("price", price);
+        bundle.putInt("stock", stock);
+        bundle.putString("imgUri", imageUri.toString());
+        onCreatePlatDialogResultListener.onPositiveResult(bundle);
+    }
+
+    private void setFabClickListener() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Escull una imatge"), PICK_PHOTO);
+                startActivityForResult(Intent.createChooser(intent, "Pick an image"), PICK_PHOTO);
             }
         });
-
-        getDialog().setCancelable(true);
-        return view;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_PHOTO && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                Toast.makeText(getActivity().getApplicationContext(), "Error al carregar la imatge", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Error at loading the image", Toast.LENGTH_LONG).show();
                 return;
             }
             imageUri = data.getData();

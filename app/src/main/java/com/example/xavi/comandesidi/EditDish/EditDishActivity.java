@@ -1,15 +1,11 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi.EditDish;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.opengl.ETC1;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,8 +13,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,74 +27,36 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.MainActivity;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.data.GestorBD;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBManager.DBManager;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
 
-public class EditPlatActivity extends AppCompatActivity {
+public class EditDishActivity extends AppCompatActivity {
 
     private static final String TAG = "EditPlatActivity";
     private static final int PICK_PHOTO = 11;
-    private TextView nameTv, priceTv;
     private Button saveBtn, deleteBtn;
     private boolean specialBackPressed;
-    private ImageView image, iconEditName, iconEditPrice;
+    private ImageView image, iconEditName, iconEditPrice, priceIcon, foodIcon;
+    private Toolbar actionbar;
     private Uri imageUri;
-    private String imageUriOriginal;
-    private int productId;
+    private FloatingActionButton fab;
+
     private EditText nameEt, priceEt;
     private int editingState;
     private static int NOT_EDITING = 0;
     private static int EDITING_NAME = 1;
     private static int EDITING_PRICE = 2;
 
+    private String name;
+    private double price;
+    private int mipmapId;
+    private int productId;
+    boolean hasImage;
+    private String imageUriOriginal;
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
-
-    private void makeEditable(boolean isEditable,EditText et){
-        if(isEditable){
-            //et.setBackgroundDrawable("Give the textbox background here");//You can store it in some variable and use it over here while making non editable.
-            et.setFocusable(true);
-            et.setEnabled(true);
-            et.setClickable(true);
-            et.setFocusableInTouchMode(true);
-            et.requestFocus();
-            //et.setKeyListener("Set edit text key listener here"); //You can store it in some variable and use it over here while making non editable.
-        }else{
-            //et.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-            et.setFocusable(false);
-            et.setClickable(false);
-            et.setFocusableInTouchMode(false);
-            et.setEnabled(false);
-            et.setTextColor(getResources().getColor(R.color.primary_text));
-            //et.setKeyListener(null);
-        }
-    }
-
-//    void visualitzaDialog(final boolean isEditName){
-//        EditTextDialog editTextDialog = new EditTextDialog();
-//        editTextDialog.setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, 0);
-//        Bundle bundle = new Bundle();
-//        bundle.putBoolean("isEditName", isEditName);
-//        editTextDialog.setArguments(bundle);
-//        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-//        editTextDialog.setOnEditTextDialogResultListener(new EditTextDialog.OnEditTextDialogResultListener() {
-//            @Override
-//            public void onPositiveResult(String result) {
-//                if(isEditName) nameTv.setText(result);
-//                else {
-//                    priceTv.setText(result);
-//                }
-//            }
-//
-//            @Override
-//            public void onNegativeResult() {
-//
-//            }
-//        });
-//        editTextDialog.show(fragmentManager, "tag");
-//    }
 
     @SuppressWarnings("ConstantConditions")
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -108,34 +64,67 @@ public class EditPlatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_plat);
         specialBackPressed = false;
         imageUri = null;
+        manageIncomingBundle();
+        initVisualItems();
+        configActionBar();
+        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        setDishImage();
+        configPriceEditText();
+        configNameEditText();
+        configIconEditName();
+        configIconEditPrice();
+        configSaveButton();
+        configDeleteButton();
+        configFloatingActionButton();
+    }
 
+    private void manageIncomingBundle() {
         Bundle b = getIntent().getExtras();
-        final String name = b.getString("name");
-        final double price = b.getDouble("price");
-        final int mipmapId = b.getInt("mipmap");
+        name = b.getString("name");
+        price = b.getDouble("price");
+        mipmapId = b.getInt("mipmap");
         productId = b.getInt("id");
-        boolean hasImage = b.getBoolean("hasImage");
+        hasImage = b.getBoolean("hasImage");
         imageUriOriginal = b.getString("image");
+    }
 
-        Toolbar actionbar = (Toolbar) findViewById(R.id.toolbar);
+    private void initVisualItems() {
+        actionbar = (Toolbar) findViewById(R.id.toolbar);
+        image = (ImageView) findViewById(R.id.image);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        priceEt = (EditText) findViewById(R.id.priceEditText);
+        nameEt = (EditText) findViewById(R.id.nameEditText);
+        priceIcon = (ImageView) findViewById(R.id.iconPrice);
+        foodIcon = (ImageView) findViewById(R.id.iconFood);
+        iconEditName = (ImageView) findViewById(R.id.iconEditName);
+        iconEditPrice = (ImageView) findViewById(R.id.iconEditPrice);
+        saveBtn = (Button) findViewById(R.id.buttonSave);
+        deleteBtn = (Button) findViewById(R.id.buttonDelete);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setGreyIcons();
+    }
+
+    private void setGreyIcons() {
+        priceIcon.setAlpha(138);
+        foodIcon.setAlpha(138);
+        iconEditName.setAlpha(138);
+        iconEditPrice.setAlpha(138);
+    }
+
+    private void configActionBar() {
         if (null != actionbar) {
-//            actionbar.setNavigationIcon(R.mipmap.abc_ic_ab_back_mtrl_am_alpha);
             actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-
-            actionbar.setTitle("Editar plat");
+            actionbar.setTitle("Edit dish");
             actionbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onBackPressed();
-                    //NavUtils.navigateUpFromSameTask(EditPlatActivity.this);
                 }
             });
         }
+    }
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-
-        image = (ImageView) findViewById(R.id.image);
+    private void setDishImage() {
         Bitmap bitmap = null;
         if(hasImage) {
             Uri uri = Uri.parse(imageUriOriginal);
@@ -148,8 +137,9 @@ public class EditPlatActivity extends AppCompatActivity {
             bitmap = BitmapFactory.decodeResource(getResources(), mipmapId);
         }
         image.setImageBitmap(bitmap);
+    }
 
-        priceEt = (EditText) findViewById(R.id.priceEditText);
+    private void configPriceEditText() {
         String aux = String.valueOf(price);
         priceEt.setText(aux);
         priceEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -163,8 +153,9 @@ public class EditPlatActivity extends AppCompatActivity {
             }
         });
         makeEditable(false, priceEt);
+    }
 
-        nameEt = (EditText) findViewById(R.id.nameEditText);
+    private void configNameEditText() {
         nameEt.setText(name);
         nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -177,17 +168,9 @@ public class EditPlatActivity extends AppCompatActivity {
             }
         });
         makeEditable(false, nameEt);
+    }
 
-        ImageView priceIcon = (ImageView) findViewById(R.id.iconPrice);
-        priceIcon.setAlpha(138);
-
-        ImageView foodIcon = (ImageView) findViewById(R.id.iconFood);
-        foodIcon.setAlpha(138);
-
-        iconEditName = (ImageView) findViewById(R.id.iconEditName);
-        iconEditPrice = (ImageView) findViewById(R.id.iconEditPrice);
-        iconEditName.setAlpha(138);
-        iconEditPrice.setAlpha(138);
+    private void configIconEditName() {
         iconEditName.setClickable(true);
         editingState = NOT_EDITING;
         iconEditName.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +189,9 @@ public class EditPlatActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void configIconEditPrice() {
         iconEditPrice.setClickable(true);
         iconEditPrice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,10 +209,9 @@ public class EditPlatActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        saveBtn = (Button) findViewById(R.id.buttonSave);
-        deleteBtn = (Button) findViewById(R.id.buttonDelete);
-
+    private void configSaveButton() {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,8 +219,8 @@ public class EditPlatActivity extends AppCompatActivity {
                 double priceAux = Double.parseDouble(priceEt.getText().toString());
                 if(!nameAux.equals(name) || price != priceAux || imageUri != null){
                     if (imageUri != null){
-                        GestorBD.getInstance(getApplicationContext()).updatePlat(productId, 1, imageUri.toString(), priceAux, nameAux);
-                    } else GestorBD.getInstance(getApplicationContext()).updatePlat(productId, 0, null, priceAux, nameAux);
+                        DBManager.getInstance(getApplicationContext()).updatePlat(productId, 1, imageUri.toString(), priceAux, nameAux);
+                    } else DBManager.getInstance(getApplicationContext()).updatePlat(productId, 0, null, priceAux, nameAux);
                     ProductsContainer.refresh(getApplicationContext());
                     specialBackPressed = true;
                     onBackPressed();
@@ -244,7 +229,9 @@ public class EditPlatActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void configDeleteButton() {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,11 +241,11 @@ public class EditPlatActivity extends AppCompatActivity {
                 infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
                     @Override
                     public void onPositiveResult() {
-                        GestorBD.getInstance(getApplicationContext()).deletePlat(name);
+                        DBManager.getInstance(getApplicationContext()).deletePlat(name);
                         ProductsContainer.refresh(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
-                        Toast.makeText(getApplicationContext(), "Producte esborrat", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Deleted product", Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onNegativeResult() {
@@ -271,17 +258,35 @@ public class EditPlatActivity extends AppCompatActivity {
                 infoDialog.show(fragmentManager, "tag");
             }
         });
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    private void configFloatingActionButton() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Escull una imatge"), PICK_PHOTO);
+                startActivityForResult(Intent.createChooser(intent, "Pick an image"), PICK_PHOTO);
             }
         });
+    }
+
+    private void makeEditable(boolean isEditable,EditText et){
+        if(isEditable) {
+            et.setFocusable(true);
+            et.setEnabled(true);
+            et.setClickable(true);
+            et.setFocusableInTouchMode(true);
+            et.requestFocus();
+        }
+        else {
+            et.setFocusable(false);
+            et.setClickable(false);
+            et.setFocusableInTouchMode(false);
+            et.setEnabled(false);
+            et.setTextColor(getResources().getColor(R.color.primary_text));
+        }
     }
 
     @Override
@@ -289,7 +294,7 @@ public class EditPlatActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PHOTO && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                Toast.makeText(getApplicationContext(), "Error al carregar la imatge", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error loading the image", Toast.LENGTH_LONG).show();
                 return;
             }
             imageUri = data.getData();
@@ -302,7 +307,7 @@ public class EditPlatActivity extends AppCompatActivity {
         if(specialBackPressed){
             Bundle bundle = new Bundle();
             bundle.putInt("Fragment", MainActivity.EDITAR_PLATS_FRAGMENT);
-            Intent intent = new Intent(EditPlatActivity.this, MainActivity.class);
+            Intent intent = new Intent(EditDishActivity.this, MainActivity.class);
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

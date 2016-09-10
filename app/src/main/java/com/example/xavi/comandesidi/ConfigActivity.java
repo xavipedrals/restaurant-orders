@@ -26,9 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
-import com.example.xavi.comandesidi.data.GestorBD;
-import com.example.xavi.comandesidi.domini.ComandaContainer;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBManager.DBManager;
+import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
 
@@ -222,7 +222,7 @@ public class ConfigActivity extends AppCompatActivity {
                 infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
                     @Override
                     public void onPositiveResult() {
-                        GestorBD.getInstance(getApplicationContext()).resetTablePlats();
+                        DBManager.getInstance(getApplicationContext()).resetTablePlats();
                         ProductsContainer.refreshAfterReset(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();
@@ -250,7 +250,7 @@ public class ConfigActivity extends AppCompatActivity {
                 infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
                     @Override
                     public void onPositiveResult() {
-                        GestorBD.getInstance(getApplicationContext()).resetTableComandes();
+                        DBManager.getInstance(getApplicationContext()).resetTableComandes();
                         ComandaContainer.refreshAfterReset(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();

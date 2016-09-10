@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment.OnListFragmentInteractionListener;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.domini.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

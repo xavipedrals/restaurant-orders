@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.domini.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
 
 
 /**

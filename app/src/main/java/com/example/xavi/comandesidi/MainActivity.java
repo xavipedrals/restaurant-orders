@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,16 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xavi.comandesidi.EditarPlats.CrearPlatDialog;
-import com.example.xavi.comandesidi.EditarPlats.EditPlatItemFragment;
+import com.example.xavi.comandesidi.EditDish.CrearPlatDialog;
+import com.example.xavi.comandesidi.EditDish.EditDishItemFragment;
 import com.example.xavi.comandesidi.LlistarComandes.ComandaItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.InfoDialog;
 import com.example.xavi.comandesidi.NovaComanda.ItemFragment;
 import com.example.xavi.comandesidi.NovaComanda.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
-import com.example.xavi.comandesidi.data.GestorBD;
-import com.example.xavi.comandesidi.domini.ComandaContainer;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBManager.DBManager;
+import com.example.xavi.comandesidi.DBWrappers.ComandaContainer;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -41,7 +40,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ItemFragment.OnListFragmentInteractionListener,
-        ComandaItemFragment.OnListFragmentInteractionListener, EditPlatItemFragment.OnListFragmentInteractionListener,
+        ComandaItemFragment.OnListFragmentInteractionListener, EditDishItemFragment.OnListFragmentInteractionListener,
         ItemStocFragment.OnListFragmentInteractionListener {
 
     private Toolbar toolbar;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
     private int actualFragment;
     private ItemFragment itemFragment;
-    private EditPlatItemFragment editPlatItemFragment;
+    private EditDishItemFragment editDishItemFragment;
 
     private final int NOVA_COMANDA_FRAGMENT = 1;
     public static final int EDITAR_PLATS_FRAGMENT = 2;
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity
                                     SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                                     Date date = new Date();
                                     String dateStr = df.format(date);
-                                    GestorBD.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                                    DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
                                     ComandaContainer.refresh(getApplicationContext());
                                     itemFragment.updateStockDb();
                                     ProductsContainer.refresh(getApplicationContext());
@@ -153,9 +152,9 @@ public class MainActivity extends AppCompatActivity
                                 double price = bundle.getDouble("price");
                                 int stock = bundle.getInt("stock");
                                 String imgUri = bundle.getString("imgUri");
-                                GestorBD.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
+                                DBManager.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
                                 ProductsContainer.refresh(getApplicationContext());
-                                editPlatItemFragment.refreshAdapter(ProductsContainer.getInstance(getApplicationContext()).getProductList());
+                                editDishItemFragment.refreshAdapter(ProductsContainer.getInstance(getApplicationContext()).getProductList());
                             }
 
                             @Override
@@ -216,8 +215,8 @@ public class MainActivity extends AppCompatActivity
                 if (b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT) {
                     actualFragment = EDITAR_PLATS_FRAGMENT;
                     configureFab(EDITAR_PLATS_FRAGMENT);
-                    editPlatItemFragment = new EditPlatItemFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
+                    editDishItemFragment = new EditDishItemFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
                 }
             } else {
                 actualFragment = NOVA_COMANDA_FRAGMENT;
@@ -272,8 +271,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_editar_plats) {
             setToolbarTitle("Editar plats");
             configureFab(EDITAR_PLATS_FRAGMENT);
-            editPlatItemFragment = new EditPlatItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editPlatItemFragment).commit();
+            editDishItemFragment = new EditDishItemFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
 
         } else if (id == R.id.nav_llistat_comandes) {
             setToolbarTitle("Llistar comandes");

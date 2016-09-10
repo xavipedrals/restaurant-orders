@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 import com.example.xavi.comandesidi.widgets.ImageHelper;
 
 import java.io.IOException;

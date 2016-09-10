@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
-import com.example.xavi.comandesidi.data.GestorBD;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBManager.DBManager;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 /**
  * A fragment representing a list of Items.
@@ -71,7 +71,7 @@ public class ItemStocFragment extends Fragment {
                                     } else if (opcio.equals("decrementar")){
                                         v.decreaseQuantityByX(bundle.getInt("quantitat"));
                                     }
-                                    GestorBD.getInstance(getActivity().getApplicationContext()).updatePlat(v.product.getId(), v.stock);
+                                    DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(v.product.getId(), v.stock);
                                     ProductsContainer.refresh(getActivity().getApplicationContext());
                                 }
 

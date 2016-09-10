@@ -19,9 +19,8 @@ import android.widget.Toast;
 
 import com.example.xavi.comandesidi.IntrQuantDialog;
 import com.example.xavi.comandesidi.R;
-import com.example.xavi.comandesidi.RecyclerItemClickListener;
-import com.example.xavi.comandesidi.data.GestorBD;
-import com.example.xavi.comandesidi.domini.ProductsContainer;
+import com.example.xavi.comandesidi.DBManager.DBManager;
+import com.example.xavi.comandesidi.DBWrappers.ProductsContainer;
 
 import java.util.List;
 
@@ -179,7 +178,7 @@ public class ItemFragment extends Fragment {
     public void updateStockDb(){
         List<ProductsContainer.Product> productList = myItemRecyclerViewAdapter.getProductesActualitzats();
         for (ProductsContainer.Product product : productList){
-            GestorBD.getInstance(getActivity().getApplicationContext()).updatePlat(product.getName(), product.getStock());
+            DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(product.getName(), product.getStock());
         }
     }
 

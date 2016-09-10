@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.EditarPlats;
+package com.example.xavi.comandesidi.EditDish;
 
 import android.content.Intent;
 import android.os.Bundle;

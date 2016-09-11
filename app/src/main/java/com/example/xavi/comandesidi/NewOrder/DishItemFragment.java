@@ -157,23 +157,7 @@ public class DishItemFragment extends Fragment {
                 viewHolder.decreaseQuantityToZero();
                 break;
             case R.id.contextualMenuSetCustomNumber:
-                IntrQuantDialog intrQuantDialog = new IntrQuantDialog();
-                android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                intrQuantDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                final DishRecyclerViewAdapter.ViewHolder finalViewHolder = viewHolder;
-                intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
-                    @Override
-                    public void onPositiveResult(int value) {
-                        if (finalViewHolder.checkStock(value)) finalViewHolder.setExactQuantity(value);
-                        else{
-                            Toast.makeText(getActivity().getApplicationContext(), "Poducte sense stoc suficient", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    @Override
-                    public void onNegativeResult() {
-                    }
-                });
-                intrQuantDialog.show(fragmentManager, "tag");
+                showIntroduceQuantityDialog(viewHolder);
                 break;
         }
         return super.onContextItemSelected(item);
@@ -188,6 +172,29 @@ public class DishItemFragment extends Fragment {
             Log.d("EXCEPTION", e.getLocalizedMessage(), e);
         }
         return viewHolder;
+    }
+
+    private void showIntroduceQuantityDialog(DishRecyclerViewAdapter.ViewHolder viewHolder) {
+        IntrQuantDialog intrQuantDialog = new IntrQuantDialog();
+        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        intrQuantDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        setResultListenerIntrQuantDialog(intrQuantDialog, viewHolder);
+        intrQuantDialog.show(fragmentManager, "tag");
+    }
+
+    private void setResultListenerIntrQuantDialog(IntrQuantDialog intrQuantDialog, final DishRecyclerViewAdapter.ViewHolder viewHolder) {
+        intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
+            @Override
+            public void onPositiveResult(int value) {
+                if (viewHolder.checkStock(value)) viewHolder.setExactQuantity(value);
+                else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Product without enough stock", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onNegativeResult() {
+            }
+        });
     }
 
     public boolean checkIfPriceIsZero(){

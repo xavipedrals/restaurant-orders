@@ -94,15 +94,25 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        configViewHolder(holder, position);
+        setImageView(holder, position);
+        setHolderOnClickListener(holder);
+        setHolderOnLongClickListener(holder);
+        viewHolderList.add(holder);
+    }
+
+    private void configViewHolder(ViewHolder holder, int position){
         holder.dish = dishList.get(position);
         holder.stock = holder.dish.stock;
         if (holder.stock == 0) holder.setOutOfStockBackgroundColor();
         holder.nameTv.setText(dishList.get(position).name);
         String priceStr = String.valueOf(dishList.get(position).price) + " €";
         holder.priceTv.setText(priceStr);
+    }
+
+    private void setImageView(ViewHolder holder, int position) {
         Bitmap bitmap = null;
         if(holder.dish.hasImage){
-            Log.d("CARREGO IMATGE", "Ei colega");
             Uri uri = Uri.parse(holder.dish.imgUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
@@ -114,8 +124,9 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
+    }
 
-
+    private void setHolderOnClickListener(final ViewHolder holder) {
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +142,9 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
                 }
             }
         });
+    }
+
+    private void setHolderOnLongClickListener(final ViewHolder holder) {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -139,7 +153,6 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
                 return false;
             }
         });
-        viewHolderList.add(holder);
     }
 
     @Override

@@ -25,47 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemStocRecyclerViewAdapter.ViewHolder> {
+public class DishStockItemRecyclerViewAdapter extends RecyclerView.Adapter<DishStockItemRecyclerViewAdapter.ViewHolder> {
 
     private List<DishesContainer.Dish> dishList;
-    private final ItemStocFragment.OnListFragmentInteractionListener mListener;
+    private final DishStockItemFragment.OnListFragmentInteractionListener mListener;
     private Context context;
-    private ViewHolder lastClickedView;
     private List<ViewHolder> viewHolderList;
 
-    private int position;
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public ViewHolder getLastClickedView() {
-        return lastClickedView;
-    }
-
-    public void setLastClickedView(ViewHolder lastClickedView) {
-        this.lastClickedView = lastClickedView;
-    }
-
-    public double getTotalPrice() {
-        double price = 0;
-        for (ViewHolder holder : viewHolderList) {
-            price += holder.stock * holder.dish.price;
-        }
-        return price;
-    }
-
-    public void resetView() {
-        for (ViewHolder holder : viewHolderList) {
-            holder.decreaseQuantityToZero();
-        }
-    }
-
-    public MyItemStocRecyclerViewAdapter(DishesContainer dishesContainer, ItemStocFragment.OnListFragmentInteractionListener listener, Context context) {
+    public DishStockItemRecyclerViewAdapter(DishesContainer dishesContainer, DishStockItemFragment.OnListFragmentInteractionListener listener, Context context) {
         dishList = dishesContainer.getDishList();
         mListener = listener;
         this.context = context;
@@ -81,6 +48,13 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        configViewHolder(holder, position);
+        setImageViewBitmap(holder, position);
+        setHolderClickListener(holder);
+        viewHolderList.add(holder);
+    }
+
+    private void configViewHolder(ViewHolder holder, int position) {
         holder.dish = dishList.get(position);
         holder.nameTv.setText(dishList.get(position).name);
         String priceStr = String.valueOf(dishList.get(position).price) + " €";
@@ -88,10 +62,11 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         holder.stock = holder.dish.stock;
         if(holder.stock == 0) holder.setNoStockBackgroundColor();
         holder.quantitatTv.setText(String.valueOf(holder.stock));
+    }
 
+    private void setImageViewBitmap(ViewHolder holder, int position) {
         Bitmap bitmap = null;
         if(holder.dish.hasImage){
-            Log.d("CARREGO IMATGE", "Ei colega");
             Uri uri = Uri.parse(holder.dish.imgUri);
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
@@ -103,7 +78,9 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
         }
         Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
+    }
 
+    private void setHolderClickListener(ViewHolder holder) {
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +90,6 @@ public class MyItemStocRecyclerViewAdapter extends RecyclerView.Adapter<MyItemSt
                 }
             }
         });
-        viewHolderList.add(holder);
     }
 
     @Override

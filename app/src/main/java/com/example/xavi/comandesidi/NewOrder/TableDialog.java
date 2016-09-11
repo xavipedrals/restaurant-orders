@@ -19,7 +19,7 @@ import com.example.xavi.comandesidi.R;
 public class TableDialog extends DialogFragment {
 
     TextView acceptTV, cancelTv;
-    EditText numeroTaulaEt;
+    EditText tableNumberEt;
     private OnTableDialogResultListener onTableDialogResultListener;
 
     public TableDialog() {
@@ -29,14 +29,25 @@ public class TableDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.table_dialog, container);
-        numeroTaulaEt = (EditText) view.findViewById(R.id.editTextnumTaula);
-        acceptTV = (TextView) view.findViewById(R.id.textViewAccept);
-        cancelTv = (TextView) view.findViewById(R.id.textViewCancel);
-
-        numeroTaulaEt.requestFocus();
+        initVisuals(view);
+        tableNumberEt.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+        setCancelTvClickListener();
+        setAcceptTVClickListener();
+
+        getDialog().setCancelable(true);
+        return view;
+    }
+
+    private void initVisuals(View view) {
+        tableNumberEt = (EditText) view.findViewById(R.id.editTextnumTaula);
+        acceptTV = (TextView) view.findViewById(R.id.textViewAccept);
+        cancelTv = (TextView) view.findViewById(R.id.textViewCancel);
+    }
+
+    private void setCancelTvClickListener() {
         cancelTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,23 +55,22 @@ public class TableDialog extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    private void setAcceptTVClickListener() {
         acceptTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int numTaula = Integer.parseInt(numeroTaulaEt.getText().toString());
-                if (numTaula <= 0 || numTaula > 20)
-                    Toast.makeText(getActivity().getApplicationContext(), "El número de taula ha d'estar entre 1 i 20", Toast.LENGTH_LONG).show();
+                int tableNumber = Integer.parseInt(tableNumberEt.getText().toString());
+                if (tableNumber <= 0 || tableNumber > 20)
+                    Toast.makeText(getActivity().getApplicationContext(), "The table number must be between 1 and 20", Toast.LENGTH_LONG).show();
                 else {
-                    onTableDialogResultListener.onPositiveResult(numTaula);
+                    onTableDialogResultListener.onPositiveResult(tableNumber);
                     dismiss();
                 }
             }
         });
-
-        getDialog().setCancelable(true);
-        return view;
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

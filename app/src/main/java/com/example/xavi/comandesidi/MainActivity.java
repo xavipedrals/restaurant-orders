@@ -29,7 +29,7 @@ import com.example.xavi.comandesidi.ListOrders.OrderItemFragment;
 import com.example.xavi.comandesidi.NewOrder.InfoDialog;
 import com.example.xavi.comandesidi.NewOrder.DishItemFragment;
 import com.example.xavi.comandesidi.NewOrder.TableDialog;
-import com.example.xavi.comandesidi.StocProductes.ItemStocFragment;
+import com.example.xavi.comandesidi.StocProductes.DishStockItemFragment;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
@@ -41,7 +41,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DishItemFragment.OnListFragmentInteractionListener,
         OrderItemFragment.OnListFragmentInteractionListener, EditDishItemFragment.OnListFragmentInteractionListener,
-        ItemStocFragment.OnListFragmentInteractionListener {
+        DishStockItemFragment.OnListFragmentInteractionListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity
             OrderContainer.getFirstInstance(getApplicationContext());
             setToolbarTitle("Ajuda");
             configureFab(CONFIGURACIO_FRAGMENT);
-            AjudaFragment f = new AjudaFragment();
+            HelpFragment f = new HelpFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
         }
         else {
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_stoc_productes) {
             setToolbarTitle("Stoc plats");
             configureFab(STOC_PRODUCTES_FRAGMENT);
-            ItemStocFragment f = new ItemStocFragment();
+            DishStockItemFragment f = new DishStockItemFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
 
         } else if (id == R.id.nav_config) {
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_ajuda){
             setToolbarTitle("Ajuda");
             configureFab(CONFIGURACIO_FRAGMENT);
-            AjudaFragment f = new AjudaFragment();
+            HelpFragment f = new HelpFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
         }
 

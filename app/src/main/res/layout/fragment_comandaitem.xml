@@ -31,7 +31,7 @@
                 android:layout_marginRight="@dimen/text_margin"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/secondary_text"
-                android:text="Taula:" />
+                android:text="Table:" />
 
             <TextView
                 android:id="@+id/numTableTv"

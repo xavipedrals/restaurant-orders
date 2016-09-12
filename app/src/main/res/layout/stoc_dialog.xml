@@ -10,14 +10,13 @@
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/primary_text"
-        android:text="Introduiex la operació:"
+        android:text="Select an option:"
         android:id="@+id/textViewLastBank"
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:layout_marginTop="20sp"
         android:layout_marginRight="20sp"
         android:layout_marginLeft="20sp" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,21 +39,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Incrementar" />
+                    android:text="Increment" />
 
                 <RadioButton
                     android:id="@+id/radioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Decrementar" />
+                    android:text="Decrement" />
 
                 <RadioButton
                     android:id="@+id/radioButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"
-                    android:text="Posar a zero" />
+                    android:text="Set to zero" />
 
             </RadioGroup>
         </LinearLayout>
@@ -77,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/primary_text"
-                android:text="Introduiex una quantitat:"
+                android:text="Insert a quantity:"
                 android:id="@+id/textViewInsertQuantity"
                 android:layout_marginBottom="@dimen/spacing_medium"
                 android:gravity="center"
@@ -118,7 +117,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CANCEL·LAR"
+            android:text="CANCEL"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:textSize="17sp"
@@ -128,7 +127,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ACCEPTAR"
+            android:text="OK"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:id="@+id/textViewAccept"

@@ -10,11 +10,4 @@
         app:showAsAction="ifRoom" />
 
 
-    <!--<item-->
-        <!--android:id="@+id/action_filter"-->
-        <!--android:icon="@mipmap/ic_filter_list_white_48dp"-->
-        <!--android:orderInCategory="200"-->
-        <!--android:title="filter"-->
-        <!--app:showAsAction="ifRoom" />-->
-
 </menu>

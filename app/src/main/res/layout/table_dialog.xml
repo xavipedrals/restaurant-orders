@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/primary_text"
-        android:text="Introduiex el número de la taula:"
+        android:text="Insert the table number:"
         android:id="@+id/textViewLastBank"
         android:layout_marginBottom="20sp"
         android:gravity="center"
@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CANCEL·LAR"
+            android:text="CANCEL"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:textSize="17sp"
@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ACCEPTAR"
+            android:text="OK"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:id="@+id/textViewAccept"

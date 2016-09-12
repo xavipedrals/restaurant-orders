@@ -51,137 +51,149 @@ public class MainActivity extends AppCompatActivity
     private int actualFragment;
     private DishItemFragment dishItemFragment;
     private EditDishItemFragment editDishItemFragment;
+    private TextView titleTv;
+    private TextView emailTv;
+    private LinearLayout linearLayout;
 
-    private final int NOVA_COMANDA_FRAGMENT = 1;
-    public static final int EDITAR_PLATS_FRAGMENT = 2;
-    private final int LLISTAR_COMANDES_FRAGMENT = 3;
-    private final int STOC_PRODUCTES_FRAGMENT = 4;
-    private final int CONFIGURACIO_FRAGMENT = 5;
+    private final int NEW_ORDER_FRAGMENT = 1;
+    public static final int EDIT_DISHES_FRAGMENT = 2;
+    private final int LIST_ORDERS_FRAGMENT = 3;
+    private final int DISHES_STOCK_FRAGMENT = 4;
+    private final int SETTINGS_FRAGMENT = 5;
 
-    private void configureFab(int fragmentTag){
-        switch (fragmentTag){
-            case NOVA_COMANDA_FRAGMENT:
-                //fab.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#64DD17"))); //Verd
-                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_done_white_64dp_1x));
-                fab.setVisibility(View.VISIBLE);
-                break;
-            case EDITAR_PLATS_FRAGMENT:
-                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
-                fab.setVisibility(View.VISIBLE);
-                break;
-            case LLISTAR_COMANDES_FRAGMENT:
-                fab.setVisibility(View.GONE);
-                break;
-            case STOC_PRODUCTES_FRAGMENT:
-                fab.setVisibility(View.GONE);
-                break;
-            case CONFIGURACIO_FRAGMENT:
-                fab.setVisibility(View.GONE);
-                break;
-        }
-        actualFragment = fragmentTag;
-    }
-
-    private void setToolbarTitle(String title){
-        toolbar.setTitle(title);
-        setSupportActionBar(toolbar);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (getIntent().hasExtra("Fragment")) toolbar.setTitle("Editar Plats");
-        else toolbar.setTitle("Nova comanda");
+        initVisuals();
+        if (getIntent().hasExtra("Fragment")) toolbar.setTitle("Edit Dishes");
+        else toolbar.setTitle("New order");
         setSupportActionBar(toolbar);
+        setFloatingButtonClickListener();
 
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        configNavigationHeaderView();
+
+//        boolean fisrtLaunch = prefs.getBoolean("FirstLaunch", true);
+        if (isFirstLaunch()){
+            manageFirstLaunch();
+        }
+        else {
+            if (getIntent().hasExtra("Fragment")) {
+                Bundle b = getIntent().getExtras();
+                if (b.getInt("Fragment") == EDIT_DISHES_FRAGMENT) {
+                    actualFragment = EDIT_DISHES_FRAGMENT;
+                    configureFab(EDIT_DISHES_FRAGMENT);
+                    editDishItemFragment = new EditDishItemFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
+                }
+            } else {
+                manageDefaultStart();
+            }
+        }
+    }
+
+    private void initVisuals() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        titleTv = (TextView) header.findViewById(R.id.navDrawerTitle);
+        emailTv = (TextView) header.findViewById(R.id.navDrawerEmail);
+        linearLayout = (LinearLayout) header.findViewById(R.id.navBackground);
+    }
+
+    private void setFloatingButtonClickListener() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (actualFragment) {
-                    case NOVA_COMANDA_FRAGMENT:
+                    case NEW_ORDER_FRAGMENT:
                         if (dishItemFragment.checkIfPriceIsZero()) {
-                            Bundle b = new Bundle();
-                            b.putString("Type", "No products selected");
-                            InfoDialog infoDialog = new InfoDialog();
-                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                            infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                            infoDialog.setArguments(b);
-                            infoDialog.show(fragmentManager, "tag");
-                        } else {
-                            TableDialog tableDialog = new TableDialog();
-                            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                            tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                            tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
-                                @Override
-                                public void onPositiveResult(int numTaula) {
-                                    double price = dishItemFragment.getDishRecyclerViewAdapter().getTotalPrice();
-                                    SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-                                    Date date = new Date();
-                                    String dateStr = df.format(date);
-                                    DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
-                                    OrderContainer.refresh(getApplicationContext());
-                                    dishItemFragment.updateStockDb();
-                                    DishesContainer.refresh(getApplicationContext());
-                                    dishItemFragment.getDishRecyclerViewAdapter().resetView();
-                                    Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
-                                }
-                                @Override
-                                public void onNegativeResult() {
-                                    //Do nothing
-                                }
-                            });
-                            tableDialog.show(fragmentManager, "tag");
+                            showNoProductsSelectedDialog();
+                        }
+                        else {
+                            showTableDialog();
                         }
                         break;
-                    case EDITAR_PLATS_FRAGMENT:
-                        CrearPlatDialog crearPlatDialog = new CrearPlatDialog();
-                        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                        crearPlatDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-                        crearPlatDialog.setOnCreatePlatDialogResultListener(new CrearPlatDialog.OnCreatePlatDialogResultListener() {
-                            @Override
-                            public void onPositiveResult(Bundle bundle) {
-                                String name = bundle.getString("name");
-                                double price = bundle.getDouble("price");
-                                int stock = bundle.getInt("stock");
-                                String imgUri = bundle.getString("imgUri");
-                                DBManager.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
-                                DishesContainer.refresh(getApplicationContext());
-                                editDishItemFragment.refreshAdapter(DishesContainer.getInstance(getApplicationContext()).getDishList());
-                            }
-
-                            @Override
-                            public void onNegativeResult() {
-
-                            }
-                        });
-                        crearPlatDialog.show(fragmentManager, "tag");
+                    case EDIT_DISHES_FRAGMENT:
+                        showCreateDishDialog();
                         break;
                     default:
                         break;
                 }
             }
         });
+    }
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+    private void showNoProductsSelectedDialog() {
+        Bundle b = new Bundle();
+        b.putString("Type", "No products selected");
+        InfoDialog infoDialog = new InfoDialog();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        infoDialog.setArguments(b);
+        infoDialog.show(fragmentManager, "tag");
+    }
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        View header = navigationView.getHeaderView(0);
-        TextView titleTv = (TextView) header.findViewById(R.id.navDrawerTitle);
-        TextView emailTv = (TextView) header.findViewById(R.id.navDrawerEmail);
-        LinearLayout linearLayout = (LinearLayout) header.findViewById(R.id.navBackground);
+    private void showTableDialog() {
+        TableDialog tableDialog = new TableDialog();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        tableDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        tableDialog.setOnTableDialogResultListener(new TableDialog.OnTableDialogResultListener() {
+            @Override
+            public void onPositiveResult(int numTaula) {
+                double price = dishItemFragment.getDishRecyclerViewAdapter().getTotalPrice();
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+                Date date = new Date();
+                String dateStr = df.format(date);
+                DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                OrderContainer.refresh(getApplicationContext());
+                dishItemFragment.updateStockDb();
+                DishesContainer.refresh(getApplicationContext());
+                dishItemFragment.getDishRecyclerViewAdapter().resetView();
+                Toast.makeText(getApplicationContext(), "Comanda tramitada", Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onNegativeResult() {
+                //Do nothing
+            }
+        });
+        tableDialog.show(fragmentManager, "tag");
+    }
+
+    public void showCreateDishDialog() {
+        CrearPlatDialog crearPlatDialog = new CrearPlatDialog();
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        crearPlatDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        crearPlatDialog.setOnCreatePlatDialogResultListener(new CrearPlatDialog.OnCreatePlatDialogResultListener() {
+            @Override
+            public void onPositiveResult(Bundle bundle) {
+                String name = bundle.getString("name");
+                double price = bundle.getDouble("price");
+                int stock = bundle.getInt("stock");
+                String imgUri = bundle.getString("imgUri");
+                DBManager.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
+                DishesContainer.refresh(getApplicationContext());
+                editDishItemFragment.refreshAdapter(DishesContainer.getInstance(getApplicationContext()).getDishList());
+            }
+            @Override
+            public void onNegativeResult() {
+            }
+        });
+        crearPlatDialog.show(fragmentManager, "tag");
+    }
+
+    private void configNavigationHeaderView() {
         SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
         String restaurantName = prefs.getString("NomRestaurant", getResources().getString(R.string.nav_drawer_title));
         String restaurantEmail = prefs.getString("EmailRestaurant", getResources().getString(R.string.nav_drawer_email));
@@ -198,33 +210,61 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         }
+    }
 
-        boolean fisrtLaunch = prefs.getBoolean("FirstLaunch", true);
-        if (fisrtLaunch){
-            prefs.edit().putBoolean("FirstLaunch", false).apply();
-            DishesContainer.getFirstInstance(getApplicationContext());
-            OrderContainer.getFirstInstance(getApplicationContext());
-            setToolbarTitle("Ajuda");
-            configureFab(CONFIGURACIO_FRAGMENT);
-            HelpFragment f = new HelpFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+    private boolean isFirstLaunch() {
+        SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+        return prefs.getBoolean("FirstLaunch", true);
+    }
+
+    private void manageFirstLaunch() {
+        SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
+        prefs.edit().putBoolean("FirstLaunch", false).apply();
+        DishesContainer.getFirstInstance(getApplicationContext());
+        OrderContainer.getFirstInstance(getApplicationContext());
+        setToolbarTitle("Ajuda");
+        configureFab(SETTINGS_FRAGMENT);
+        HelpFragment f = new HelpFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+    }
+
+    private void setToolbarTitle(String title){
+        toolbar.setTitle(title);
+        setSupportActionBar(toolbar);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void manageDefaultStart() {
+        actualFragment = NEW_ORDER_FRAGMENT;
+        configureFab(NEW_ORDER_FRAGMENT);
+        dishItemFragment = new DishItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
+    }
+
+    private void configureFab(int fragmentTag){
+        switch (fragmentTag){
+            case NEW_ORDER_FRAGMENT:
+                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_done_white_64dp_1x));
+                fab.setVisibility(View.VISIBLE);
+                break;
+            case EDIT_DISHES_FRAGMENT:
+                fab.setImageDrawable(getResources().getDrawable(R.mipmap.ic_add_white_48dp));
+                fab.setVisibility(View.VISIBLE);
+                break;
+            case LIST_ORDERS_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
+            case DISHES_STOCK_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
+            case SETTINGS_FRAGMENT:
+                fab.setVisibility(View.GONE);
+                break;
         }
-        else {
-            if (getIntent().hasExtra("Fragment")) {
-                Bundle b = getIntent().getExtras();
-                if (b.getInt("Fragment") == EDITAR_PLATS_FRAGMENT) {
-                    actualFragment = EDITAR_PLATS_FRAGMENT;
-                    configureFab(EDITAR_PLATS_FRAGMENT);
-                    editDishItemFragment = new EditDishItemFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
-                }
-            } else {
-                actualFragment = NOVA_COMANDA_FRAGMENT;
-                configureFab(NOVA_COMANDA_FRAGMENT);
-                dishItemFragment = new DishItemFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
-            }
-        }
+        actualFragment = fragmentTag;
     }
 
     @Override
@@ -256,55 +296,70 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_nova_comanda) {
-            setToolbarTitle("Nova comanda");
-            configureFab(NOVA_COMANDA_FRAGMENT);
-            dishItemFragment = new DishItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
-
-        } else if (id == R.id.nav_editar_plats) {
-            setToolbarTitle("Editar plats");
-            configureFab(EDITAR_PLATS_FRAGMENT);
-            editDishItemFragment = new EditDishItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
-
-        } else if (id == R.id.nav_llistat_comandes) {
-            setToolbarTitle("Llistar comandes");
-            configureFab(LLISTAR_COMANDES_FRAGMENT);
-            OrderItemFragment orderItemFragment = new OrderItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, orderItemFragment).commit();
-
-        } else if (id == R.id.nav_stoc_productes) {
-            setToolbarTitle("Stoc plats");
-            configureFab(STOC_PRODUCTES_FRAGMENT);
-            DishStockItemFragment f = new DishStockItemFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
-
-        } else if (id == R.id.nav_config) {
-            startActivity(new Intent(MainActivity.this, ConfigActivity.class));
-
-        } else if (id == R.id.nav_ajuda){
-            setToolbarTitle("Ajuda");
-            configureFab(CONFIGURACIO_FRAGMENT);
-            HelpFragment f = new HelpFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+            showNewOrderFragment();
         }
-
+        else if (id == R.id.nav_editar_plats) {
+            showEditDishes();
+        }
+        else if (id == R.id.nav_llistat_comandes) {
+            showListOrdersFragments();
+        }
+        else if (id == R.id.nav_stoc_productes) {
+            showDishesStockFragment();
+        }
+        else if (id == R.id.nav_config) {
+            startActivity(new Intent(MainActivity.this, ConfigActivity.class));
+        }
+        else if (id == R.id.nav_ajuda){
+            showHelpFragment();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private void showNewOrderFragment() {
+        setToolbarTitle("New order");
+        configureFab(NEW_ORDER_FRAGMENT);
+        dishItemFragment = new DishItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dishItemFragment).commit();
+    }
+
+    private void showEditDishes() {
+        setToolbarTitle("Edit dishes");
+        configureFab(EDIT_DISHES_FRAGMENT);
+        editDishItemFragment = new EditDishItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, editDishItemFragment).commit();
+    }
+
+    private void showListOrdersFragments() {
+        setToolbarTitle("List orders");
+        configureFab(LIST_ORDERS_FRAGMENT);
+        OrderItemFragment orderItemFragment = new OrderItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, orderItemFragment).commit();
+    }
+
+    private void showDishesStockFragment() {
+        setToolbarTitle("Dishes stock");
+        configureFab(DISHES_STOCK_FRAGMENT);
+        DishStockItemFragment f = new DishStockItemFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+    }
+
+    private void showHelpFragment() {
+        setToolbarTitle("Help");
+        configureFab(SETTINGS_FRAGMENT);
+        HelpFragment f = new HelpFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();
+    }
 
     @Override
     public void onListFragmentInteraction(DishesContainer.Dish dish) {
-        Toast.makeText(getApplicationContext(), "Poducte fora de stoc", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Dish out of stock", Toast.LENGTH_LONG).show();
     }
 
     @Override

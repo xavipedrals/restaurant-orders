@@ -38,9 +38,8 @@
                         android:layout_marginTop="@dimen/spacing_large"
                         android:textStyle="bold"
                         android:gravity="center"
-                        android:text="Informació"
+                        android:text="Information"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
 
                     <TextView
                         android:id="@+id/description2"
@@ -84,7 +83,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Nova comanda"
+                            android:text="New order"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textStyle="bold" />
 
@@ -132,7 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Editar plats"
+                            android:text="Edit dishes"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textStyle="bold" />
 
@@ -180,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Llistar comandes del dia"
+                            android:text="List orders"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textStyle="bold" />
 
@@ -228,7 +227,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Stoc plats"
+                            android:text="Dishes stock"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textStyle="bold" />
 
@@ -276,7 +275,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Configuració"
+                            android:text="Settings"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textStyle="bold" />
 

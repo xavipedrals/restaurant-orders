@@ -4,9 +4,8 @@
 
     <item
         android:id="@+id/menu_reset_comanda"
-        android:title="Reiniciar comanda"
+        android:title="Reset the order"
         app:showAsAction="never" />
-
 
     <item
         android:id="@+id/action_info"

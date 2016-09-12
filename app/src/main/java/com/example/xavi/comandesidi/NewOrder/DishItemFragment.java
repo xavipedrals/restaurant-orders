@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.xavi.comandesidi.IntrQuantDialog;
+import com.example.xavi.comandesidi.IntroduceQuantityDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
@@ -175,15 +175,15 @@ public class DishItemFragment extends Fragment {
     }
 
     private void showIntroduceQuantityDialog(DishRecyclerViewAdapter.ViewHolder viewHolder) {
-        IntrQuantDialog intrQuantDialog = new IntrQuantDialog();
+        IntroduceQuantityDialog introduceQuantityDialog = new IntroduceQuantityDialog();
         android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        intrQuantDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        setResultListenerIntrQuantDialog(intrQuantDialog, viewHolder);
-        intrQuantDialog.show(fragmentManager, "tag");
+        introduceQuantityDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        setResultListenerIntrQuantDialog(introduceQuantityDialog, viewHolder);
+        introduceQuantityDialog.show(fragmentManager, "tag");
     }
 
-    private void setResultListenerIntrQuantDialog(IntrQuantDialog intrQuantDialog, final DishRecyclerViewAdapter.ViewHolder viewHolder) {
-        intrQuantDialog.setOnDialogResultListener(new IntrQuantDialog.OnDialogResultListener() {
+    private void setResultListenerIntrQuantDialog(IntroduceQuantityDialog introduceQuantityDialog, final DishRecyclerViewAdapter.ViewHolder viewHolder) {
+        introduceQuantityDialog.setOnDialogResultListener(new IntroduceQuantityDialog.OnDialogResultListener() {
             @Override
             public void onPositiveResult(int value) {
                 if (viewHolder.checkStock(value)) viewHolder.setExactQuantity(value);

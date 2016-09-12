@@ -307,7 +307,7 @@ public class EditDishActivity extends AppCompatActivity {
     public void onBackPressed() {
         if(specialBackPressed){
             Bundle bundle = new Bundle();
-            bundle.putInt("Fragment", MainActivity.EDITAR_PLATS_FRAGMENT);
+            bundle.putInt("Fragment", MainActivity.EDIT_DISHES_FRAGMENT);
             Intent intent = new Intent(EditDishActivity.this, MainActivity.class);
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

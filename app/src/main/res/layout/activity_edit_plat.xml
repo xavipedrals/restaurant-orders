@@ -49,10 +49,6 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<FrameLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,13 +76,6 @@
                         android:id="@+id/iconFood"
                         android:padding="12dp"
                         android:src="@mipmap/cutlery22"/>
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/nameTextView"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textColor="@color/primary_text"-->
-                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
 
                     <EditText
                         android:id="@+id/nameEditText"
@@ -118,9 +107,7 @@
                             android:src="@mipmap/ic_edit_black_48dp"
                             android:alpha="138" />
 
-
                     </LinearLayout>
-
 
                 </LinearLayout>
 
@@ -147,13 +134,6 @@
                         android:id="@+id/iconPrice"
                         android:padding="12dp"
                         android:src="@mipmap/euro35"/>
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/priceTextView"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textColor="@color/primary_text"-->
-                        <!--android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
 
                     <EditText
                         android:id="@+id/priceEditText"
@@ -186,19 +166,16 @@
                             android:src="@mipmap/ic_edit_black_48dp"
                             android:alpha="138" />
 
-
                     </LinearLayout>
 
-
                 </LinearLayout>
-
 
             </android.support.v7.widget.CardView>
 
                     <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GUARDAR CANVIS"
+                android:text="SAVE CHANGES"
                 android:textColor="@android:color/white"
                 android:background="@color/material_green"
                 android:id="@+id/buttonSave"
@@ -210,27 +187,16 @@
                 android:layout_height="match_parent"
                 android:background="@color/background_light_red">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Zona de perill"-->
-                    <!--android:id="@+id/textView2"-->
-                    <!--android:layout_marginStart="@dimen/spacing_large"-->
-                    <!--android:layout_marginTop="@dimen/spacing_small"-->
-                    <!--android:textColor="@color/primary_text"-->
-                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
-
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="BORRAR PRODUCTE"
+                    android:text="DELETE DISH"
                     android:textColor="@android:color/white"
                     android:background="@color/material_red"
                     android:id="@+id/buttonDelete"
                     android:layout_margin="@dimen/spacing_large" />
 
             </LinearLayout>
-
 
         </LinearLayout>
 
@@ -242,16 +208,5 @@
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|right|end"
         style="@style/FabStyle"/>
-
-
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--android:src="@android:drawable/ic_dialog_email"-->
-    <!--android:visibility="gone"/>-->
 
 </android.support.design.widget.CoordinatorLayout>

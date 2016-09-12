@@ -9,14 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Introdueix un nom pel plat:"
+        android:text="Insert a dish name:"
         android:id="@+id/textView1"
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:layout_marginTop="20sp"
         android:layout_marginRight="20sp"
         android:layout_marginLeft="20sp" />
-
 
     <LinearLayout
         android:orientation="horizontal"
@@ -36,14 +35,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Introduiex un preu:"
+        android:text="Insert the price:"
         android:id="@+id/textView2"
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:layout_marginTop="20sp"
         android:layout_marginRight="20sp"
         android:layout_marginLeft="20sp" />
-
 
     <LinearLayout
         android:orientation="horizontal"
@@ -63,8 +61,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Introduiex un stoc:"
-        android:id="@+id/textView3"
+        android:text="Insert a stock:"
+        android:id="@+id/textView4"
         android:layout_marginBottom="20sp"
         android:gravity="center"
         android:layout_marginTop="20sp"
@@ -95,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Selecciona una imatge:"
+            android:text="Pick an image:"
             android:id="@+id/textView3"
             android:layout_marginBottom="20sp"
             android:gravity="center"
@@ -135,7 +133,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CANCEL·LAR"
+            android:text="CANCEL"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:textSize="17sp"
@@ -145,7 +143,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ACCEPTAR"
+            android:text="OK"
             android:textStyle="bold"
             android:textColor="@color/primary"
             android:id="@+id/textViewAccept"

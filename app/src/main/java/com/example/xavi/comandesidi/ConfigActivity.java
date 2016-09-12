@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -38,8 +37,10 @@ public class ConfigActivity extends AppCompatActivity {
     private static final String TAG = "ConfigActivity";
     private static final int PICK_PHOTO = 11;
     private EditText nameEt, mailEt;
-    private ImageView image, iconEditName, iconEditMail;
-    private Button saveBtn, deletePlatsBtn, deleteComandesBtn;
+    private ImageView image, iconEditName, iconEditMail, iconName, iconEmail;
+    private Button saveButton, deleteDishesButton, deleteOrdersButton;
+    private FloatingActionButton fab;
+    private Toolbar actionbar;
     private String restaurantName, restaurantEmail, backgroundUri;
     private Uri imageUri;
     private boolean specialBackPressed;
@@ -48,36 +49,56 @@ public class ConfigActivity extends AppCompatActivity {
     private static int EDITING_NAME = 1;
     private static int EDITING_MAIL = 2;
 
-
-
-    private void makeEditable(boolean isEditable,EditText et){
-        if(isEditable){
-            et.setFocusable(true);
-            et.setEnabled(true);
-            et.setClickable(true);
-            et.setFocusableInTouchMode(true);
-            et.requestFocus();
-        } else{
-            et.setFocusable(false);
-            et.setClickable(false);
-            et.setFocusableInTouchMode(false);
-            et.setEnabled(false);
-            et.setTextColor(getResources().getColor(R.color.primary_text));
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracio);
+        getPreferencesData();
+        initVisuals();
+        setImageBitmap();
+        manageActionBar();
+        configNameEt();
+        configMailEt();
+        configIconEditName();
+        configIconEditMail();
+        configSaveButton();
+        configDeleteDishesButon();
+        configDeleteOrdersButton();
+        configFloatingActionButton();
+    }
 
+    private void getPreferencesData() {
         SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
         restaurantName = prefs.getString("NomRestaurant", getResources().getString(R.string.nav_drawer_title));
         restaurantEmail = prefs.getString("EmailRestaurant", getResources().getString(R.string.nav_drawer_email));
         backgroundUri = prefs.getString("BackgroundUri", "");
         specialBackPressed = false;
+    }
 
+    private void initVisuals() {
+        actionbar = (Toolbar) findViewById(R.id.toolbar);
         image = (ImageView) findViewById(R.id.image);
+        nameEt = (EditText) findViewById(R.id.nameEditText);
+        mailEt = (EditText) findViewById(R.id.mailEditText);
+        iconName = (ImageView) findViewById(R.id.iconName);
+        iconEmail = (ImageView) findViewById(R.id.iconEmail);
+        iconEditName = (ImageView) findViewById(R.id.iconEditName);
+        iconEditMail = (ImageView) findViewById(R.id.iconEditMail);
+        saveButton = (Button) findViewById(R.id.buttonSave);
+        deleteDishesButton = (Button) findViewById(R.id.buttonDeletePlats);
+        deleteOrdersButton = (Button) findViewById(R.id.buttonDeleteComandes);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setIconAlphas();
+    }
+
+    private void setIconAlphas() {
+        iconName.setAlpha(ConstantValues.alpha);
+        iconEmail.setAlpha(ConstantValues.alpha);
+        iconEditName.setAlpha(ConstantValues.alpha);
+        iconEditMail.setAlpha(ConstantValues.alpha);
+    }
+
+    private void setImageBitmap() {
         Bitmap bitmap = null;
         if(!backgroundUri.equals("")) {
             Uri uri = Uri.parse(backgroundUri);
@@ -90,13 +111,12 @@ public class ConfigActivity extends AppCompatActivity {
             bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.restaurant2);
         }
         image.setImageBitmap(bitmap);
+    }
 
-
-        Toolbar actionbar = (Toolbar) findViewById(R.id.toolbar);
+    private void manageActionBar() {
         if (null != actionbar) {
             actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-
-            actionbar.setTitle("Configuració");
+            actionbar.setTitle("Configuration");
             actionbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,12 +124,9 @@ public class ConfigActivity extends AppCompatActivity {
                 }
             });
         }
+    }
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        //collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-
-
-        nameEt = (EditText) findViewById(R.id.nameEditText);
+    private void configNameEt() {
         nameEt.setText(restaurantName);
         nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -122,8 +139,9 @@ public class ConfigActivity extends AppCompatActivity {
             }
         });
         makeEditable(false, nameEt);
+    }
 
-        mailEt = (EditText) findViewById(R.id.mailEditText);
+    private void configMailEt() {
         mailEt.setText(restaurantEmail);
         mailEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -136,15 +154,9 @@ public class ConfigActivity extends AppCompatActivity {
             }
         });
         makeEditable(false, mailEt);
+    }
 
-
-        ImageView iconName = (ImageView) findViewById(R.id.iconName);
-        ImageView iconEmail = (ImageView) findViewById(R.id.iconEmail);
-        iconName.setAlpha(ConstantValues.alpha);
-        iconEmail.setAlpha(ConstantValues.alpha);
-
-        iconEditName = (ImageView) findViewById(R.id.iconEditName);
-        iconEditName.setAlpha(ConstantValues.alpha);
+    private void configIconEditName() {
         iconEditName.setClickable(true);
         editingState = NOT_EDITING;
         iconEditName.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +175,9 @@ public class ConfigActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        iconEditMail = (ImageView) findViewById(R.id.iconEditMail);
-        iconEditMail.setAlpha(ConstantValues.alpha);
+    private void configIconEditMail() {
         iconEditMail.setClickable(true);
         iconEditMail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,9 +195,26 @@ public class ConfigActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        saveBtn = (Button) findViewById(R.id.buttonSave);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+    private void makeEditable(boolean isEditable,EditText et){
+        if(isEditable){
+            et.setFocusable(true);
+            et.setEnabled(true);
+            et.setClickable(true);
+            et.setFocusableInTouchMode(true);
+            et.requestFocus();
+        } else{
+            et.setFocusable(false);
+            et.setClickable(false);
+            et.setFocusableInTouchMode(false);
+            et.setEnabled(false);
+            et.setTextColor(getResources().getColor(R.color.primary_text));
+        }
+    }
+
+    private void configSaveButton() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nameAux = nameEt.getText().toString();
@@ -205,80 +234,97 @@ public class ConfigActivity extends AppCompatActivity {
                     hasChanges = true;
                 }
                 if (!hasChanges){
-                    Toast.makeText(getApplicationContext(), "Fes algun canvi abans de guardar", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Els canvis s'han guardat", Toast.LENGTH_LONG).show();
+                    displayToast("Make a change before saving");
+                }
+                else {
+                    displayToast("Changes have been saved");
                     specialBackPressed = true;
                     onBackPressed();
                 }
             }
         });
-        deletePlatsBtn = (Button) findViewById(R.id.buttonDeletePlats);
-        deletePlatsBtn.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void configDeleteDishesButon() {
+        deleteDishesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("Type", "Reset table plats");
                 InfoDialog infoDialog = new InfoDialog();
-                infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
-                    @Override
-                    public void onPositiveResult() {
-                        DBManager.getInstance(getApplicationContext()).resetTablePlats();
-                        DishesContainer.refreshAfterReset(getApplicationContext());
-                        specialBackPressed = true;
-                        onBackPressed();
-                        Toast.makeText(getApplicationContext(), "S'han esborrat els plats", Toast.LENGTH_LONG).show();
-                    }
-                    @Override
-                    public void onNegativeResult() {
-
-                    }
-                });
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                setDeleteDishesDialogListener(infoDialog);
                 infoDialog.setArguments(b);
-                infoDialog.show(fragmentManager, "tag");
+                showInfoDialog(infoDialog);
             }
         });
+    }
 
-        deleteComandesBtn = (Button) findViewById(R.id.buttonDeleteComandes);
-        deleteComandesBtn.setOnClickListener(new View.OnClickListener() {
+    private void setDeleteDishesDialogListener(InfoDialog infoDialog) {
+        infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
+            @Override
+            public void onPositiveResult() {
+                DBManager.getInstance(getApplicationContext()).resetTablePlats();
+                DishesContainer.refreshAfterReset(getApplicationContext());
+                specialBackPressed = true;
+                onBackPressed();
+                displayToast("All dishes have been deleted");
+            }
+            @Override
+            public void onNegativeResult() {
+            }
+        });
+    }
+
+    private void configDeleteOrdersButton() {
+        deleteOrdersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle b = new Bundle();
                 b.putString("Type", "Reset table comandes");
                 InfoDialog infoDialog = new InfoDialog();
-                infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
-                    @Override
-                    public void onPositiveResult() {
-                        DBManager.getInstance(getApplicationContext()).resetTableComandes();
-                        OrderContainer.refreshAfterReset(getApplicationContext());
-                        specialBackPressed = true;
-                        onBackPressed();
-                        Toast.makeText(getApplicationContext(), "S'han esborrat les comandes", Toast.LENGTH_LONG).show();
-                    }
-                    @Override
-                    public void onNegativeResult() {
-
-                    }
-                });
-                android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-                infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+                setDeleteOrdersDialogListener(infoDialog);
                 infoDialog.setArguments(b);
-                infoDialog.show(fragmentManager, "tag");
+                showInfoDialog(infoDialog);
             }
         });
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    private void setDeleteOrdersDialogListener(InfoDialog infoDialog){
+        infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
+            @Override
+            public void onPositiveResult() {
+                DBManager.getInstance(getApplicationContext()).resetTableComandes();
+                OrderContainer.refreshAfterReset(getApplicationContext());
+                specialBackPressed = true;
+                onBackPressed();
+                displayToast("All orders have been deleted");
+            }
+            @Override
+            public void onNegativeResult() {
+            }
+        });
+    }
+
+    private void showInfoDialog(InfoDialog infoDialog) {
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        infoDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        infoDialog.show(fragmentManager, "tag");
+    }
+
+    private void configFloatingActionButton() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Escull una imatge"), PICK_PHOTO);
+                startActivityForResult(Intent.createChooser(intent, "Pick an image"), PICK_PHOTO);
             }
         });
+    }
+
+    private void displayToast(String text) {
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
     @Override public boolean dispatchTouchEvent(MotionEvent motionEvent) {
@@ -294,7 +340,7 @@ public class ConfigActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_PHOTO && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                Toast.makeText(getApplicationContext(), "Error al carregar la imatge", Toast.LENGTH_LONG).show();
+                displayToast("Error loading the image");
                 return;
             }
             imageUri = data.getData();

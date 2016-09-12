@@ -5,38 +5,38 @@
         <item
             android:id="@+id/nav_nova_comanda"
             android:icon="@mipmap/comanda48"
-            android:title="Nova Comanda" />
+            android:title="New Order" />
 
     </group>
-    <item android:title="Administració">
+    <item android:title="Administration">
         <menu>
             <item
                 android:id="@+id/nav_editar_plats"
                 android:icon="@mipmap/cutlery22"
-                android:title="Editar plats" />
+                android:title="Edit dishes" />
             <item
                 android:id="@+id/nav_llistat_comandes"
                 android:icon="@mipmap/ic_event_black_48dp"
-                android:title="Llistar comandes del dia" />
+                android:title="List orders" />
             <item
                 android:id="@+id/nav_stoc_productes"
                 android:icon="@mipmap/ic_assignment_black_48dp"
-                android:title="Stoc plats" />
+                android:title="Dishes Stock" />
 
             <item
                 android:id="@+id/nav_config"
                 android:icon="@mipmap/ic_build_black_48dp"
-                android:title="Configuració" />
+                android:title="Settings" />
 
         </menu>
     </item>
 
-    <item android:title="Informació adicional">
+    <item android:title="Information">
         <menu>
         <item
             android:id="@+id/nav_ajuda"
             android:icon="@mipmap/ic_help_outline_black_48dp"
-            android:title="Ajuda" />
+            android:title="Help" />
         </menu>
 
     </item>

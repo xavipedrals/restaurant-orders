@@ -1,4 +1,4 @@
-package com.example.xavi.comandesidi.NewOrder;
+package com.example.xavi.comandesidi.Utils;
 
 import android.content.Intent;
 import android.graphics.Color;

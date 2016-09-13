@@ -18,10 +18,8 @@ import java.text.DecimalFormat;
  * Created by xavi on 13/12/15.
  */
 
-/**Serveix per mostrar info en general**/
 public class InfoDialog extends DialogFragment {
 
-    //TODO: Move to Utils package
     private TextView acceptTV, totalTv, textTV, cancelTv;
     private OnInfoDialogDialogResultListener onInfoDialogDialogResultListener;
 

@@ -26,7 +26,7 @@ import android.widget.Toast;
 import com.example.xavi.comandesidi.EditDish.CrearPlatDialog;
 import com.example.xavi.comandesidi.EditDish.EditDishItemFragment;
 import com.example.xavi.comandesidi.ListOrders.OrderItemFragment;
-import com.example.xavi.comandesidi.NewOrder.InfoDialog;
+import com.example.xavi.comandesidi.Utils.InfoDialog;
 import com.example.xavi.comandesidi.NewOrder.DishItemFragment;
 import com.example.xavi.comandesidi.NewOrder.TableDialog;
 import com.example.xavi.comandesidi.StocProductes.DishStockItemFragment;

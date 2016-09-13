@@ -21,6 +21,7 @@ import com.example.xavi.comandesidi.IntroduceQuantityDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.InfoDialog;
 
 import java.util.List;
 

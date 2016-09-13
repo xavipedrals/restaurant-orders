@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.xavi.comandesidi.NewOrder.InfoDialog;
+import com.example.xavi.comandesidi.Utils.InfoDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
 

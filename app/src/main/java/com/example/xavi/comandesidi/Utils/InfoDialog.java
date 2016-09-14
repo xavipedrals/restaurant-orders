@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
  * Created by xavi on 13/12/15.
  */
 
-public class InfoDialog extends DialogFragment {
+public class InfoDialog extends DialogFragmentUtils {
 
     private TextView acceptTV, totalTv, textTV, cancelTv;
     private OnInfoDialogDialogResultListener onInfoDialogDialogResultListener;
@@ -137,17 +137,7 @@ public class InfoDialog extends DialogFragment {
     }
 
     private void setCancelTvClickListener() {
-        cancelTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        cancelTv.setOnClickListener(super.getDismissClickLitener());
     }
 
     public interface OnInfoDialogDialogResultListener {

@@ -1,8 +1,6 @@
 package com.example.xavi.comandesidi.StocProductes;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.Utils.DialogFragmentUtils;
 
-/**
- * Created by xavi on 22/12/15.
- */
-public class StockDialog extends DialogFragment {
+
+public class EditStockDialog extends DialogFragmentUtils {
 
     private TextView acceptTV, cancelTv, totalTv, textTV;
     private LinearLayout quantitatLayout;
@@ -25,8 +22,7 @@ public class StockDialog extends DialogFragment {
     private EditText editText;
     private OnStockDialogResultListener onStockDialogResultListener;
 
-
-    public StockDialog() {
+    public EditStockDialog() {
         // Empty constructor required for DialogFragment
     }
 
@@ -149,17 +145,7 @@ public class StockDialog extends DialogFragment {
     }
 
     private void setCancelTvClickListener() {
-        cancelTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        cancelTv.setOnClickListener(super.getDismissClickLitener());
     }
 
     public interface OnStockDialogResultListener {

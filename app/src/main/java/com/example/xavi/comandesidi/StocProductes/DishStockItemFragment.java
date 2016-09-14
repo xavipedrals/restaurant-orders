@@ -3,9 +3,6 @@ package com.example.xavi.comandesidi.StocProductes;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +12,7 @@ import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ItemFragmentUtils;
 
 /**
  * A fragment representing a list of Items.
@@ -22,14 +20,10 @@ import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class DishStockItemFragment extends Fragment {
+public class DishStockItemFragment extends ItemFragmentUtils {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private DishesContainer dishesContainer;
-    private RecyclerView recyclerView;
-    private Context context;
     private DishStockItemRecyclerViewAdapter dishStockItemRecyclerViewAdapter;
 
 
@@ -48,21 +42,13 @@ public class DishStockItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_itemstoc_list, container, false);
         if (view instanceof RecyclerView) {
-            context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            super.context = view.getContext();
+            super.recyclerView = (RecyclerView) view;
             setRecyclerViewClickListener();
-            manageRecyclerViewLayout();
+            super.manageRecyclerViewLayout();
             setRecyclerViewAdapter();
         }
         return view;
-    }
-
-    private void manageRecyclerViewLayout() {
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
     }
 
     private void setRecyclerViewAdapter() {
@@ -82,15 +68,15 @@ public class DishStockItemFragment extends Fragment {
     }
 
     private void showStockDialog(View view) {
-        StockDialog stockDialog = new StockDialog();
+        EditStockDialog editStockDialog = new EditStockDialog();
         android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        stockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        setStockDialogResultListener(stockDialog, view);
-        stockDialog.show(fragmentManager, "tag");
+        editStockDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        setStockDialogResultListener(editStockDialog, view);
+        editStockDialog.show(fragmentManager, "tag");
     }
 
-    private void setStockDialogResultListener(StockDialog stockDialog, final View view) {
-        stockDialog.setOnStockDialogResultListener(new StockDialog.OnStockDialogResultListener() {
+    private void setStockDialogResultListener(EditStockDialog editStockDialog, final View view) {
+        editStockDialog.setOnStockDialogResultListener(new EditStockDialog.OnStockDialogResultListener() {
             @Override
             public void onPositiveResult(Bundle bundle) {
                 manageStockDialogPositiveResult(view, bundle);

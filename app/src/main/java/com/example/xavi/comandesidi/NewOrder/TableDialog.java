@@ -12,11 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.Utils.DialogFragmentUtils;
 
 /**
  * Created by xavi on 13/12/15.
  */
-public class TableDialog extends DialogFragment {
+public class TableDialog extends DialogFragmentUtils {
 
     TextView acceptTV, cancelTv;
     EditText tableNumberEt;
@@ -48,13 +49,7 @@ public class TableDialog extends DialogFragment {
     }
 
     private void setCancelTvClickListener() {
-        cancelTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onTableDialogResultListener.onNegativeResult();
-                dismiss();
-            }
-        });
+        cancelTv.setOnClickListener(super.getDismissClickLitener());
     }
 
     private void setAcceptTVClickListener() {
@@ -70,11 +65,6 @@ public class TableDialog extends DialogFragment {
                 }
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public interface OnTableDialogResultListener {

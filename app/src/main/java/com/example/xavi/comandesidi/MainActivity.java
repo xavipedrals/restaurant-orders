@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.xavi.comandesidi.EditDish.CrearPlatDialog;
+import com.example.xavi.comandesidi.EditDish.CreateDishDialog;
 import com.example.xavi.comandesidi.EditDish.EditDishItemFragment;
 import com.example.xavi.comandesidi.ListOrders.OrderItemFragment;
 import com.example.xavi.comandesidi.Utils.InfoDialog;
@@ -172,10 +172,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showCreateDishDialog() {
-        CrearPlatDialog crearPlatDialog = new CrearPlatDialog();
+        CreateDishDialog createDishDialog = new CreateDishDialog();
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        crearPlatDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        crearPlatDialog.setOnCreatePlatDialogResultListener(new CrearPlatDialog.OnCreatePlatDialogResultListener() {
+        createDishDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        createDishDialog.setOnCreatePlatDialogResultListener(new CreateDishDialog.OnCreatePlatDialogResultListener() {
             @Override
             public void onPositiveResult(Bundle bundle) {
                 String name = bundle.getString("name");
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity
             public void onNegativeResult() {
             }
         });
-        crearPlatDialog.show(fragmentManager, "tag");
+        createDishDialog.show(fragmentManager, "tag");
     }
 
     private void configNavigationHeaderView() {

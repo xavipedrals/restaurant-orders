@@ -15,9 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xavi.comandesidi.R;
+import com.example.xavi.comandesidi.Utils.DialogFragmentUtils;
 
 
-public class CrearPlatDialog extends DialogFragment {
+public class CreateDishDialog extends DialogFragmentUtils {
 
     private TextView acceptTV, cancelTv;
     private EditText nameEt, priceEt, stockEt;
@@ -28,7 +29,7 @@ public class CrearPlatDialog extends DialogFragment {
     private FloatingActionButton fab;
     private View view;
 
-    public CrearPlatDialog() {
+    public CreateDishDialog() {
         // Empty constructor required for DialogFragment
     }
 
@@ -55,13 +56,7 @@ public class CrearPlatDialog extends DialogFragment {
     }
 
     private void setCancelClickListener() {
-        cancelTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCreatePlatDialogResultListener.onNegativeResult();
-                dismiss();
-            }
-        });
+        cancelTv.setOnClickListener(super.getDismissClickLitener());
     }
 
     private void setCreateDishClickListener() {

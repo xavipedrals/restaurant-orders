@@ -12,15 +12,13 @@
     <string name="nav_drawer_title">Mikado</string>
     <string name="nav_drawer_email">mikado.restaurant@gmail.com</string>
 
+   <string name="about_text">L\' aplicació comandes serveix per gestionar les comandes de un restaurant. Permet enregistrar comandes, editar
+    els plats que ofereix el restaurant, llistar les comandes fetes durant el dia i també permet mantenir un stoc dels
+    plats que ofereix el restaurant.</string>
 
-    <string name="about_text">This app's main objective is to manage the orders of a restaurant. It lets you create new orders, edit
-    the dishes that the restaurant offers, list the day's orders and also mantain a stock of the dishes offered by
-        the restaurant.</string>
-
-    <string name="about_nova_comanda">Here you can create orders, by doing a click you will add a unit of it to the order, by doing
-         a long click on a dish you will access a menu where you can change the quantity of the dish and by doing a click in the
-    information button you can know in any moment the total price of the order
-        d\'informació podràs saber en tot moment el preu acumulat de la comanda i finalment amb el botó de baix a la dreta de la pantalla
+    <string name="about_nova_comanda">Aquí podràs crear noves comandes, fent click sobre un plat afegiràs una unitat d\'aquest, fent un
+         click llarg sobre un plat accediràs a un menú on podràs canviar la quantitat que vols d\'aquest, fent click al botó
+    d\'informació podràs saber en tot moment el preu acumulat de la comanda i finalment amb el botó de baix a la dreta de la pantalla
     podràs tramitar una comanda.</string>
 
     <string name="help_editar_plats">Aquí podràs editar els teus plats, fent click sobre un plat aniràs a una pantalla on podràs editar-lo
@@ -38,3 +36,4 @@
 
 
 </resources>
+

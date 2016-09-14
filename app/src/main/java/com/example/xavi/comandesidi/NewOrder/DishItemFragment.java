@@ -3,9 +3,6 @@ package com.example.xavi.comandesidi.NewOrder;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -22,6 +19,7 @@ import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBManager.DBManager;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
 import com.example.xavi.comandesidi.Utils.InfoDialog;
+import com.example.xavi.comandesidi.Utils.ItemFragmentUtils;
 
 import java.util.List;
 
@@ -31,14 +29,10 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class DishItemFragment extends Fragment {
+public class DishItemFragment extends ItemFragmentUtils {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private DishesContainer dishesContainer;
-    private RecyclerView recyclerView;
-    private Context context;
     private DishRecyclerViewAdapter dishRecyclerViewAdapter;
 
     public DishItemFragment() {
@@ -61,20 +55,12 @@ public class DishItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         if (view instanceof RecyclerView) {
-            context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            super.context = view.getContext();
+            super.recyclerView = (RecyclerView) view;
             manageRecyclerViewLayout();
             setRecyclerViewAdapter();
         }
         return view;
-    }
-
-    private void manageRecyclerViewLayout() {
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
     }
 
     private void setRecyclerViewAdapter() {

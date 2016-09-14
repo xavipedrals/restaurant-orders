@@ -3,9 +3,6 @@ package com.example.xavi.comandesidi.EditDish;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.RecyclerItemClickListener;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.ItemFragmentUtils;
 
 import java.util.List;
 
@@ -23,15 +21,11 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class EditDishItemFragment extends Fragment {
+public class EditDishItemFragment extends ItemFragmentUtils {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private DishesContainer dishesContainer;
     private EditDishItemRecyclerViewAdapter editDishItemRecyclerViewAdapter;
-    RecyclerView recyclerView;
-    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,8 +46,8 @@ public class EditDishItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editplatitem_list, container, false);
         if (view instanceof RecyclerView) {
-            context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            super.context = view.getContext();
+            super.recyclerView = (RecyclerView) view;
             setRecyclerViewItemTouchListener();
             manageRecyclerViewLayout();
             setRecyclerViewAdapter();
@@ -86,21 +80,13 @@ public class EditDishItemFragment extends Fragment {
         return bundle;
     }
 
-    private void manageRecyclerViewLayout() {
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
-    }
-
     private void setRecyclerViewAdapter() {
         editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(dishesContainer, mListener, getActivity().getApplicationContext());
         recyclerView.setAdapter(editDishItemRecyclerViewAdapter);
     }
 
-    public void refreshAdapter(List<DishesContainer.Dish> dishs){
-        editDishItemRecyclerViewAdapter.refreshView(dishs);
+    public void refreshAdapter(List<DishesContainer.Dish> dishes){
+        editDishItemRecyclerViewAdapter.refreshView(dishes);
     }
 
     @Override

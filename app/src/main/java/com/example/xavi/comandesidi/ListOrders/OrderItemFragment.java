@@ -3,9 +3,6 @@ package com.example.xavi.comandesidi.ListOrders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.xavi.comandesidi.Utils.InfoDialog;
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
+import com.example.xavi.comandesidi.Utils.ItemFragmentUtils;
 
 
 /**
@@ -25,14 +23,10 @@ import com.example.xavi.comandesidi.DBWrappers.OrderContainer;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class OrderItemFragment extends Fragment {
+public class OrderItemFragment extends ItemFragmentUtils {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener orderItemfragmentInteractionListener;
     private OrderItemRecyclerViewAdapter orderItemRecyclerViewAdapter;
-    private RecyclerView recyclerView;
-    private Context context;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,22 +35,10 @@ public class OrderItemFragment extends Fragment {
     public OrderItemFragment() {
     }
 
-    @SuppressWarnings("unused")
-    public static OrderItemFragment newInstance(int columnCount) {
-        OrderItemFragment fragment = new OrderItemFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -64,20 +46,12 @@ public class OrderItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comandaitem_list, container, false);
         if (view instanceof RecyclerView) {
-            context = view.getContext();
-            recyclerView = (RecyclerView) view;
-            manageRecyclerViewLayout();
+            super.context = view.getContext();
+            super.recyclerView = (RecyclerView) view;
+            super.manageRecyclerViewLayout();
             setRecyclerViewAdapter();
         }
         return view;
-    }
-
-    private void manageRecyclerViewLayout() {
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
     }
 
     private void setRecyclerViewAdapter() {

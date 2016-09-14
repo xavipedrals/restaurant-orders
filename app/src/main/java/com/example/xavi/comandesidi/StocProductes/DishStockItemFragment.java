@@ -26,7 +26,6 @@ public class DishStockItemFragment extends ItemFragmentUtils {
     private DishesContainer dishesContainer;
     private DishStockItemRecyclerViewAdapter dishStockItemRecyclerViewAdapter;
 
-
     public DishStockItemFragment() {
         //Required empty constructor
     }
@@ -99,11 +98,6 @@ public class DishStockItemFragment extends ItemFragmentUtils {
         }
         DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(v.dish.id, v.stock);
         DishesContainer.refresh(getActivity().getApplicationContext());
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

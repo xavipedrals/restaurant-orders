@@ -24,7 +24,6 @@ import java.util.List;
 public class EditDishItemFragment extends ItemFragmentUtils {
 
     private OnListFragmentInteractionListener mListener;
-    private DishesContainer dishesContainer;
     private EditDishItemRecyclerViewAdapter editDishItemRecyclerViewAdapter;
 
     /**
@@ -38,7 +37,6 @@ public class EditDishItemFragment extends ItemFragmentUtils {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
@@ -81,7 +79,7 @@ public class EditDishItemFragment extends ItemFragmentUtils {
     }
 
     private void setRecyclerViewAdapter() {
-        editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(dishesContainer, mListener, getActivity().getApplicationContext());
+        editDishItemRecyclerViewAdapter = new EditDishItemRecyclerViewAdapter(DishesContainer.getInstance(getActivity().getApplicationContext()), mListener, getActivity().getApplicationContext());
         recyclerView.setAdapter(editDishItemRecyclerViewAdapter);
     }
 

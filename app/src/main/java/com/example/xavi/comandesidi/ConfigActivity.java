@@ -263,7 +263,7 @@ public class ConfigActivity extends AppCompatActivity {
         infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
             @Override
             public void onPositiveResult() {
-                DBManager.getInstance(getApplicationContext()).resetTablePlats();
+                DBManager.getInstance(getApplicationContext()).resetTableDishes();
                 DishesContainer.refreshAfterReset(getApplicationContext());
                 specialBackPressed = true;
                 onBackPressed();
@@ -293,7 +293,7 @@ public class ConfigActivity extends AppCompatActivity {
         infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
             @Override
             public void onPositiveResult() {
-                DBManager.getInstance(getApplicationContext()).resetTableComandes();
+                DBManager.getInstance(getApplicationContext()).resetTableOrders();
                 OrderContainer.refreshAfterReset(getApplicationContext());
                 specialBackPressed = true;
                 onBackPressed();

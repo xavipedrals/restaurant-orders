@@ -67,12 +67,12 @@ public class OrderContainer {
     }
 
     private boolean checkIfBDhasSomething(){
-        Cursor cursor = DBManager.getInstance(context).getAllComandes();
+        Cursor cursor = DBManager.getInstance(context).getAllOrders();
         return cursor.moveToFirst();
     }
 
     private void populateBDifNotPopulated(String date){
-        Cursor cursor = DBManager.getInstance(context).getComandesByDay(date);
+        Cursor cursor = DBManager.getInstance(context).getOrdersByDay(date);
         if (cursor.moveToFirst()) {
             do {
                 Order order = initNewOrder(cursor);
@@ -87,7 +87,7 @@ public class OrderContainer {
     }
 
     private void fetchOrderItems(String date){
-        Cursor cursor = DBManager.getInstance(context).getComandesByDay(date);
+        Cursor cursor = DBManager.getInstance(context).getOrdersByDay(date);
         if (cursor.moveToFirst()) {
             do {
                 Order order = initNewOrder(cursor);
@@ -98,9 +98,9 @@ public class OrderContainer {
 
     private Order initNewOrder(Cursor cursor) {
         Order order = new Order();
-        order.setDate(cursor.getString(cursor.getColumnIndex(DBManager.COMANDES_COL_DATA)));
-        order.price = cursor.getDouble(cursor.getColumnIndex(DBManager.COMANDES_COL_PRICE));
-        order.tableNum = cursor.getInt(cursor.getColumnIndex(DBManager.COMANDES_COL_NUM_TABLE));
+        order.setDate(cursor.getString(cursor.getColumnIndex(DBManager.ORDERS_COL_DATA)));
+        order.price = cursor.getDouble(cursor.getColumnIndex(DBManager.ORDERS_COL_PRICE));
+        order.tableNum = cursor.getInt(cursor.getColumnIndex(DBManager.ORDERS_COL_NUM_TABLE));
         return order;
     }
 
@@ -111,12 +111,12 @@ public class OrderContainer {
         String hour4 = " 02:30 PM";
         String hour5 = " 08:40 PM";
         String hour6 = " 10:00 PM";
-        DBManager.getInstance(context).insertComanda((double) 15, date + hour, 3);
-        DBManager.getInstance(context).insertComanda((double) 23.50, date + hour2, 13);
-        DBManager.getInstance(context).insertComanda((double) 7.45, date + hour3, 4);
-        DBManager.getInstance(context).insertComanda((double) 28, date + hour4, 8);
-        DBManager.getInstance(context).insertComanda((double) 19.99, date + hour5, 20);
-        DBManager.getInstance(context).insertComanda((double) 43.25, date + hour6, 1);
+        DBManager.getInstance(context).insertOrder((double) 15, date + hour, 3);
+        DBManager.getInstance(context).insertOrder((double) 23.50, date + hour2, 13);
+        DBManager.getInstance(context).insertOrder((double) 7.45, date + hour3, 4);
+        DBManager.getInstance(context).insertOrder((double) 28, date + hour4, 8);
+        DBManager.getInstance(context).insertOrder((double) 19.99, date + hour5, 20);
+        DBManager.getInstance(context).insertOrder((double) 43.25, date + hour6, 1);
     }
 
     public List<Order> getOrderList() {

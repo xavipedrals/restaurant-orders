@@ -23,7 +23,7 @@ import com.example.xavi.comandesidi.Utils.ItemFragmentUtils;
 public class DishStockItemFragment extends ItemFragmentUtils {
 
     private OnListFragmentInteractionListener mListener;
-    private DishesContainer dishesContainer;
+//    private DishesContainer dishesContainer;
     private DishStockItemRecyclerViewAdapter dishStockItemRecyclerViewAdapter;
 
     public DishStockItemFragment() {
@@ -33,7 +33,7 @@ public class DishStockItemFragment extends ItemFragmentUtils {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
+//        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DishStockItemFragment extends ItemFragmentUtils {
         } else if (opcio.equals("decrementar")){
             v.decreaseQuantityByX(bundle.getInt("quantitat"));
         }
-        DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(v.dish.id, v.stock);
+        DBManager.getInstance(getActivity().getApplicationContext()).updateDish(v.dish.id, v.stock);
         DishesContainer.refresh(getActivity().getApplicationContext());
     }
 

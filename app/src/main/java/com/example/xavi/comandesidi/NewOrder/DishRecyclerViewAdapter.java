@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,12 +34,6 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
     private ViewHolder lastClickedView;
     private List<ViewHolder> viewHolderList;
 
-    private int position;
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public ViewHolder getLastClickedView() {
         return lastClickedView;
     }
@@ -57,6 +50,7 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
         return price;
     }
 
+    //TODO bettter use a DishesCOntainer object
     public List<DishesContainer.Dish> getProductesActualitzats(){
         List<DishesContainer.Dish> productesActualitzats = new ArrayList<>();
         for(ViewHolder holder: viewHolderList){
@@ -74,7 +68,8 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
         }
     }
 
-    public DishRecyclerViewAdapter(DishesContainer dishesContainer, OnListFragmentInteractionListener listener, Context context) {
+    public DishRecyclerViewAdapter(OnListFragmentInteractionListener listener, Context context) {
+        DishesContainer dishesContainer = DishesContainer.getInstance(context);
         dishList = dishesContainer.getDishList();
         mListener = listener;
         this.context = context;
@@ -144,7 +139,7 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                setPosition(holder.getPosition());
+//                setPosition(holder.getPosition());
                 setLastClickedView(holder);
                 return false;
             }

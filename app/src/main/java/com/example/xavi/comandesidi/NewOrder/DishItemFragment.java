@@ -32,7 +32,7 @@ import java.util.List;
 public class DishItemFragment extends ItemFragmentUtils {
 
     private OnListFragmentInteractionListener mListener;
-    private DishesContainer dishesContainer;
+//    private DishesContainer dishesContainer;
     private DishRecyclerViewAdapter dishRecyclerViewAdapter;
 
     public DishItemFragment() {
@@ -47,7 +47,7 @@ public class DishItemFragment extends ItemFragmentUtils {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
+//        dishesContainer = DishesContainer.getInstance(getActivity().getApplicationContext());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class DishItemFragment extends ItemFragmentUtils {
     }
 
     private void setRecyclerViewAdapter() {
-        dishRecyclerViewAdapter = new DishRecyclerViewAdapter(DishesContainer.getInstance(getActivity().getApplicationContext()), mListener, getContext());
+        dishRecyclerViewAdapter = new DishRecyclerViewAdapter(mListener, getContext());
         recyclerView.setAdapter(dishRecyclerViewAdapter);
     }
 
@@ -191,7 +191,7 @@ public class DishItemFragment extends ItemFragmentUtils {
     public void updateStockDb(){
         List<DishesContainer.Dish> dishList = dishRecyclerViewAdapter.getProductesActualitzats();
         for (DishesContainer.Dish dish : dishList){
-            DBManager.getInstance(getActivity().getApplicationContext()).updatePlat(dish.name, dish.stock);
+            DBManager.getInstance(getActivity().getApplicationContext()).updateDish(dish.name, dish.stock);
         }
     }
 

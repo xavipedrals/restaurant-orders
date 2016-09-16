@@ -220,8 +220,8 @@ public class EditDishActivity extends AppCompatActivity {
                 double priceAux = Double.parseDouble(priceEt.getText().toString());
                 if(!nameAux.equals(name) || price != priceAux || imageUri != null){
                     if (imageUri != null){
-                        DBManager.getInstance(getApplicationContext()).updatePlat(productId, 1, imageUri.toString(), priceAux, nameAux);
-                    } else DBManager.getInstance(getApplicationContext()).updatePlat(productId, 0, null, priceAux, nameAux);
+                        DBManager.getInstance(getApplicationContext()).updateDish(productId, 1, imageUri.toString(), priceAux, nameAux);
+                    } else DBManager.getInstance(getApplicationContext()).updateDish(productId, 0, null, priceAux, nameAux);
                     DishesContainer.refresh(getApplicationContext());
                     specialBackPressed = true;
                     onBackPressed();
@@ -242,7 +242,7 @@ public class EditDishActivity extends AppCompatActivity {
                 infoDialog.setOnInfoDialogDialogResultListener(new InfoDialog.OnInfoDialogDialogResultListener() {
                     @Override
                     public void onPositiveResult() {
-                        DBManager.getInstance(getApplicationContext()).deletePlat(name);
+                        DBManager.getInstance(getApplicationContext()).deleteDish(name);
                         DishesContainer.refresh(getApplicationContext());
                         specialBackPressed = true;
                         onBackPressed();

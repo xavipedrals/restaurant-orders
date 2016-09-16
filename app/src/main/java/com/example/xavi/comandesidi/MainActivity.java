@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity
                 SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
                 Date date = new Date();
                 String dateStr = df.format(date);
-                DBManager.getInstance(getApplicationContext()).insertComanda(price, dateStr, numTaula);
+                DBManager.getInstance(getApplicationContext()).insertOrder(price, dateStr, numTaula);
                 OrderContainer.refresh(getApplicationContext());
                 dishItemFragment.updateStockDb();
                 DishesContainer.refresh(getApplicationContext());
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity
                 double price = bundle.getDouble("price");
                 int stock = bundle.getInt("stock");
                 String imgUri = bundle.getString("imgUri");
-                DBManager.getInstance(getApplicationContext()).insertPlat(imgUri, price, name, stock);
+                DBManager.getInstance(getApplicationContext()).insertDish(imgUri, price, name, stock);
                 DishesContainer.refresh(getApplicationContext());
                 editDishItemFragment.refreshAdapter(DishesContainer.getInstance(getApplicationContext()).getDishList());
             }

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +14,9 @@ import android.widget.TextView;
 
 import com.example.xavi.comandesidi.R;
 import com.example.xavi.comandesidi.DBWrappers.DishesContainer;
+import com.example.xavi.comandesidi.Utils.BitmapUtils;
 import com.example.xavi.comandesidi.Utils.ConstantValues;
-import com.example.xavi.comandesidi.widgets.ImageHelper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,16 +63,11 @@ public class DishStockItemRecyclerViewAdapter extends RecyclerView.Adapter<DishS
     private void setImageViewBitmap(ViewHolder holder, int position) {
         Bitmap bitmap = null;
         if(holder.dish.hasImage){
-            Uri uri = Uri.parse(holder.dish.imgUri);
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            BitmapUtils.getBitmapFromUri(holder.dish.imgUri, context);
         } else {
             bitmap = BitmapFactory.decodeResource(context.getResources(), dishList.get(position).mipmapId);
         }
-        Bitmap round = ImageHelper.getRoundedShape(bitmap, 128);
+        Bitmap round = BitmapUtils.getRoundedShape(bitmap, 128);
         holder.imageView.setImageBitmap(round);
     }
 

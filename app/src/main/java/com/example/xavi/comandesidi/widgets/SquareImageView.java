@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+/** Needed for collapsible layout **/
 public class SquareImageView extends ImageView {
 
     public SquareImageView(Context context) {

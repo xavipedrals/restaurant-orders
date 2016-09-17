@@ -134,46 +134,46 @@ public class DishItemFragment extends ItemFragmentUtils {
     /**Menu that appears in new command after making a long click on a dish**/
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        DishRecyclerViewAdapter.ViewHolder viewHolder = getlastClickedViewHolder();
+        DishRecyclerViewAdapter.DishViewHolder dishViewHolder = getlastClickedViewHolder();
 
         switch (item.getItemId()) {
             case R.id.contextualMenuDecrease:
-                viewHolder.decreaseQuantityByOne();
+                dishViewHolder.decreaseQuantityByOne();
                 break;
             case R.id.contextualMenuSetZero:
-                viewHolder.decreaseQuantityToZero();
+                dishViewHolder.decreaseQuantityToZero();
                 break;
             case R.id.contextualMenuSetCustomNumber:
-                showIntroduceQuantityDialog(viewHolder);
+                showIntroduceQuantityDialog(dishViewHolder);
                 break;
         }
         return super.onContextItemSelected(item);
 
     }
 
-    public DishRecyclerViewAdapter.ViewHolder getlastClickedViewHolder() {
-        DishRecyclerViewAdapter.ViewHolder viewHolder = null;
+    public DishRecyclerViewAdapter.DishViewHolder getlastClickedViewHolder() {
+        DishRecyclerViewAdapter.DishViewHolder dishViewHolder = null;
         try {
-            viewHolder = dishRecyclerViewAdapter.getLastClickedView();
+            dishViewHolder = dishRecyclerViewAdapter.getLastClickedView();
         } catch (Exception e) {
             Log.d("EXCEPTION", e.getLocalizedMessage(), e);
         }
-        return viewHolder;
+        return dishViewHolder;
     }
 
-    private void showIntroduceQuantityDialog(DishRecyclerViewAdapter.ViewHolder viewHolder) {
+    private void showIntroduceQuantityDialog(DishRecyclerViewAdapter.DishViewHolder dishViewHolder) {
         IntroduceQuantityDialog introduceQuantityDialog = new IntroduceQuantityDialog();
         android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         introduceQuantityDialog.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        setResultListenerIntrQuantDialog(introduceQuantityDialog, viewHolder);
+        setResultListenerIntrQuantDialog(introduceQuantityDialog, dishViewHolder);
         introduceQuantityDialog.show(fragmentManager, "tag");
     }
 
-    private void setResultListenerIntrQuantDialog(IntroduceQuantityDialog introduceQuantityDialog, final DishRecyclerViewAdapter.ViewHolder viewHolder) {
+    private void setResultListenerIntrQuantDialog(IntroduceQuantityDialog introduceQuantityDialog, final DishRecyclerViewAdapter.DishViewHolder dishViewHolder) {
         introduceQuantityDialog.setOnDialogResultListener(new IntroduceQuantityDialog.OnDialogResultListener() {
             @Override
             public void onPositiveResult(int value) {
-                if (viewHolder.checkStock(value)) viewHolder.setExactQuantity(value);
+                if (dishViewHolder.isStockSufficient(value)) dishViewHolder.setExactQuantity(value);
                 else {
                     Toast.makeText(getActivity().getApplicationContext(), "Product without enough stock", Toast.LENGTH_LONG).show();
                 }
@@ -189,7 +189,7 @@ public class DishItemFragment extends ItemFragmentUtils {
     }
 
     public void updateStockDb(){
-        List<DishesContainer.Dish> dishList = dishRecyclerViewAdapter.getProductesActualitzats();
+        List<DishesContainer.Dish> dishList = dishRecyclerViewAdapter.getUpdatedDishes();
         for (DishesContainer.Dish dish : dishList){
             DBManager.getInstance(getActivity().getApplicationContext()).updateDish(dish.name, dish.stock);
         }

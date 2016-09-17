@@ -1,15 +1,22 @@
 package com.example.xavi.comandesidi;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -60,7 +67,6 @@ public class MainActivity extends AppCompatActivity
     private final int LIST_ORDERS_FRAGMENT = 3;
     private final int DISHES_STOCK_FRAGMENT = 4;
     private final int SETTINGS_FRAGMENT = 5;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

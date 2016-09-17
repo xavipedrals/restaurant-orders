@@ -27,19 +27,19 @@ public class OrderContainer {
         return instance;
     }
 
-    public static OrderContainer getFirstInstance(Context context){
-        if(instance == null){
-            instance = new OrderContainer(context, true);
-        }
-        return instance;
-    }
-
-    public static void refresh(Context context){
+    public static void initInstanceWithStubs(Context context) {
         instance = new OrderContainer(context);
+        String today = getOnlyDayFromDate(new Date());
+        instance.initStubs(today);
+        instance.fetchOrderItems(today);
     }
 
-    public static void refreshAfterReset(Context context){
-        instance = new OrderContainer(context, false);
+    private static String getOnlyDayFromDate(Date date){
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        String dateStr = df.format(date);
+        String aux[] = dateStr.split(" ");
+        String onlyDay = aux[0];
+        return onlyDay;
     }
 
     public OrderContainer(Context context){
@@ -51,39 +51,6 @@ public class OrderContainer {
         String aux[] = dateStr.split(" ");
         String onlyDay = aux[0];
         fetchOrderItems(onlyDay);
-    }
-
-    public OrderContainer(Context context, boolean populate){
-        orderList = new ArrayList<>();
-        this.context = context;
-        if (populate){
-            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-            Date date = new Date();
-            String dateStr = df.format(date);
-            String aux[] = dateStr.split(" ");
-            String onlyDay = aux[0];
-            populateBDifNotPopulated(onlyDay);
-        }
-    }
-
-    private boolean checkIfBDhasSomething(){
-        Cursor cursor = DBManager.getInstance(context).getAllOrders();
-        return cursor.moveToFirst();
-    }
-
-    private void populateBDifNotPopulated(String date){
-        Cursor cursor = DBManager.getInstance(context).getOrdersByDay(date);
-        if (cursor.moveToFirst()) {
-            do {
-                Order order = initNewOrder(cursor);
-                orderList.add(order);
-            } while (cursor.moveToNext());
-        } else {
-            if (!checkIfBDhasSomething()) {
-                initStub(date);
-                populateBDifNotPopulated(date);
-            }
-        }
     }
 
     private void fetchOrderItems(String date){
@@ -104,7 +71,7 @@ public class OrderContainer {
         return order;
     }
 
-    private void initStub(String date) {
+    private void initStubs(String date) {
         String hour = " 12:00 AM";
         String hour2 = " 11:30 PM";
         String hour3 = " 09:00 AM";
@@ -117,6 +84,10 @@ public class OrderContainer {
         DBManager.getInstance(context).insertOrder((double) 28, date + hour4, 8);
         DBManager.getInstance(context).insertOrder((double) 19.99, date + hour5, 20);
         DBManager.getInstance(context).insertOrder((double) 43.25, date + hour6, 1);
+    }
+
+    public static void refresh(Context context){
+        instance = new OrderContainer(context);
     }
 
     public List<Order> getOrderList() {
@@ -132,10 +103,6 @@ public class OrderContainer {
         public double price;
 
         public Order(){}
-
-        public String getDate() {
-            return date;
-        }
 
         public void setDate(String date) {
             this.date = date;

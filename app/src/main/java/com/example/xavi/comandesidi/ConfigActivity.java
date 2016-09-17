@@ -264,7 +264,7 @@ public class ConfigActivity extends AppCompatActivity {
             @Override
             public void onPositiveResult() {
                 DBManager.getInstance(getApplicationContext()).resetTableDishes();
-                DishesContainer.refreshAfterReset(getApplicationContext());
+                DishesContainer.refresh(getApplicationContext());
                 specialBackPressed = true;
                 onBackPressed();
                 displayToast("All dishes have been deleted");
@@ -294,7 +294,7 @@ public class ConfigActivity extends AppCompatActivity {
             @Override
             public void onPositiveResult() {
                 DBManager.getInstance(getApplicationContext()).resetTableOrders();
-                OrderContainer.refreshAfterReset(getApplicationContext());
+                OrderContainer.refresh(getApplicationContext());
                 specialBackPressed = true;
                 onBackPressed();
                 displayToast("All orders have been deleted");

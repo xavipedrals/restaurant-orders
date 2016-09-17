@@ -25,31 +25,25 @@ public class DishesContainer {
         return instance;
     }
 
-    public static DishesContainer getFirstInstance(Context context){
-        if(instance == null){
-            instance = new DishesContainer(context, true);
-        }
-        return instance;
-    }
-
-    public static void refresh(Context context){
+    public static void initInstanceWithStubs(Context context) {
         instance = new DishesContainer(context);
+        instance.initStubs();
+        instance.fetchDishItems();
     }
 
-    public static void refreshAfterReset(Context context){
-        instance = new DishesContainer(context, false);
+    private DishesContainer(Context context){
+        dishList = new ArrayList<>();
+        this.context = context;
+        fetchDishItems();
     }
 
-    private void populateBDifNotPopulated(){
+    private void fetchDishItems(){
         Cursor cursor = DBManager.getInstance(context).getAllDishes();
         if (cursor.moveToFirst()) {
             do {
                 Dish dish = initProduct(cursor);
                 dishList.add(dish);
             } while (cursor.moveToNext());
-        } else {
-            initStub();
-            populateBDifNotPopulated();
         }
     }
 
@@ -71,7 +65,7 @@ public class DishesContainer {
         return dish;
     }
 
-    private void initStub () {
+    public void initStubs() {
         DBManager.getInstance(context).insertDish(R.mipmap.alberginia, 7.50, "Eggplant with bacon", 100);
         DBManager.getInstance(context).insertDish(R.mipmap.arros, 8.40, "Rice with chicken", 50);
         DBManager.getInstance(context).insertDish(R.mipmap.cranc, 11.99, "Crab with garnish", 20);
@@ -83,31 +77,9 @@ public class DishesContainer {
         DBManager.getInstance(context).insertDish(R.mipmap.tacos, 4, "Tacos", 99);
     }
 
-    private void fetchDishItems(){
-        Cursor cursor = DBManager.getInstance(context).getAllDishes();
-        if (cursor.moveToFirst()) {
-            do {
-                Dish dish = initProduct(cursor);
-                dishList.add(dish);
-            } while (cursor.moveToNext());
-        }
+    public static void refresh(Context context){
+        instance = new DishesContainer(context);
     }
-
-    private DishesContainer(Context context){
-        dishList = new ArrayList<>();
-        this.context = context;
-        fetchDishItems();
-    }
-
-    private DishesContainer(Context context, boolean populate){
-        dishList = new ArrayList<>();
-        this.context = context;
-        if (populate) populateBDifNotPopulated();
-    }
-
-//    public static int getSize(){
-//        return instance.dishList.size();
-//    }
 
     public List<Dish> getDishList(){
         return dishList;

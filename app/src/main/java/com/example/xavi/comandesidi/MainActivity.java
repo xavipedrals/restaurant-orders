@@ -226,9 +226,9 @@ public class MainActivity extends AppCompatActivity
     private void manageFirstLaunch() {
         SharedPreferences prefs = this.getSharedPreferences("com.example.app", Context.MODE_PRIVATE);
         prefs.edit().putBoolean("FirstLaunch", false).apply();
-        DishesContainer.getFirstInstance(getApplicationContext());
-        OrderContainer.getFirstInstance(getApplicationContext());
-        setToolbarTitle("Ajuda");
+        DishesContainer.initInstanceWithStubs(getApplicationContext());
+        OrderContainer.initInstanceWithStubs(getApplicationContext());
+        setToolbarTitle("Help");
         configureFab(SETTINGS_FRAGMENT);
         HelpFragment f = new HelpFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, f).commit();

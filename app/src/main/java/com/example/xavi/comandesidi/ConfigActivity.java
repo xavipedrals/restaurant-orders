@@ -115,7 +115,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     private void manageActionBar() {
         if (null != actionbar) {
-            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
             actionbar.setTitle("Configuration");
             actionbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

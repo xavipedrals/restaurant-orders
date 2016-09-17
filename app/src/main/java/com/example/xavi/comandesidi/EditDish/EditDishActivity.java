@@ -114,7 +114,7 @@ public class EditDishActivity extends AppCompatActivity {
 
     private void configActionBar() {
         if (null != actionbar) {
-            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+            actionbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
             actionbar.setTitle("Edit dish");
             actionbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
